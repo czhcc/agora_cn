@@ -260,7 +260,7 @@ function nextStepFor(
         : disabled('noProject', stepKind)
     case 'personas':
       return project
-        ? enabled(stepKind, target('StepEnvSetup', { projectId: project }))
+        ? enabled(stepKind, target('RunPersonas', { simulationId: data.simulationId }))
         : disabled('noProject', stepKind)
     case 'simulation':
       return stepKind === 'view'

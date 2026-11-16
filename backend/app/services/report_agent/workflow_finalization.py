@@ -7,6 +7,7 @@ from typing import Any, Callable, Dict, List, Optional, Sequence
 
 from pydantic import ValidationError
 
+from ...contracts.report_language_contract import report_language_instruction
 from ...contracts.report_v3 import (
     RED_TEAM_FINDINGS_LIMIT,
     ModelAttribution,
@@ -124,7 +125,6 @@ _RED_TEAM_SYSTEM_PROMPT = (
     "Du prüfst einen Berichtsentwurf auf Schwachstellen im Wording-Glossar v1 "
     "(VERBOTEN: 'Vorhersage', 'Prognose', 'wird eintreten'; ERLAUBT: Simulation, "
     "Szenarienanalyse, Reaktionsmuster, Einschätzung). "
-    "Antworte ausschliesslich auf Deutsch."
 )
 
 _RED_TEAM_USER_TEMPLATE = (
@@ -262,7 +262,11 @@ def _run_red_team_review(
     try:
         raw = agent.llm.chat_json(
             messages=[
-                {"role": "system", "content": _RED_TEAM_SYSTEM_PROMPT},
+                {
+                    "role": "system",
+                    "content": _RED_TEAM_SYSTEM_PROMPT + "\n\n"
+                    + report_language_instruction(_wf.Config.REPORT_LANGUAGE),
+                },
                 {"role": "user", "content": user_msg},
             ],
             temperature=0.3,
@@ -398,7 +402,12 @@ def generate_section_metadata(
         "3. Verwende nur Informationen, die explizit im Abschnittstext stehen. "
         "Erfinde keine Daten.\n"
         "4. Bei fehlenden Informationen: leere Liste oder Default-Wert. "
-        "Nicht halluzinieren, nicht auffüllen."
+        "Nicht halluzinieren, nicht auffüllen.\n"
+        "5. evidence_status='verified' requires non-empty evidence_refs copied "
+        "from actual evidence identifiers in the section. Never invent evidence "
+        "references. Without evidence use heuristic for unsupported proposals "
+        "or omit the entry if it cannot be represented faithfully.\n\n"
+        + report_language_instruction(_wf.Config.REPORT_LANGUAGE)
     )
     if len(section_content) > METADATA_MAX_CONTENT_CHARS:
         logger.warning(
@@ -414,18 +423,37 @@ def generate_section_metadata(
     ) + _prior_thresholds_prompt(agent, schema_cls, section_index)
 
     try:
-        result = agent.llm.chat_json(
-            messages=[
-                {"role": "system", "content": system_msg},
-                {"role": "user", "content": user_msg},
-            ],
-            temperature=0.2,
-            max_tokens=METADATA_MAX_OUTPUT_TOKENS,
-            enforce_token_floor=False,
-            schema=schema_cls,
-            schema_name=schema_name,
-            context="report",
-        )
+        messages = [
+            {"role": "system", "content": system_msg},
+            {"role": "user", "content": user_msg},
+        ]
+        for attempt in range(2):
+            try:
+                result = agent.llm.chat_json(
+                    messages=messages,
+                    temperature=0.2,
+                    max_tokens=METADATA_MAX_OUTPUT_TOKENS,
+                    enforce_token_floor=False,
+                    schema=schema_cls,
+                    schema_name=schema_name,
+                    context="report",
+                )
+                break
+            except ValidationError as validation_error:
+                if attempt:
+                    raise
+                logger.warning(
+                    "generate_section_metadata: section=%d schema=%s invalid output; retrying once",
+                    section_index, schema_cls.__name__,
+                )
+                messages = [*messages, {
+                    "role": "user",
+                    "content": "Regenerate the metadata from the original section, fixing "
+                    "these schema violations. Do not invent facts or evidence references.\n"
+                    + json.dumps(validation_error.errors(
+                        include_input=False, include_context=False, include_url=False,
+                    ), ensure_ascii=False),
+                }]
         logger.info(
             "generate_section_metadata: section=%d title=%r schema=%s",
             section_index,

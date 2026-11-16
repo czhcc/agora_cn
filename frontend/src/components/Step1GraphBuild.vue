@@ -14,6 +14,7 @@ const { t } = useI18n()
 
 const props = defineProps({
   currentPhase: { type: Number, default: 0 },
+  failed: { type: Boolean, default: false },
   projectData: Object,
   ontologyProgress: Object,
   buildProgress: Object,
@@ -53,6 +54,7 @@ const graphStats = computed(() => {
 // Issue #1029: drei Zustände statt zwei — läuft noch, fertig, oder fertig
 // mit einem Ergebnis, mit dem weiterzuarbeiten sich nicht lohnt.
 const graphStepBadge = computed(() => {
+  if (props.failed) return { variant: 'outline', labelKey: 'common.failed' }
   if (props.currentPhase < 2) return { variant: 'outline', labelKey: 'common.loading' }
   if (props.qualityBlocked) return { variant: 'outline', labelKey: 'step1.build.insufficient' }
   return { variant: 'accent', labelKey: 'common.ready' }
@@ -116,12 +118,14 @@ watch(() => props.systemLogs.length, () => {
 })
 
 function phaseLabel(phase) {
+  if (props.failed && props.currentPhase === phase) return t('common.failed')
   if (props.currentPhase > phase) return t('common.completed')
   if (props.currentPhase === phase) return t('common.running')
   return t('common.ready')
 }
 
 function phaseVariant(phase) {
+  if (props.failed && props.currentPhase === phase) return 'outline'
   if (props.currentPhase > phase) return 'solid'
   if (props.currentPhase === phase) return 'accent'
   return 'outline'
@@ -136,11 +140,11 @@ function phaseVariant(phase) {
       <article class="card" :class="{ 'is-active': currentPhase === 0 }">
         <header class="card-head">
           <Kicker num="01">{{ t('step1.ontology.title') }}</Kicker>
-          <Badge :variant="phaseVariant(0)" :dot="currentPhase === 0">{{ phaseLabel(0) }}</Badge>
+          <Badge :variant="phaseVariant(0)" :dot="currentPhase === 0 && !failed">{{ phaseLabel(0) }}</Badge>
         </header>
         <p class="card-desc">{{ t('step1.ontology.desc') }}</p>
 
-        <div v-if="currentPhase === 0 && ontologyProgress" class="progress-row">
+        <div v-if="!failed && currentPhase === 0 && ontologyProgress" class="progress-row">
           <span class="spinner-sm" />
           <span>{{ ontologyProgress.message || t('common.processing') }}</span>
         </div>
@@ -206,8 +210,8 @@ function phaseVariant(phase) {
       <article class="card" :class="{ 'is-active': currentPhase === 1 }">
         <header class="card-head">
           <Kicker num="02">{{ t('step1.build.title') }}</Kicker>
-          <Badge :variant="phaseVariant(1)" :dot="currentPhase === 1">
-            <template v-if="currentPhase === 1">{{ buildProgress?.progress || 0 }} %</template>
+          <Badge :variant="phaseVariant(1)" :dot="currentPhase === 1 && !failed">
+            <template v-if="currentPhase === 1 && !failed">{{ buildProgress?.progress || 0 }} %</template>
             <template v-else>{{ phaseLabel(1) }}</template>
           </Badge>
         </header>
@@ -229,7 +233,7 @@ function phaseVariant(phase) {
         <p v-if="graphStats.pending" class="stats-pending" role="status">
           {{ t('step1.graph.countsPending') }}
         </p>
-        <div v-if="currentPhase === 1 && buildProgress?.message" class="progress-row">
+        <div v-if="!failed && currentPhase === 1 && buildProgress?.message" class="progress-row">
           <span class="spinner-sm" />
           <span>{{ buildProgress.message }}</span>
         </div>

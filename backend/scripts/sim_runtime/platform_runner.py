@@ -605,6 +605,10 @@ class SinglePlatformRunner:
             available_actions=self.AVAILABLE_ACTIONS,
         )
 
+        from simulation_language import apply_simulation_language
+
+        apply_simulation_language(self.agent_graph, self.config.get("language", "de"))
+
         # Memory-Token-Limit auch ohne Tool-Attach hochziehen — sonst kappt
         # CAMELs ScoreBasedContextCreator-Default bei 8192.
         try:

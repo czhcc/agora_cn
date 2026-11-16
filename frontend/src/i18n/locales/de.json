@@ -1,4 +1,5 @@
 {
+  "language": { "label": "Sprache" },
   "brand": {
     "name": "Agora",
     "tagline": "Schwarmintelligenz — lokal oder Cloud."
@@ -406,6 +407,7 @@
       "label": "Agentensprache",
       "de": "Deutsch",
       "en": "Englisch",
+      "zh": "Chinesisch (vereinfacht)",
       "hint": "Bestimmt, in welcher Sprache die Agenten posten und antworten."
     },
     "agentTools": {
@@ -875,6 +877,17 @@
     }
   },
   "cmd": {
+    "navigation": {
+      "nav:dashboard": "Neuer Lauf",
+      "nav:runs": "Läufe",
+      "nav:graphs": "Graphen",
+      "nav:history": "Aktivität",
+      "nav:settings-general": "Einstellungen — Allgemein",
+      "nav:settings-integrations": "Einstellungen — Pipeline",
+      "nav:settings-llm-routing": "Einstellungen — Profile",
+      "nav:settings-llm-providers": "Einstellungen — Anbieter",
+      "nav:settings-api-keys": "Einstellungen — Zugang"
+},
     "title": "Befehlspalette",
     "placeholder": "Route suchen oder Befehl eingeben…",
     "trigger": "Befehlspalette öffnen (Cmd+K)",
@@ -1505,6 +1518,7 @@
       "languageLabel": "Sprache",
       "languageDe": "Deutsch",
       "languageEn": "English",
+      "languageZh": "Chinesisch (vereinfacht)",
       "startCta": "Starten",
       "disabledHint": "Erst Datei und Fragestellung eingeben, dann starten.",
       "servicesUnavailableHint": "Neo4j-Bereitschaft noch nicht bestätigt. Systemstatus prüfen und erneut laden.",
@@ -1791,6 +1805,8 @@
       "organisationLabel": "Organisation",
       "languageLabel": "Sprache",
       "timezoneLabel": "Zeitzone",
+      "beijingTimezone": "Peking-Zeit (Asia/Shanghai, UTC+8)",
+      "useSystemTimezone": "Systemzeitzone verwenden",
       "reportLanguageLabel": "Berichtssprache",
       "themeLabel": "Theme",
       "privacyModeLabel": "Datenschutzmodus",
@@ -1805,7 +1821,8 @@
       },
       "language": {
         "de": "Deutsch",
-        "en": "Englisch"
+        "en": "Englisch",
+        "zhCN": "Chinesisch (vereinfacht)"
       }
     }
   },
@@ -2501,7 +2518,8 @@
           "you": "Du:",
           "badgeSim": "SIM",
           "badgeInterview": "Interview",
-          "origin": "Einträge können auch aus Interviews stammen, die der Bericht geführt hat; sie sind hier nicht zu unterscheiden.",
+          "origin": "Automatische Berichtsinterviews sind gekennzeichnet; bei einigen älteren Einträgen ist die Herkunft unbekannt.",
+          "reportInterview": "Automatisches Berichtsinterview",
           "unknownPersona": "Für Agent {n} liegt kein Persona-Profil vor und es gibt keinen Verlauf. Wähle eine Persona aus der Liste.",
           "failedReason": "Keine Antwort: {reason}",
           "copy": "Kopieren",

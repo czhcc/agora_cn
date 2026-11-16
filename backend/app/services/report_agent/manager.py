@@ -162,20 +162,20 @@ class ReportManager(ReportManagerSectionsMixin, ReportManagerCrudMixin):
         return read_json_safe(path, logger)
 
     @classmethod
-    def get_console_log(cls, report_id: str) -> Optional[str]:
-        return read_console_log(cls._get_console_log_path(report_id))
+    def get_console_log(cls, report_id: str, from_line: int = 0) -> Dict[str, Any]:
+        return read_console_log(cls.REPORTS_DIR, report_id, from_line=max(0, from_line))
 
     @classmethod
     def get_console_log_stream(cls, report_id: str):
-        return cls._get_console_log_path(report_id)
+        return cls.get_console_log(report_id)["logs"]
 
     @classmethod
-    def get_agent_log(cls, report_id: str) -> Optional[str]:
-        return read_agent_log(cls._get_agent_log_path(report_id))
+    def get_agent_log(cls, report_id: str, from_line: int = 0) -> Dict[str, Any]:
+        return read_agent_log(cls.REPORTS_DIR, report_id, from_line=max(0, from_line))
 
     @classmethod
     def get_agent_log_stream(cls, report_id: str):
-        return cls._get_agent_log_path(report_id)
+        return cls.get_agent_log(report_id)["logs"]
 
     @classmethod
     def save_evidence_map(cls, report_id: str, data: Dict[str, Any]) -> None:

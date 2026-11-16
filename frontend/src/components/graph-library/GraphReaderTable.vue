@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useGraphTypeLabel } from '@/composables/graph-library/useGraphTypeLabel'
+const typeLabel = useGraphTypeLabel()
 /**
  * Tabellen-Ansicht des Graph-Lesers (#1797): zwei Reiter, Entitaeten und
  * Beziehungen, je sortierbar. Echte `th scope`, Auswahl per Taste ueber die
@@ -191,7 +193,7 @@ const relationColumns: RelationColumn[] = ['from', 'label', 'to', 'episodes']
             </th>
             <td>
               <span aria-hidden="true" class="grt__glyph">{{ glyphByType.get(row.type) }}</span>
-              {{ row.type }}
+              {{ typeLabel(row.type) }}
             </td>
             <td class="grt__num">{{ row.degree }}</td>
             <td>{{ row.createdAt ?? '' }}</td>
@@ -249,7 +251,7 @@ const relationColumns: RelationColumn[] = ['from', 'label', 'to', 'episodes']
               </button>
               <GraphOriginMark v-if="showOrigin" :origin="originOf(row.raw)" />
             </th>
-            <td>{{ row.label }}</td>
+            <td>{{ typeLabel(row.label) }}</td>
             <td>{{ row.toName }}</td>
             <td class="grt__num">{{ row.episodeCount }}</td>
           </tr>

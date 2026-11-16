@@ -47,6 +47,7 @@ class LLMClientTransportMixin:
         Gibt die ggf. aktualisierte ``api_key_source`` fuer das Audit-Log
         in ``__init__`` zurueck.
         """
+        self._configured_provider_type = resolved_provider_type
         self._codex_cli_active = resolved_provider_type == PROVIDER_CODEX_CLI
         # claude_cli hat, anders als codex_cli, einen echten Secret (den per
         # ``claude setup-token`` erzeugten Langzeit-Token) — der laeuft durch

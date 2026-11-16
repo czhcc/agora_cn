@@ -55,6 +55,39 @@ def _connection_data(base_url: str) -> dict:
     }
 
 
+@pytest.mark.parametrize("base_url", SHARED_FIXTURES["base_urls"]["lan"])
+@pytest.mark.parametrize("kind", ["custom", "openai_compatible"])
+def test_lan_gateway_survives_connection_and_routing_roundtrip(base_url, kind):
+    data = {**_connection_data(base_url), "provider_kind": kind}
+    connection = ProviderConnection.model_validate(data)
+    request = ProviderConnectionUpsertRequest(display_name="LAN", provider_kind=kind, base_url=base_url)
+    assert connection.base_url == request.base_url == base_url
+    legacy = StageLLMRoute(provider_id=connection.id, model="qwen", provider_options={"base_url": base_url})
+    route = ai_route_from_stage_route(legacy)
+    assert route.provider_options["base_url"] == base_url
+    assert stage_route_from_ai_route(route).provider_options["base_url"] == base_url
+    profile = LlmProfile(id="lan", name="LAN", provider=kind, base_url=base_url, model_name="qwen", created_at=NOW, updated_at=NOW)
+    canonical, model, profile_route = llm_profile_to_canonical(profile)
+    assert canonical.base_url == base_url
+    assert profile_route.provider_connection_id == canonical.id
+    assert llm_profile_from_canonical(canonical, model, template=profile).base_url == base_url
+    assert canonical.status == "unknown"
+
+
+@pytest.mark.parametrize("base_url", SHARED_FIXTURES["base_urls"]["lan"])
+def test_lan_gateway_does_not_change_public_provider_rules(base_url):
+    with pytest.raises(ValidationError):
+        ProviderConnection.model_validate({**_connection_data(base_url), "provider_kind": "openai"})
+
+
+@pytest.mark.parametrize("base_url", SHARED_FIXTURES["base_urls"]["unsafe_lan"])
+def test_lan_support_rejects_invalid_or_credential_bearing_endpoints(base_url):
+    with pytest.raises(ValidationError):
+        ProviderConnection.model_validate(_connection_data(base_url))
+    with pytest.raises(ValidationError):
+        AiRoute(source="runtime", provider_options={"base_url": base_url})
+
+
 @pytest.mark.parametrize("provider_kind", ["minimax"])
 def test_provider_connection_upsert_request_accepts_new_api_key_providers(
     provider_kind: str,

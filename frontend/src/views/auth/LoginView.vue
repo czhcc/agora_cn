@@ -34,7 +34,7 @@ async function submit(): Promise<void> {
     await auth.signIn(email.value, password.value)
     await router.replace(safeNext(route.query.next))
   } catch {
-    errorMsg.value = tokenMode ? t('auth.login.tokenInvalid') : t('auth.login.errorGeneric')
+    errorMsg.value = tokenMode ? 'auth.login.tokenInvalid' : 'auth.login.errorGeneric'
   } finally {
     pending.value = false
   }
@@ -97,7 +97,7 @@ async function submit(): Promise<void> {
           role="alert"
           aria-live="assertive"
         >
-          {{ errorMsg }}
+          {{ t(errorMsg) }}
         </div>
 
         <button

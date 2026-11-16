@@ -166,7 +166,7 @@ async function send() {
         </p>
         <ol v-else class="cpane__turns" data-testid="turns">
           <li v-for="(turn, i) in persona.turns" :key="`${turn.timestamp}-${i}`" class="cpane__turn">
-            <p class="cpane__q"><span class="cpane__who">{{ t('views.run.interviews.pane.you') }}</span> {{ turn.question }}</p>
+            <p class="cpane__q"><span class="cpane__who">{{ t(turn.origin === 'report' ? 'views.run.interviews.pane.reportInterview' : 'views.run.interviews.pane.you') }}</span> {{ turn.question }}</p>
             <div v-if="turn.error" class="cpane__sim cpane__sim--error" role="alert" data-testid="turn-error">
               <p class="cpane__head">
                 <span class="cpane__who">{{ persona.name }}</span>

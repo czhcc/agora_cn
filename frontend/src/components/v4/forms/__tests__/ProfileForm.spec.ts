@@ -12,7 +12,7 @@
  *  8. delete-avatar-Button emittiert 'delete-avatar'.
  *  9. Verstecktes Avatar-Dateifeld hat einen lokalisierten Accessible Name.
  */
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createI18n } from 'vue-i18n'
 import ProfileForm from '../ProfileForm.vue'
@@ -56,6 +56,36 @@ function mountForm(props: MountFormProps = {}) {
 }
 
 describe('ProfileForm', () => {
+  it('saves Chinese UI/report preferences and Beijing timezone', async () => {
+    const w = mountForm()
+    const selects = w.findAll('select')
+    for (const index of [0, 1]) {
+      expect(selects[index]!.find('option[value="zh-CN"]').exists()).toBe(true)
+      await selects[index]!.setValue('zh-CN')
+    }
+    expect(w.get('datalist option[value="Asia/Shanghai"]').attributes('label')).toContain('Asia/Shanghai')
+    await w.get('[data-testid="profile-form-timezone"]').setValue('Asia/Shanghai')
+    await w.findAll('button').at(-1)!.trigger('click')
+    expect(w.emitted('save')?.[0]?.[0]).toMatchObject({
+      language: 'zh-CN', report_language: 'zh-CN', timezone: 'Asia/Shanghai',
+    })
+  })
+
+  it('uses the workstation timezone for a new profile and on explicit request', async () => {
+    const spy = vi.spyOn(Intl.DateTimeFormat.prototype, 'resolvedOptions').mockReturnValue({ timeZone: 'Asia/Shanghai' } as Intl.ResolvedDateTimeFormatOptions)
+    try {
+      const fresh = mountForm({ profile: null })
+      expect((fresh.get('[data-testid="profile-form-timezone"]').element as HTMLInputElement).value).toBe('Asia/Shanghai')
+      const saved = mountForm()
+      expect((saved.get('[data-testid="profile-form-timezone"]').element as HTMLInputElement).value).toBe('Europe/Berlin')
+      await saved.get('[data-testid="profile-form-system-timezone"]').trigger('click')
+      await saved.findAll('button').at(-1)!.trigger('click')
+      expect(saved.emitted('save')?.[0]?.[0]).toMatchObject({ timezone: 'Asia/Shanghai' })
+    } finally {
+      spy.mockRestore()
+    }
+  })
+
   it('Test 1: mountet ohne Crash, Felder aus profile-Prop vorbefüllt', () => {
     const w = mountForm()
     expect(w.exists()).toBe(true)

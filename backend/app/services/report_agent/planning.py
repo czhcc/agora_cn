@@ -4,6 +4,7 @@ import json
 from typing import Any, Callable, Optional
 
 from ...config import Config
+from ...contracts.report_language_contract import report_language_name
 from ...contracts.report_contract import ReportOutlineModel, ReportOutlineSectionModel
 from ...models.report import ReportOutline, ReportSection
 from ...utils.logger import get_logger
@@ -41,7 +42,7 @@ def plan_outline(
     )
     system_prompt = (
         PLAN_SYSTEM_PROMPT_TEMPLATE
-        .replace("{language}", Config.REPORT_LANGUAGE)
+        .replace("{language}", report_language_name(Config.REPORT_LANGUAGE))
         .replace("{section_kinds}", format_section_kinds())
     )
     user_prompt = PLAN_USER_PROMPT_TEMPLATE.format(

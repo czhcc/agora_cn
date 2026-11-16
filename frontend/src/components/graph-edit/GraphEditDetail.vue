@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useGraphTypeLabel } from '@/composables/graph-library/useGraphTypeLabel'
+const typeLabel = useGraphTypeLabel()
 /**
  * Bearbeitungsspalte des Graphen (#1808, Etappe 8).
  *
@@ -255,7 +257,7 @@ function nameOf(id: string): string {
             :disabled="busy"
           >
             <option :value="NO_VALUE">{{ NO_VALUE }}</option>
-            <option v-for="option in typeOptions" :key="option" :value="option">{{ option }}</option>
+            <option v-for="option in typeOptions" :key="option" :value="option">{{ typeLabel(option) }}</option>
           </select>
         </label>
         <label class="ged__field">
@@ -439,7 +441,7 @@ function nameOf(id: string): string {
               :disabled="busy"
             >
               <option :value="NO_VALUE">{{ NO_VALUE }}</option>
-              <option v-for="option in typeOptions" :key="option" :value="option">{{ option }}</option>
+              <option v-for="option in typeOptions" :key="option" :value="option">{{ typeLabel(option) }}</option>
             </select>
           </label>
           <label class="ged__field">
@@ -521,7 +523,7 @@ function nameOf(id: string): string {
     <!-- Auswahl: Beziehung -->
     <template v-else-if="relation">
       <header class="ged__head">
-        <h2 class="ged__name">{{ relation.label || relation.fromName }}</h2>
+        <h2 class="ged__name">{{ typeLabel(relation.label) || relation.fromName }}</h2>
         <GraphOriginMark :origin="relationOrigin" :changed-at="relationChangedAt" />
       </header>
       <p class="ged__p ged__p--quiet">

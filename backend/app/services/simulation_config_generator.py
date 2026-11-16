@@ -16,6 +16,7 @@ from collections.abc import Collection
 from typing import Dict, Any, List, Optional, Callable
 
 
+from ..contracts.simulation_language_contract import parse_simulation_language
 from ..config import Config
 from ..contracts.contested_question_contract import ContestedQuestion
 from ..contracts.provider_types import PROVIDER_CLAUDE_CLI, PROVIDER_CODEX_CLI
@@ -145,7 +146,7 @@ class SimulationConfigGenerator:
         )
         self.model_name = resolved_model_name
         # Normalize language to two-letter code; defaults from Config.AGENT_LANGUAGE.
-        self.language = (language or Config.AGENT_LANGUAGE or "de").lower()
+        self.language = parse_simulation_language(language or Config.AGENT_LANGUAGE) or "de"
         # Batching-Granularität (#870): ENV-konfigurierbar, Default 8.
         self.AGENTS_PER_BATCH = self._resolve_agents_per_batch()
         # Topic-Typen des aktuellen Laufs (Issue #1759); ``generate_config``

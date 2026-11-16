@@ -1,5 +1,63 @@
 # Runbook: Upgrade zwischen Release-Linien
 
+## Lokaler Branch: chinesische Profilpräferenzen und lokale Zeitzone
+
+Backend neu starten und Frontend aktualisieren. Profil- und Update-Schemas akzeptieren zusätzlich `zh-CN`; keine Migration und keine neue Env-Variable nötig. Sprache und Berichtssprache werden als Profilpräferenzen gespeichert; die bestehende Berichtserzeugung verwendet weiterhin `REPORT_LANGUAGE`. Bestehende Zeitzonen bleiben erhalten. Neue Profile übernehmen die Browser-Zeitzone; „Systemzeitzone verwenden“ übernimmt die aktuell erkannte IANA-Zeitzone beim Klick, ohne automatisches Nachführen späterer Systemänderungen. Peking verwendet `Asia/Shanghai`, kein frei erfundenes Zeitzonenlabel. Vor einem Downgrade auf einen älteren Contract chinesische Profilpräferenzen auf `de` oder `en` zurückstellen.
+
+## Lokaler Branch: sichtbare Interviewfragen und Herkunft
+
+Backend neu starten und Frontend aktualisieren. Keine neue Env-Variable oder Datenmigration. History-Antworten ergänzen optional `display_prompt` und `origin`; Roh-Prompts, Antworten und Evidence bleiben erhalten. Neue Berichtsprompts markieren die Fragengrenze, bekannte alte Wrapper werden beim Lesen erkannt. Deshalb genügt für vorhandene erkennbare Einträge ein Neuladen der Interviewansicht; keine erneute Simulation, Berichtsgenerierung oder Befragung nötig. Unbekannte Legacy-Formen werden nicht blind abgeschnitten. Ältere Clients ignorieren die additiven Felder.
+
+## Lokaler Branch: lokalisierte Zitatdetails
+
+Backend neu starten; neue Reports verwenden die bestehende `REPORT_LANGUAGE`-Auswahl auch für simulierte Zitat-Header. Vollständige Persona-/Evidence-Identifier bleiben in einem standardmäßig geschlossenen HTML-Details-Block im Markdown erhalten. Keine neue Env-Variable, keine Schema-/Datenmigration. Bestehende gespeicherte Report-Texte bleiben unverändert; neue Darstellung erfordert eine neue Generierung, keine erneute Simulation. Markdown-Exporte behalten die HTML-Details und ihre Referenzen auch ohne interaktive Oberfläche.
+
+## Lokaler Branch: chinesische synthetische Persona-Namen
+
+Backend neu starten. Bei der Persona-Vorbereitung `language=zh` wählen; keine neue Env-Variable. Synthetische Einzelpersonen erhalten chinesische Namen in Modell-, Fallback- und Dedup-Pfaden. Quellpersonen und Organisationen behalten ihre Quellnamen, auch wenn diese fremdsprachig sind. Alte Profile, Interviews und Reports bleiben beim Lesen unverändert. Neue Namen erfordern ein explizites erneutes Prepare; historische Simulationen nicht allein zur Namensänderung überschreiben, sondern bei Bedarf einen neuen Lauf verwenden. Keine Datenmigration; Rollback verwendet wieder die vorherige Namensgenerierung.
+
+## Lokaler Branch: chinesische Graphnamen und Typ-Labels
+
+Backend neu starten und Frontend aktualisieren. Keine neue Env-Einstellung. Neue Ontologien speichern optional `display_name_zh`; interne Typ-Identifier bleiben unverändert. Die chinesische Oberfläche verwendet diese Labels oder einen Fallback für bekannte alte Typen. Unbekannte alte Typen behalten ihren Identifier. Neue Extraktionen erhalten Quellnamen und speichern Alternativen als Aliase; eindeutige Alias-Endpunkte werden auf denselben Knoten aufgelöst. Bestehende Entity-Namen werden nicht migriert: für chinesische Namen aus dem Originaldokument einen neuen Graphen aufbauen. Vorhandene Graphen und Runs bleiben erhalten. Das additive Metadatenfeld kann beim Rollback ignoriert werden.
+
+## Lokaler Branch: chinesische Interviews
+
+Backend neu starten; neue direkte Interviews übernehmen `language=zh` aus der gespeicherten Simulationskonfiguration. Keine zusätzliche Env-Einstellung oder Datenmigration. Bereits laufende OASIS-Prozesse müssen neu gestartet werden, damit deren Systemprompts die Sprachvorgabe vor dem Response-Format-Abschnitt enthalten; bei abgeschlossener Simulation kann ohne erneuten Simulationslauf der Direktpfad genutzt werden. Frühere Antworten bleiben in ihrer Originalsprache. Default ohne unterstützte Sprachauswahl bleibt Deutsch.
+
+## Lokaler Branch: Report- und Shutdown-Recovery
+
+Backend neu starten. Bereits abgeschlossene Simulationen behalten beim Beenden der noch für Interviews laufenden Prozesse ihren Endstatus. Windows-PID-Prüfung nutzt die vorhandene psutil-Abhängigkeit. Explizite `openai_compatible`-Verbindungen senden native Tool-Parameter unabhängig von URL-Heuristiken; unbekannte, nicht explizit deklarierte Verbindungen behalten ihren bisherigen Fallback. Report-Log-Polling unterstützt `from_line`; Metadaten werden nach Schemafehler einmal neu erzeugt, ohne Evidence-Validierung abzuschwächen. Keine neuen Env-Variablen oder automatische Datenmigration.
+
+Historische `stopped`-Zustände nicht pauschal als abgeschlossen umschreiben: nur bei nachgewiesenem regulärem Abschluss aller aktivierten Plattformen (persistierte `simulation_end`-Ereignisse, passende Run-Generation, kein aktiver alter Prozess) und belegter nachträglicher Shutdown-Überschreibung korrigieren; zuvor Zustandsdateien sichern. Nach einer solchen Reparatur Backend-Caches durch Neustart erneuern und Report neu generieren. Historische Report-Snapshots bleiben unverändert. Ein Rollback stellt die früheren Fehler wieder her; Zustandsbackups sind kein Ersatz für die Prüfung des tatsächlichen Laufverlaufs.
+
+## Lokaler Branch: chinesische Berichtssprache
+
+`REPORT_LANGUAGE=Simplified Chinese` (auch `zh`/`zh-CN`) setzen und Backend neu starten. Outline, Abschnitte, freie Metadaten, LLM-Qualitätsprüfung und Report-Chat folgen dieser Sprache; die Vollständigkeitsprüfung erkennt chinesische Analyseaspekte und Pilot-/Skalierungsfragen. UI-/Simulationssprache bleiben unabhängig. Default weiterhin `German`; keine Migration. Bestehende Reports neu generieren, nicht sprachübergreifend fortsetzen. Explizite Abschnittstitel und Originalbelege bleiben unverändert; operative Diagnosen können ihre bisherige Sprache behalten. Vor Rollback für zuverlässige Vollständigkeitsprüfung wieder `German` oder `English` setzen.
+
+## Lokaler Branch: direktes TWHIN-BERT-Modellverzeichnis
+
+Optional `AGORA_TWHIN_BERT_MODEL_DIR` in `.env` setzen und Backend neu starten. Das Verzeichnis muss Konfiguration, Tokenizer und Gewichte enthalten; es ist kein HF-Cache-Wurzelverzeichnis. Relative Pfade gelten ab Projektwurzel, Container brauchen einen passenden Mount. Modell und Tokenizer laden dann lokal/offline ohne Snapshot-Warmup; ungültige Pfade brechen sichtbar ab. Leer/ungesetzt bleibt der bisherige Cache-/Download-Pfad aktiv. Keine Datenmigration; vor Rollback die Variable entfernen, damit ältere Stände nicht irrtümlich als lokal konfiguriert gelten.
+
+## Lokaler Branch: Home- und Modellcache-Pfade der Simulation
+
+Backend neu starten, damit Simulationsprozesse vorhandene `HOME`/`USERPROFILE`/`HOMEDRIVE`/`HOMEPATH` sowie Hugging-Face-/Transformers-Cache-, Endpoint- und Offline-Einstellungen übernehmen. Keine neue `.env`-Einstellung oder Migration nötig. Twitter-/Parallel-Läufe benötigen weiterhin den TWHIN-BERT-Checkpoint; fehlt er im geerbten Cache, lädt die bestehende Warmup-Logik ihn beim ersten Start. Offline-Einstellungen nur aktivieren, wenn der benötigte Snapshot bereits verfügbar ist.
+
+## Lokaler Branch: Windows-Simulationsumgebung
+
+Backend nach dem Update neu starten und den fehlgeschlagenen Simulationslauf erneut starten. Die Allowlist übernimmt nun vorhandene Windows-Systemvariablen (`SYSTEMROOT`, `WINDIR`, `TEMP`, `TMP`); keine neue `.env`-Einstellung oder Datenmigration erforderlich. Vorher konnten Kinder bereits beim Import von asyncio mit WinError 10106 abbrechen. Ein Rollback stellt diese Einschränkung wieder her.
+
+## Lokaler Branch: terminale Ontologie-Fehler
+
+Backend nach dem Update neu starten. Neue synchrone Routing-/Generierungsfehler terminalisieren den Run auch bei Profil-/Env-Auswahl; das Manifestformat bleibt unverändert. Alte `processing`-Einträge nur nach Abgleich mit Request-/Worker-Logs korrigieren, nicht allein anhand ihres Alters. Ein nachgewiesener HTTP-400-Abbruch hat keine laufende Generierung und muss nach Konfigurationskorrektur neu gestartet werden. Der RunRegistry-Prozesscache erfordert nach externer Manifestkorrektur einen Backend-Neustart.
+
+## Lokaler Branch: OpenAI-kompatible LAN-Gateways
+
+Backend und Frontend gemeinsam aktualisieren. Interne Gateways mit RFC1918-IPv4-Adresse (`10/8`, `172.16/12`, `192.168/16`) als `custom` oder `openai_compatible` konfigurieren. Profil und aktivierte ProviderConnection müssen denselben Endpunkt verwenden; API-Keys bleiben im Secret-Store. Keine Datenmigration nötig. Ein Rollback auf einen Stand mit rein öffentlicher URL-Prüfung lehnt gespeicherte LAN-Verbindungen/Routen wieder ab; vor dem Rollback auf dort unterstützte Verbindungen umstellen.
+
+## Lokaler Branch: chinesische Simulationssprache
+
+Frontend und Backend gemeinsam aktualisieren, bevor neue Läufe mit `language=zh` angelegt werden. Optional `AGENT_LANGUAGE=zh` als Standard setzen; ohne Änderung bleibt `de` der Standard. Keine Datenmigration erforderlich. Bestehende Personas werden nicht umgeschrieben, die Berichtssprache bleibt separat. Vor einem Rollback `AGENT_LANGUAGE` wieder auf `de` oder `en` setzen und neue Läufe ohne `zh` anlegen; ältere Backends ignorieren diese Prepare-Auswahl, ältere Laufzeiten behandeln sie nicht zuverlässig als Chinesisch.
+
 Zugehöriges Issue: [#1673](https://github.com/arn0ld87/agora/issues/1673) (Release-Gate vor `0.10.0-rc.1`, siehe [`../../ROADMAP.md`](../../ROADMAP.md)).
 **Stand:** 29.10.2026, Produktversion `0.9.9` ([`VERSION`](../../VERSION)). `0.10.0-rc.1` ist noch nicht geschnitten.
 
@@ -23,6 +81,8 @@ Ein Upgrade besteht in Agora aus mehr als einem neuen Image: Ab `0.10` gehören 
 ---
 
 ## Persistenz-Änderungen außerhalb des Versionssprungs
+
+**Windows-Prozesssperren für lokale Stores.** Embedding-, Provider-Connection-, JSON- und LLM-Secret-Stores verwenden unter Windows `msvcrt` statt des dort nicht verfügbaren `fcntl`. POSIX verwendet weiterhin `flock`. Datenformate und bestehende `.lock`-Pfade bleiben unverändert; keine Migration nötig. Vor dem Upgrade alle Backend-Prozesse beenden und gemeinsam neu starten. Sidecar-Dateien nicht während laufender Schreibvorgänge löschen. Ein Rollback stellt die bisherigen POSIX-Sperren wieder her und unterstützt den nativen Windows-Start nicht.
 
 **`report_mode` und `report_status` in den Run-Metadaten von `report_generate` (PR #1922).** `POST /api/report/generate` schreibt den gewählten Berichtsmodus (`strict`, `balanced`, `explorative`) als `metadata.report_mode` an den Run. `POST /api/runs/<id>/resume` liest ihn dort und erzeugt und speichert den fortgesetzten Bericht im selben Modus. Vorher fiel jeder Resume auf `balanced` zurück. Außerdem setzt jetzt auch ein normal gestarteter Bericht `metadata.report_status` (`completed`/`incomplete`), bisher tat das nur der Resume-Pfad (#1479).
 

@@ -305,6 +305,13 @@ def configure_platform_agent_graph(
 
     Returns ``(activation_limits, agent_names)``.
     """
+    try:
+        from ..simulation_language import apply_simulation_language
+    except ImportError:
+        from simulation_language import apply_simulation_language
+
+    apply_simulation_language(agent_graph, config.get("language", "de"))
+
     if agent_tools_available:
         try:
             from agent_tools import enforce_memory_token_limit

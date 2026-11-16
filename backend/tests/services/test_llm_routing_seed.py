@@ -126,23 +126,24 @@ def test_seed_run_stage_routing_keeps_server_default_without_override(mock_run_d
     assert loaded.stage_overrides == {}
 
 
+@pytest.mark.parametrize("provider_kind, base_url", [("openai", "https://api.openai.com/v1"), ("openai_compatible", "http://192.168.5.82:4002/v1"), ("custom", "http://192.168.5.82:4002/v1")])
 @patch("app.utils.artifact_locator.ArtifactLocator.run_dir")
-def test_profile_id_expands_to_a_secret_free_stage_route(mock_run_dir, monkeypatch, tmp_path):
+def test_profile_id_expands_to_a_secret_free_stage_route(mock_run_dir, monkeypatch, tmp_path, provider_kind, base_url):
     run_id = "run_profile_only"
     run_dir = tmp_path / "runs" / run_id
     run_dir.mkdir(parents=True)
     mock_run_dir.return_value = str(run_dir)
     profile_store = MagicMock()
-    profile_store.get.return_value = _profile("profile-openai")
+    profile_store.get.return_value = _profile("profile-openai").model_copy(update={"provider": provider_kind, "base_url": base_url})
     connection_store = MagicMock()
     connection_store.list_connections.return_value = [
         ProviderConnection(
             id="openai",
-            provider_kind="openai",
+            provider_kind=provider_kind,
             display_name="OpenAI",
             transport="http",
             auth_mode="api_key",
-            base_url="https://api.openai.com/v1",
+            base_url=base_url,
             secret_ref="openai",
         )
     ]
@@ -167,7 +168,7 @@ def test_profile_id_expands_to_a_secret_free_stage_route(mock_run_dir, monkeypat
     assert route.provider_id == "openai"
     assert route.model == "gpt-4.1-mini"
     assert route.provider_options == {
-        "base_url": "https://api.openai.com/v1",
+        "base_url": base_url,
         "secret_ref": "openai",
         "connection_only": True,
     }

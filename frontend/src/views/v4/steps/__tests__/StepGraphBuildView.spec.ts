@@ -104,7 +104,7 @@ describe('StepGraphBuildView', () => {
           GraphPanel: true,
           Step1GraphBuild: {
             name: 'Step1GraphBuild',
-            props: ['projectData', 'currentPhase', 'ontologyProgress', 'buildProgress', 'graphData', 'systemLogs'],
+            props: ['projectData', 'currentPhase', 'failed', 'ontologyProgress', 'buildProgress', 'graphData', 'systemLogs'],
             template: '<section />',
           },
         },
@@ -115,6 +115,7 @@ describe('StepGraphBuildView', () => {
     expect(step.props()).toMatchObject({
       projectData: { project_id: 'project_42' },
       currentPhase: 1,
+      failed: true,
       ontologyProgress: { message: 'ontology' },
       buildProgress: { progress: 50, message: 'building' },
       graphData: { graph_id: 'graph_42', nodes: [], edges: [] },

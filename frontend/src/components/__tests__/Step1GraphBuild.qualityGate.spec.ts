@@ -51,6 +51,18 @@ function nextButton(wrapper: ReturnType<typeof mountStep>) {
 }
 
 describe('Step1GraphBuild — Qualitätsgate', () => {
+  it.each([0, 1])('stops showing progress after phase %i fails', async (phase) => {
+    const wrapper = mountStep(false, phase)
+    await wrapper.setProps({
+      failed: true,
+      ontologyProgress: { message: 'Processing' },
+      buildProgress: { progress: 0, message: 'Building' },
+    })
+    expect(wrapper.text()).toContain(de.common.failed)
+    expect(wrapper.text()).not.toContain(de.common.running)
+    expect(wrapper.find('.spinner-sm').exists()).toBe(false)
+    expect(nextButton(wrapper).attributes('disabled')).toBeDefined()
+  })
   it('meldet einen sauberen Build als bereit', () => {
     const wrapper = mountStep(false)
     expect(wrapper.text()).toContain('Bereit')

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useGraphTypeLabel } from '@/composables/graph-library/useGraphTypeLabel'
+const typeLabel = useGraphTypeLabel()
 /**
  * Detailspalte des Graph-Lesers (#1797): gewaehlte Entitaet (Name, Typ, Aliase,
  * Beschreibung, Beziehungen, Herkunft) oder gewaehlte Beziehung. Zeigt nur, was
@@ -57,7 +59,7 @@ const attributes = computed(() => {
     <template v-else-if="entity">
       <header class="grd__head">
         <h2 class="grd__name">{{ entity.name }}</h2>
-        <span class="grd__type"><span aria-hidden="true">{{ glyph }}</span> {{ entity.type }}</span>
+        <span class="grd__type"><span aria-hidden="true">{{ glyph }}</span> {{ typeLabel(entity.type) }}</span>
       </header>
 
       <section v-if="entity.aliases.length" class="grd__sec">
@@ -95,7 +97,7 @@ const attributes = computed(() => {
                 {{ t(rel.fromId === entity.id ? 'views.graphLibrary.reader.detail.outgoing' : 'views.graphLibrary.reader.detail.incoming') }}
               </span>
               {{ rel.fromId === entity.id ? rel.toName : rel.fromName }}
-              <span class="grd__rel">{{ rel.label }}</span>
+              <span class="grd__rel">{{ typeLabel(rel.label) }}</span>
             </button>
           </li>
         </ul>
@@ -113,7 +115,7 @@ const attributes = computed(() => {
 
     <template v-else-if="relation">
       <header class="grd__head">
-        <h2 class="grd__name">{{ relation.label || t('views.graphLibrary.reader.detail.unnamedRelation') }}</h2>
+        <h2 class="grd__name">{{ typeLabel(relation.label) || t('views.graphLibrary.reader.detail.unnamedRelation') }}</h2>
         <span class="grd__type">{{ t('views.graphLibrary.reader.detail.relationKind') }}</span>
       </header>
 

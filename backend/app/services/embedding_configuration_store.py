@@ -26,7 +26,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator, Optional
 
-import fcntl
+from app.process_lock import process_file_lock
 
 from app.services.data_dir import resolve_data_dir as _resolve_data_dir
 
@@ -367,12 +367,8 @@ class EmbeddingConfigurationStore:
     def _process_lock(self, path: Path) -> Iterator[None]:
         self._data_dir.mkdir(parents=True, exist_ok=True)
         lock_path = path.with_suffix(".lock")
-        with open(lock_path, "w", encoding="utf-8") as lock_fh:
-            fcntl.flock(lock_fh, fcntl.LOCK_EX)
-            try:
-                yield
-            finally:
-                fcntl.flock(lock_fh, fcntl.LOCK_UN)
+        with process_file_lock(lock_path):
+            yield
 
     def _write_raw(self, path: Path, raw: dict) -> None:
         tmp_path = path.with_suffix(".tmp")

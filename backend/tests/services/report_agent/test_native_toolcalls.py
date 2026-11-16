@@ -144,6 +144,22 @@ class TestChatWithToolsOpenAIProvider:
         client._retry_max_delay = 0.0
         return client
 
+    def test_explicit_compatible_lan_connection_uses_native_tools(self):
+        client = self._make_client()
+        client.base_url = "http://192.168.5.82:4002/v1"
+        client.model = "qwen3.8-flash-next"
+        client._configured_provider_type = "openai_compatible"
+        client.chat = MagicMock(side_effect=AssertionError("Must not fall back to plain chat"))
+        client.client = MagicMock()
+        client.client.chat.completions.create.return_value = _make_openai_response(
+            tool_calls=[_make_tool_call_obj("call_lan", "quick_search", {"query": "AI"})],
+        )
+        tools = [{"type": "function", "function": {"name": "quick_search", "parameters": {"type": "object", "properties": {}}}}]
+        result = client.chat_with_tools(messages=[{"role": "user", "content": "Search"}], tools=tools)
+        assert result["tool_calls"][0]["name"] == "quick_search"
+        assert client.client.chat.completions.create.call_args.kwargs["tools"] == tools
+        client.chat.assert_not_called()
+
     def test_chat_with_tools_returns_tool_calls_on_openai_provider(self) -> None:
         """Mockt OpenAI-SDK-Response mit message.tool_calls → normalisierten Return."""
         client = self._make_client()

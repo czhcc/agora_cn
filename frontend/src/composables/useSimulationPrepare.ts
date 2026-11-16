@@ -153,9 +153,11 @@ export function useSimulationPrepare(): UseSimulationPrepareReturn {
       // richtig; falsch war nur die Typangabe an der Quelle.
       if (res?.success && Array.isArray(res.data?.profiles)) {
         profiles.value = res.data.profiles
+      } else if (res && !res.success) {
+        error.value = res.error || 'Profile konnten nicht geladen werden.'
       }
-    } catch {
-      // swallow — realtime poll; errors are transient
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : String(err)
     }
   }
 
@@ -168,17 +170,25 @@ export function useSimulationPrepare(): UseSimulationPrepareReturn {
       if (res?.success && res.data?.config) {
         simulationConfig.value = res.data.config
       }
-    } catch {
-      // swallow — realtime poll; errors are transient
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : String(err)
     }
   }
 
-  async function _loadPreparedData(): Promise<void> {
+  async function _loadPreparedData(): Promise<boolean> {
     await fetchProfilesRealtime()
     await _fetchConfigRealtime()
+    if (!simulationConfig.value || profiles.value.length === 0) {
+      error.value ||= 'Vorbereitung unvollstaendig: Profile oder Konfiguration fehlen.'
+      phase.value = profiles.value.length ? 1 : 0
+      _onStatusChange?.('error')
+      isPreparing.value = false
+      return false
+    }
     phase.value = 3
     _onStatusChange?.('completed')
     isPreparing.value = false
+    return true
   }
 
   async function _pollPrepareStatus(): Promise<void> {
@@ -203,12 +213,13 @@ export function useSimulationPrepare(): UseSimulationPrepareReturn {
           )
         }
 
-        if (st.status === 'completed') {
+        if (st.status === 'completed' || st.already_prepared || st.status === 'ready') {
           prepareStatusPolling.stop()
           profilesPolling.stop()
           configPolling.stop()
-          await _loadPreparedData()
-          _onLog?.(`Vorbereitung abgeschlossen (${profiles.value.length} Personas)`)
+          if (await _loadPreparedData()) {
+            _onLog?.(`Vorbereitung abgeschlossen (${profiles.value.length} Personas)`)
+          }
         } else if (st.status === 'failed') {
           const msg = st.error || 'Vorbereitung fehlgeschlagen.'
           _onLog?.(msg)
@@ -270,6 +281,8 @@ export function useSimulationPrepare(): UseSimulationPrepareReturn {
     error.value = null
     degradations.value = EMPTY_DEGRADATION_REPORT
 
+    prepareProgress.value = 0
+    progressMessage.value = ''
     isPreparing.value = true
     phase.value = 1
     onStatusChange('processing')
@@ -281,8 +294,7 @@ export function useSimulationPrepare(): UseSimulationPrepareReturn {
       if (res?.success && res.data) {
         if (res.data.already_prepared) {
           onLog('Simulation bereits vorbereitet.')
-          await _loadPreparedData()
-          return true
+          return await _loadPreparedData()
         }
 
         _taskId = res.data.task_id ?? null
@@ -364,7 +376,7 @@ export function useSimulationPrepare(): UseSimulationPrepareReturn {
     // nicht wie ein frischer Lauf aussehen. Reihenfolge wie im Lese-Pfad:
     // Config zuerst, dann Profiles.
     await fetchProfilesRealtime()
-    if (simulationConfig.value) {
+    if (simulationConfig.value && profiles.value.length > 0) {
       // Persistierter Zustand inkl. Config: Lauf ist komplett vorbereitet.
       // (Explizit statt _loadPreparedData(), damit der Config-Endpunkt im
       // Restore-Pfad nicht doppelt gefetcht wird.)

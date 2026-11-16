@@ -13,6 +13,19 @@ from .entity_reader import EntityNode
 from .oasis_profile_models import PersonaDemographicSlot
 from .persona_demographics import DACH_NAME_ORIGIN_QUOTAS, filter_first_names_for_gender
 
+
+def pick_persona_name(generator: Any, gender: Optional[str] = None) -> str:
+    """Choose synthetic names for the simulation language, including dedup retries."""
+    if getattr(generator, "language", "de") != "zh":
+        return generator._pick_dach_name(gender)
+    surnames = "赵钱孙李周吴郑王冯陈蒋沈韩杨朱秦许何吕张孔曹严华金魏陶姜谢邹苏潘范彭鲁韦马方石林罗梁宋唐邓萧徐叶胡顾程陆余钟汪董袁于杜丁姚夏廖田任卢江谭白孟熊侯邱邵贺尹薛段雷龙黎"
+    given_names = (
+        "文清", "明远", "思涵", "雨桐", "子墨", "嘉宁", "书瑶", "景行",
+        "欣然", "知远", "宇航", "若溪", "博文", "晨曦", "亦辰", "安然",
+        "梓萱", "浩然", "一诺", "清和", "舒言", "泽宇", "诗雨", "云帆",
+    )
+    return random.choice(surnames) + random.choice(given_names)
+
 def _pick_dach_name (gender :Optional [str ]=None )->str :
     """Wählt einen Vor- und Nachnamen gewichtet nach DACH-Mikrozensus-Quoten.
 

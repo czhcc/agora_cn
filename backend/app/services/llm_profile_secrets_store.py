@@ -48,7 +48,7 @@ Adapter dann vorfindet.
 
 from __future__ import annotations
 
-import fcntl
+from app.process_lock import process_file_lock
 import json
 import os
 import threading
@@ -146,12 +146,8 @@ class LlmProfileSecretsStore:
     def _file_lock(self) -> Iterator[IO[str]]:
         self._data_dir.mkdir(parents=True, exist_ok=True)
         lock_path = self._path.with_suffix(".lock")
-        with open(lock_path, "w", encoding="utf-8") as lock_fh:
-            fcntl.flock(lock_fh, fcntl.LOCK_EX)
-            try:
-                yield lock_fh
-            finally:
-                fcntl.flock(lock_fh, fcntl.LOCK_UN)
+        with process_file_lock(lock_path) as lock_fh:
+            yield lock_fh
 
     def _write_raw(self, raw: dict) -> None:
         """Atomisch schreiben, 0600 schon beim Anlegen der Temp-Datei.

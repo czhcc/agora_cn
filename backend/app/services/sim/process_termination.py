@@ -237,7 +237,9 @@ def cleanup_all_simulations(
 
                 # Update run_state.json
                 state = get_run_state(simulation_id)
-                if state:
+                if state and state.runner_status not in {
+                    RunnerStatus.COMPLETED, RunnerStatus.FAILED, RunnerStatus.STOPPED,
+                }:
                     state.runner_status = RunnerStatus.STOPPED
                     state.twitter_running = False
                     state.reddit_running = False
@@ -245,13 +247,13 @@ def cleanup_all_simulations(
                     state.error = "Server closed, simulation terminated"
                     save_state(state)
 
-                # Update state.json via injected callback
-                try:
-                    update_store_state(simulation_id)
-                except Exception as state_err:  # noqa: BLE001 — exception is logged; swallowed intentionally
-                    logger.warning(
-                        f"Failed to update state.json: {simulation_id}, error={state_err}"
-                    )
+                    # Update state.json only when cleanup changed the outcome.
+                    try:
+                        update_store_state(simulation_id)
+                    except Exception as state_err:  # noqa: BLE001 — exception is logged; swallowed intentionally
+                        logger.warning(
+                            f"Failed to update state.json: {simulation_id}, error={state_err}"
+                        )
 
         except Exception as e:  # noqa: BLE001 — exception is logged; swallowed intentionally
             logger.error(f"Failed to clean up process: {simulation_id}, error={e}")

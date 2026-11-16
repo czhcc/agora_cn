@@ -4,13 +4,15 @@
     <div class="legend-items">
       <div v-for="type in entityTypes" :key="type.name" class="legend-item">
         <span class="legend-dot" :style="{ background: type.color }"></span>
-        <span class="legend-label">{{ type.name }}</span>
+        <span class="legend-label">{{ typeLabel(type.name) }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { useGraphTypeLabel } from '@/composables/graph-library/useGraphTypeLabel'
+const typeLabel = useGraphTypeLabel()
 defineProps({
   entityTypes: {
     type: Array,

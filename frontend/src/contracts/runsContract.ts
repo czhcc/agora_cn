@@ -12,6 +12,14 @@
  */
 import { z } from "zod";
 
+/** Simulation identity used to associate project-scoped graph jobs with a run. */
+export const RunWorkspaceSimulationSchema = z.object({
+  simulation_id: z.string().min(1),
+  project_id: z.string().nullable().optional(),
+  graph_id: z.string().nullable().optional(),
+  status: z.string().optional(),
+}).passthrough();
+
 // === RunStatus ===
 export const RunStatusSchema = z.enum([
   "pending",

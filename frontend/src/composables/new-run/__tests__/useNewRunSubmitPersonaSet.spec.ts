@@ -33,7 +33,7 @@ import { useNewRunSubmit } from '../useNewRunSubmit'
 const INPUT = {
   personaSetId: 'pset_1',
   simulationRequirement: 'Wie hält das Betriebsrat?',
-  language: 'de',
+  language: 'zh',
   maxRounds: 3,
   simulationDays: 2,
   budget: null,
@@ -93,6 +93,7 @@ describe('useNewRunSubmit.createFromPersonaSet', () => {
     expect(api.createSimulationFromPersonas).toHaveBeenCalledWith({
       simulation_requirement: INPUT.simulationRequirement,
       persona_set_id: INPUT.personaSetId,
+      language: INPUT.language,
     })
     // Der regulaere Weg verlangt einen Graphen; ihn zu nehmen, waere falsch.
     expect(api.createSimulation).not.toHaveBeenCalled()

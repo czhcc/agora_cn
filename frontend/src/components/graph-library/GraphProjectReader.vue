@@ -8,6 +8,7 @@
  * Ansicht: im Lauf bleibt es beim Leser, in der Bibliothek wird bearbeitet.
  */
 import { computed } from 'vue'
+import { provideGraphTypeLabels } from '@/composables/graph-library/useGraphTypeLabel'
 import { useI18n } from 'vue-i18n'
 import type { Project } from '@/contracts/projectContract'
 import type { GraphData, ReaderModel } from '@/composables/graph-library/graphReaderModel'
@@ -30,6 +31,8 @@ const props = withDefaults(
 const emit = defineEmits<{ retry: []; changed: [] }>()
 
 const { t } = useI18n()
+
+provideGraphTypeLabels(computed(() => props.project?.ontology))
 
 const notice = computed(() =>
   props.state.kind === 'ready' && props.state.incomplete ? t('views.graphLibrary.state.incomplete') : null,

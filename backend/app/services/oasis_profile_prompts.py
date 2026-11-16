@@ -5,6 +5,11 @@ The public compatibility surface remains app.services.oasis_profile_generator.
 
 from __future__ import annotations
 
+from ..contracts.simulation_language_contract import (
+    simulation_language_instruction,
+    synthetic_persona_name_instruction,
+)
+
 from typing import Any
 
 from . import oasis_profile_generator as _legacy
@@ -17,7 +22,7 @@ from .persona_quota_defaults import build_industry_quota_prompt_block, build_ind
 from .persona_voice_register import voice_register_prompt_block
 
 def _get_system_prompt (self: Any ,is_individual :bool )->str :
-    """Get system prompt — language-aware (de/en)."""
+    """Get system prompt — language-aware (de/en/zh)."""
     if self .language =="de":
         return (
         "Du erstellst realistische Social-Media-Personas für eine Meinungssimulation. "
@@ -28,7 +33,7 @@ def _get_system_prompt (self: Any ,is_individual :bool )->str :
     return (
     "You are an expert in generating social media user profiles. Generate detailed, realistic "
     "personas for opinion simulation that maximize restoration of existing reality. Must return "
-    "valid JSON format with all string values containing no unescaped newlines. Use English."
+    f"valid JSON format with all string values containing no unescaped newlines. {simulation_language_instruction(self.language)}"
     )
 
 
@@ -141,7 +146,17 @@ Wichtig:
 - voice_register MUSS eines der oben genannten exakten Werte sein.
 """
 
-        _quota_block_en =build_name_quota_prompt_block_en ()
+        _quota_block_en = (
+            synthetic_persona_name_instruction(self.language)
+            if self.language == "zh" else build_name_quota_prompt_block_en()
+        )
+        _display_name_rule = (
+            synthetic_persona_name_instruction(self.language)
+            if self.language == "zh" else
+            f'Realistic first + last name of a person following the name distribution above '
+            f'(DACH Mikrozensus 2024). Only keep "{entity_name}" if it is the source person. '
+            'For roles, topics, products or job titles choose a fresh unique personal name.'
+        )
         _industry_block_en =(
         ""if _source_bound
         else build_industry_quota_prompt_block_en (self ._industry_quota_plan )
@@ -167,7 +182,7 @@ Context Information:
 
 Please generate JSON containing the following fields:
 
-1. display_name: Realistic first + last name of a person — following the name distribution above (DACH Mikrozensus 2024). IMPORTANT: Only use a real person's actual name if "{entity_name }" itself IS a personal name AND matches reality. For roles, topics, products, or job titles ALWAYS pick a different, freshly chosen name — do NOT reuse names of people mentioned in the context. Every persona must have its own unique name.
+1. display_name: {_display_name_rule}
 2. handle: Short lowercase social handle without spaces (e.g. "lena_hoffmann"). Do not append digits.
 3. bio: Social media bio, 200 characters
 4. persona: Detailed persona description ({detail ['word_count_en']} of pure text), must include:
@@ -189,7 +204,7 @@ Please generate JSON containing the following fields:
 Important:
 - All field values must be strings or numbers, do not use newlines
 - persona must be a coherent text description
-- Use English
+- {simulation_language_instruction(self.language)}
 - display_name must be a realistic personal name, not the abstract entity label.
 - age must be a valid integer, gender must be "male"/"female"/"nonbinary".
 - voice_register MUST be one of the exact values listed above.
@@ -301,7 +316,7 @@ Important:
 - NO invented personal name. The organization speaks under its own name.
 - persona must be coherent, no newlines.
 - voice_register MUST be one of the exact values listed above.
-- Use English."""
+- {simulation_language_instruction(self.language)}"""
 
 
 def _build_drift_correction_prompt (
@@ -365,6 +380,7 @@ Previous free text: {persona_text }
 Source:
 {source_excerpt }
 
+{simulation_language_instruction(self.language)}
 Rewrite the bio and free text so they fit the source's domain. The collective keeps speaking as an organization/group — no invented name, no age, no gender, no MBTI type, no profession. Return an empty string for profession."""
 
         return f"""The biography of the persona "{entity_name }" ({entity_type }) carries vocabulary from {domains }, which does not appear in the source.
@@ -376,4 +392,5 @@ Previous free text: {persona_text }
 Source:
 {source_excerpt }
 
+{simulation_language_instruction(self.language)}
 Rewrite profession, bio and free text so they fit the source's domain. Change only the field, not the person's name, age, gender or MBTI type. If no profession can be derived from the source, return an empty string for profession instead of inventing one."""

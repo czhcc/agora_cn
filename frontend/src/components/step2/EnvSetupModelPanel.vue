@@ -47,6 +47,7 @@ const emit = defineEmits<{
           :options="[
             { value: 'de', label: t('step2.language.de') },
             { value: 'en', label: t('step2.language.en') },
+            { value: 'zh', label: t('step2.language.zh') },
           ]"
           @update:model-value="emit('update:language', $event)"
         />

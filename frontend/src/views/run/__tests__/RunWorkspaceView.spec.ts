@@ -72,6 +72,7 @@ function makeRouter() {
         children: [
           { path: '', name: 'RunOverview', component: RunOverviewView },
           { path: 'graph', name: 'RunGraph', component: Stub },
+          { path: 'personas', name: 'RunPersonas', component: Stub },
           { path: 'report/:reportId?', name: 'RunReport', component: Stub },
         ],
       },
@@ -111,14 +112,17 @@ function report(over: Record<string, unknown> = {}) {
   }
 }
 
-interface Setup { projectId?: string | null; jobs?: ReturnType<typeof runDetail>[]; reports?: ReturnType<typeof report>[] }
+interface Setup { projectId?: string | null; jobs?: ReturnType<typeof runDetail>[]; graphJobs?: ReturnType<typeof runDetail>[]; reports?: ReturnType<typeof report>[] }
 
-function arrange({ projectId = 'proj_1', jobs = [], reports = [] }: Setup = {}) {
+function arrange({ projectId = 'proj_1', jobs = [], graphJobs = [], reports = [] }: Setup = {}) {
   api.getSimulation.mockResolvedValue({ success: true, data: { simulation_id: 'sim_1', project_id: projectId, status: 'ready' } })
   api.getProject.mockResolvedValue({ success: true, data: PROJECT })
-  api.listRuns.mockResolvedValue({ success: true, data: { runs: jobs, total: jobs.length } })
+  api.listRuns.mockImplementation(async (params) => {
+    const rows = params.project ? graphJobs : jobs
+    return { success: true, data: { runs: rows, total: rows.length } }
+  })
   api.getRun.mockImplementation(async (id: string) => {
-    const j = jobs.find((x) => x.run_id === id)
+    const j = [...jobs, ...graphJobs].find((x) => x.run_id === id)
     return { success: true, data: { ...j, usage: { totals: { total_tokens: 2000, cost_micros: 410000, duration_ms: 5000 } } } }
   })
   api.listReports.mockResolvedValue({ success: true, data: reports })
@@ -128,7 +132,7 @@ function arrange({ projectId = 'proj_1', jobs = [], reports = [] }: Setup = {}) 
     simulation_run: 'simulation_rounds', report_generate: 'report_generation',
   }
   api.getRunLlmRouting.mockImplementation(async (id: string) => {
-    const j = jobs.find((x) => x.run_id === id)
+    const j = [...jobs, ...graphJobs].find((x) => x.run_id === id)
     const stage = stageOf[j?.run_type ?? ''] ?? 'x'
     return { snapshots: { [stage]: { stage, provider_id: 'prov-1', model: `snap-${j?.run_type}`, routing_version: 1 } } }
   })
@@ -162,7 +166,7 @@ describe('RunWorkspaceView: Reiter', () => {
     const href = (k: string) => wrapper.get(`[data-testid="run-tab-${k}"]`).attributes('href')
     expect(href('overview')).toBe('/simulations/sim_1')
     expect(href('graph')).toBe('/simulations/sim_1/graph')
-    expect(href('personas')).toBe('/v4/env-setup/proj_1')
+    expect(href('personas')).toBe('/simulations/sim_1/personas')
     expect(href('simulation')).toBe('/simulations/sim_1/simulation/feed')
     expect(href('report')).toBe('/simulations/sim_1/report')
     expect(href('interviews')).toBe('/simulations/sim_1/interviews')
@@ -207,6 +211,39 @@ describe('RunWorkspaceView: Reiter', () => {
 })
 
 describe('RunOverviewView: Stufen', () => {
+  it('loads project-scoped graph status, model, duration and measured tokens', async () => {
+    const graph = runDetail('graph_build', { run_id: 'run_graph_project', entity_id: 'proj_1', linked_ids: { project_id: 'proj_1', graph_id: 'g1' } })
+    arrange({ graphJobs: [graph], jobs: [runDetail('simulation_run')] })
+    const { wrapper } = await mountAt()
+    const row = wrapper.get('[data-testid="stage-row-graph"]')
+    expect(api.listRuns).toHaveBeenCalledWith({ project: 'proj_1', run_type: 'graph_build', limit: 200 })
+    expect(api.getRun).toHaveBeenCalledWith('run_graph_project')
+    expect(row.text()).toContain('4 min 12 s')
+    expect(row.text()).toContain('2k')
+    expect(row.text()).not.toContain('nicht erfasst')
+    expect(wrapper.get('[data-testid="stage-model-graph"]').text()).toContain('snap-graph_build')
+  })
+
+  it('matches the simulation graph instead of a newer project graph or another project', async () => {
+    const correct = runDetail('graph_build', { run_id: 'run_correct', entity_id: 'proj_1', linked_ids: { project_id: 'proj_1', graph_id: 'g1' } })
+    const wrongGraph = runDetail('graph_build', { run_id: 'run_wrong_graph', entity_id: 'proj_1', updated_at: '2026-11-01', linked_ids: { project_id: 'proj_1', graph_id: 'g2' } })
+    const wrongProject = runDetail('graph_build', { run_id: 'run_wrong_project', entity_id: 'proj_2', updated_at: '2026-11-02', linked_ids: { project_id: 'proj_2', graph_id: 'g1' } })
+    arrange({ graphJobs: [correct, wrongGraph, wrongProject] })
+    api.getSimulation.mockResolvedValue({ success: true, data: { simulation_id: 'sim_1', project_id: 'proj_1', graph_id: 'g1' } })
+    api.getProject.mockResolvedValue({ success: true, data: { ...PROJECT, graph_id: 'g2' } })
+    await mountAt()
+    expect(api.getRun).toHaveBeenCalledWith('run_correct')
+    expect(api.getRun).not.toHaveBeenCalledWith('run_wrong_graph')
+    expect(api.getRun).not.toHaveBeenCalledWith('run_wrong_project')
+  })
+
+  it('does not guess a matching graph when the project build has no graph link', async () => {
+    arrange({ graphJobs: [runDetail('graph_build', { entity_id: 'proj_1', linked_ids: { project_id: 'proj_1' } })] })
+    const { wrapper } = await mountAt()
+    expect(wrapper.get('[data-testid="stage-row-graph"]').text()).toContain('nicht erfasst')
+    expect(api.getRun).not.toHaveBeenCalled()
+  })
+
   it('zeigt fünf Zeilen und je Zeile genau einen nächsten Schritt', async () => {
     arrange({ jobs: [runDetail('graph_build'), runDetail('simulation_prepare'), runDetail('simulation_run')], reports: [report()] })
     const { wrapper } = await mountAt()

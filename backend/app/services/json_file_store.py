@@ -20,7 +20,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import IO, Iterator, Optional
 
-import fcntl
+from app.process_lock import process_file_lock
 
 from .data_dir import resolve_data_dir
 
@@ -48,12 +48,8 @@ class JsonFileStore:
         und Updates gehen verloren.
         """
         self._data_dir.mkdir(parents=True, exist_ok=True)
-        with open(self._lock_path, "w", encoding="utf-8") as lock_fh:
-            fcntl.flock(lock_fh, fcntl.LOCK_EX)
-            try:
-                yield lock_fh
-            finally:
-                fcntl.flock(lock_fh, fcntl.LOCK_UN)
+        with process_file_lock(self._lock_path) as lock_fh:
+            yield lock_fh
 
     def reset_for_tests(self) -> None:
         """Entfernt Nutzdaten- und Lock-Datei. Nur für Tests gedacht."""

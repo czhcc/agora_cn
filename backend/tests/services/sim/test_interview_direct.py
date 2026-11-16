@@ -132,6 +132,34 @@ class TestDirectInterviewsAvailable:
 
 
 class TestBatchDirect:
+    @pytest.mark.parametrize("language,expected", [("de", "German"), ("en", "English"), ("zh", "Simplified Chinese"), (None, "German")])
+    @pytest.mark.parametrize("batch", [False, True])
+    def test_single_and_batch_use_persisted_simulation_language(self, tmp_path, language, expected, batch):
+        (tmp_path / "sim_0123456789ab").mkdir()
+        client = _FakeLLMClient(response="模拟回复")
+        config = {**SIM_CONFIG, "language": language}
+        store = _store_mock(config=config)
+        with patch.object(interview_direct, "_store", return_value=store):
+            if batch:
+                result = interview_agents_batch_direct(
+                    "sim_0123456789ab",
+                    [{"agent_id": 0, "prompt": "请重述你的观点。"}, {"agent_id": 1, "prompt": "你的看法？"}],
+                    run_state_dir=str(tmp_path), client_factory=lambda: client, max_workers=1,
+                )
+            else:
+                result = interview_agent_direct(
+                    "sim_0123456789ab", 0, "请重述你的观点。",
+                    run_state_dir=str(tmp_path), client_factory=lambda: client,
+                )
+        assert result["success"] is True
+        assert len(client.calls) == (2 if batch else 1)
+        for call in client.calls:
+            system = call["messages"][0]["content"]
+            assert f"Write all natural-language output in {expected}" in system
+            assert "Ich-Form" in system
+            assert "2 bis 6" in system
+            assert "auf Englisch" not in system
+
     def _run(self, tmp_path, interviews, client=None, **kwargs):
         sim_dir = tmp_path / "sim_0123456789ab"
         sim_dir.mkdir(exist_ok=True)

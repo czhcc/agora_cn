@@ -245,7 +245,10 @@ export function useGraphBuildPipeline({
       error.value = messageFor(caughtError)
       addLog(error.value)
     } finally {
-      if (isCurrent(generation)) loading.value = false
+      if (isCurrent(generation)) {
+        loading.value = false
+        if (error.value) ontologyProgress.value = null
+      }
     }
   }
 

@@ -328,6 +328,8 @@ describe('useGraphBuildPipeline', () => {
     expect(graphApi.buildGraph).not.toHaveBeenCalled()
     expect(router.replace).not.toHaveBeenCalled()
     expect(pipeline.error.value).toBe('Ontology failed')
+    expect(pipeline.loading.value).toBe(false)
+    expect(pipeline.ontologyProgress.value).toBeNull()
   })
 
   it('behält nach erfolgreicher Ontologie die konkrete ID bei Buildfehler und startet kein Polling', async () => {

@@ -20,6 +20,7 @@
 
     <!-- Actions (right) -->
     <div class="topbar__actions">
+      <LanguageSwitcher />
       <slot name="actions">
         <!-- Aktivitaets-Indikator der Ablage (#1795, ex ShellRoot) -->
         <ShelfActivity />
@@ -107,6 +108,7 @@ import Breadcrumbs from './Breadcrumbs.vue'
 import type { BreadcrumbItem } from './Breadcrumbs.vue'
 import Icon from './Icon.vue'
 import UserMenu from '@/components/shell/UserMenu.vue'
+import LanguageSwitcher from '@/components/shell/LanguageSwitcher.vue'
 import ShelfActivity from '@/components/shell/ShelfActivity.vue'
 import { useCommandPalette } from '@/composables/useCommandPalette'
 import { useCompactToolbar } from '@/composables/useCompactToolbar'

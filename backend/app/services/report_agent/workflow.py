@@ -10,6 +10,7 @@ from typing import Any, Callable, Dict, List, Optional, Sequence
 from pydantic import ValidationError
 
 from ...config import Config
+from ...contracts.report_language_contract import report_language_name
 from ...contracts.report_contract import ReportOutlineModel, ReportOutlineSectionModel
 from ...contracts.report_v3 import (
     DEFAULT_REPORT_MODE,
@@ -529,7 +530,7 @@ def chat(agent: Any, message: str, chat_history: List[Dict[str, str]] = None) ->
         simulation_requirement=agent.simulation_requirement,
         report_content=report_content if report_content else "(nonereport)",
         tools_description=agent._get_tools_description(),
-        language=Config.REPORT_LANGUAGE,
+        language=report_language_name(Config.REPORT_LANGUAGE),
     )
 
     messages = [{"role": "system", "content": system_prompt}]

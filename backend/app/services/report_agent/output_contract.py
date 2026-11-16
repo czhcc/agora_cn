@@ -189,7 +189,7 @@ def sanitize_final_content(raw: str) -> SanitizedContent:
     matches = list(_FINAL_ANSWER_RE.finditer(text))
     if matches:
         cut = matches[-1].end()
-        prefix = text[:cut].strip()
+        prefix = text[:matches[-1].start()].strip()
         if prefix:
             removed.append(prefix)
         text = text[cut:]

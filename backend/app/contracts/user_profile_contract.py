@@ -33,7 +33,7 @@ from pydantic import (
 
 _STRICT = ConfigDict(extra="forbid")
 
-ProfileLanguage = Literal["de", "en"]
+ProfileLanguage = Literal["de", "en", "zh-CN"]
 ProfileTheme = Literal["system", "light", "dark"]
 PrivacyMode = Literal["standard", "strict"]
 OperatingMode = Literal["local", "hybrid", "server"]

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useGraphTypeLabel } from '@/composables/graph-library/useGraphTypeLabel'
+const typeLabel = useGraphTypeLabel()
 /**
  * GraphReader (#1797, Etappe 2): lesende Graph-Ansicht fuer Lauf und Bibliothek.
  * Dreispaltig nach Bauplan 4.3: links Suche, Typfilter und Entitaetenliste,
@@ -250,7 +252,7 @@ const viewOptions = ['net', 'table'] as const
               >
                 <span aria-hidden="true" class="gr__check">{{ activeTypes.has(type.name) ? '✓' : '' }}</span>
                 <span aria-hidden="true" class="gr__glyph">{{ type.glyph }}</span>
-                <span class="gr__typename">{{ type.name }}</span>
+                <span class="gr__typename">{{ typeLabel(type.name) }}</span>
                 <span class="gr__num">{{ type.count }}</span>
               </button>
             </li>

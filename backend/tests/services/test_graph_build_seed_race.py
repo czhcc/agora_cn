@@ -32,6 +32,35 @@ def _seed_race(*_args, **_kwargs):
     raise ValueError(f"route changed concurrently: {SECRET_SENTINEL}")
 
 
+@pytest.mark.parametrize("phase", ["routing", "generation"])
+def test_legacy_profile_failure_terminalizes_run_and_preserves_error(monkeypatch, phase):
+    project = SimpleNamespace(project_id=PROJECT_ID, status=ProjectStatus.CREATED, error=None)
+    registry = MagicMock()
+    registry.create_run.return_value = {"run_id": "run-legacy-failure"}
+    save = MagicMock()
+    monkeypatch.setattr("app.services.graph_build.ProjectManager.get_project", lambda _id: project)
+    monkeypatch.setattr("app.services.graph_build.ProjectManager.save_project", save)
+    monkeypatch.setattr("app.services.graph_build.run_registry", registry)
+    original = ValueError("Provider connection unavailable")
+    if phase == "routing":
+        monkeypatch.setattr("app.services.graph_build.seed_run_stage_routing", MagicMock(side_effect=original))
+    else:
+        monkeypatch.setattr("app.services.graph_build.seed_run_stage_routing", MagicMock())
+        monkeypatch.setattr("app.services.graph_build.StageModelRouter", MagicMock())
+        monkeypatch.setattr("app.services.graph_build.LLMClient.from_route", MagicMock(side_effect=original))
+    with pytest.raises(ValueError) as caught:
+        GraphBuildService.generate_ontology(
+            project_id=PROJECT_ID, simulation_requirement="Question", document_texts=["Document"],
+            llm_profile_id="profile-test",
+        )
+    assert caught.value is original
+    assert project.status == ProjectStatus.FAILED
+    save.assert_called_once_with(project)
+    registry.update_run.assert_called_once()
+    assert registry.update_run.call_args.kwargs["status"] == "failed"
+    assert registry.update_run.call_args.kwargs["error"] == project.error
+
+
 def test_ontology_seed_race_terminalizes_run_and_project(monkeypatch):
     project = SimpleNamespace(
         project_id=PROJECT_ID,

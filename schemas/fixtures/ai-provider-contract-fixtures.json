@@ -1,5 +1,22 @@
 {
   "base_urls": {
+  "lan": [
+    "http://192.168.5.82:4002/v1",
+    "http://10.1.2.3:8080/v1",
+    "https://172.16.0.1/v1",
+    "http://172.31.255.254/v1"
+  ],
+  "unsafe_lan": [
+    "http://169.254.169.254/v1",
+    "http://0.0.0.0/v1",
+    "http://224.0.0.1/v1",
+    "http://192.168.5.82:0/v1",
+    "http://192.168.5.82:99999/v1",
+    "http://user:pass@192.168.5.82/v1",
+    "http://192.168.5.82/v1?key=fixture-token",
+    "http://192.168.5.82/v1#fragment",
+    "http://192.168.999.1/v1"
+  ],
   "valid": [
     "https://example.test:8443/v1",
       "https://gateway.example/v1/models"

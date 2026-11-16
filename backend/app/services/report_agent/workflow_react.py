@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Callable, Dict, List, Optional
 
+from ...contracts.report_language_contract import report_language_name
 from ...utils.logger import get_logger
 from ...utils.provider_message import redacted_provider_message as _redacted_provider_message
 from .output_contract import (
@@ -407,7 +408,7 @@ def _build_initial_section_messages(
         simulation_requirement=agent.simulation_requirement,
         section_title=section.title,
         tools_description=agent._get_tools_description(),
-        language=_wf.Config.REPORT_LANGUAGE,
+        language=report_language_name(_wf.Config.REPORT_LANGUAGE),
     )
     if previous_sections:
         previous_parts = [

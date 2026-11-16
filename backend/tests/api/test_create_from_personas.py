@@ -82,7 +82,7 @@ def test_legt_projekt_und_simulation_an_und_bereitet_vor():
 
         res = _client().post(
             "/api/simulation/create-from-personas",
-            json={"simulation_requirement": "Wie reagiert die Belegschaft?", "template_ids": ["tpl_1"]},
+            json={"simulation_requirement": "Wie reagiert die Belegschaft?", "template_ids": ["tpl_1"], "language": "zh"},
         )
 
     assert res.status_code == 201
@@ -96,6 +96,7 @@ def test_legt_projekt_und_simulation_an_und_bereitet_vor():
     sm.return_value.create_simulation.assert_called_once_with(project_id="proj_neu", graph_id="")
     prep.assert_called_once()
     assert prep.call_args[0][2] == [PERSONA]
+    assert prep.call_args.kwargs["language"] == "zh"
 
 
 def test_nimmt_auch_inline_personas_ohne_bibliothek():
@@ -189,17 +190,23 @@ def _usernames(manager, simulation_id):
     return [p["username"] for p in profiles]
 
 
-def test_lauf_aus_satz_kopiert_personas_und_sperrt_den_satz(set_env):
+@pytest.mark.parametrize("language", ["de", "zh"])
+def test_lauf_aus_satz_kopiert_personas_und_sperrt_den_satz(set_env, language):
     client = _set_client()
     set_id = _make_set(client)
 
-    res = _run_from_set(client, set_id)
+    res = client.post(
+        "/api/simulation/create-from-personas",
+        json={"simulation_requirement": "Question", "persona_set_id": set_id, "language": language},
+    )
 
     assert res.status_code == 201
     data = res.get_json()["data"]
     assert data["persona_count"] == 2
     assert data["persona_set_id"] == set_id
     assert _usernames(set_env, data["simulation_id"]) == ["anna", "bernd"]
+    config = set_env._store.read_json(data["simulation_id"], "simulation_config", default=None)
+    assert config["language"] == language
 
     locked = client.get(f"/api/persona-sets/{set_id}").get_json()["data"]
     assert locked["locked_at"] is not None
@@ -549,3 +556,10 @@ def test_persona_lauf_sagt_beim_bericht_klar_was_fehlt():
     src = pathlib.Path(report_generation.__file__).read_text(encoding="utf-8")
     assert "Berichte stuetzen sich auf" in src
     assert "Missing graph ID, please ensure graph is built" not in src
+
+
+def test_rejects_unsupported_simulation_language():
+    res = _client().post("/api/simulation/create-from-personas", json={
+        "simulation_requirement": "Question", "language": "fr",
+    })
+    assert res.status_code == 400

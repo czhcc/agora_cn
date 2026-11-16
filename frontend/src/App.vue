@@ -4,6 +4,7 @@ import type { FunctionalComponent } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { RouteLocationNormalized } from 'vue-router'
 import LogDrawer from './components/LogDrawer.vue'
+import LanguageSwitcher from './components/shell/LanguageSwitcher.vue'
 import { SETTINGS_FALLBACK_PATH } from './components/settings-window/sections'
 import { isWindowRoute, useSettingsWindowStore } from './stores/settingsWindow'
 import AppShell from './components/v4/shell/AppShell.vue'
@@ -63,6 +64,9 @@ const shellProps = computed(() => (withShell.value ? { demoFrame: !showStaticPre
 </script>
 
 <template>
+  <div v-if="!withShell" class="bare-language-switcher">
+    <LanguageSwitcher />
+  </div>
   <!-- #1795 Ticket 4: die Huelle sitzt genau hier, einmal um alle Ansichten.
        Sie bleibt beim Wechsel zwischen Ansichten stehen (Seitenleiste und
        Kopf werden nicht neu aufgebaut); nur der Inhalt blendet ueber.
@@ -113,6 +117,15 @@ const shellProps = computed(() => (withShell.value ? { demoFrame: !showStaticPre
 #app {
   position: relative;
   z-index: 2;
+}
+
+.bare-language-switcher {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
 }
 
 ::-webkit-scrollbar {

@@ -124,6 +124,14 @@ beforeEach(() => {
 })
 
 describe('RunInterviewsView', () => {
+  it('labels report interviews and hides internal instructions', async () => {
+    api.getInterviewHistory.mockResolvedValue([{ ...hist(0, 'internal instructions', '回答'), display_prompt: '1. 你怎么看？', origin: 'report' }])
+    const { w } = await mountAt('/simulations/sim_1/interviews/persona-0')
+    expect(w.get('.cpane__q').text()).toContain('Automatisches Berichtsinterview')
+    expect(w.get('.cpane__q').text()).toContain('1. 你怎么看？')
+    expect(w.text()).not.toContain('internal instructions')
+    w.unmount()
+  })
   it('zeigt "Noch kein Gespräch" ohne Verlauf und hat keinen h1', async () => {
     const { w } = await mountAt('/simulations/sim_1/interviews')
     expect(w.get('[data-testid="list-empty"]').text()).toBe('Noch kein Gespräch')

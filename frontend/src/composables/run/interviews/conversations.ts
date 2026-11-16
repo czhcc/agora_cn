@@ -27,6 +27,7 @@ export function stripInterviewPrefix(prompt: string): string {
 
 export interface InterviewTurn {
   question: string
+  origin?: 'user' | 'report' | 'unknown'
   /** `null`, wenn keine Antwort kam; dann steht der Grund in `error`. */
   answer: string | null
   timestamp: string
@@ -114,7 +115,8 @@ export function buildConversations(
   }
   for (const row of history) {
     push(row.agent_id, {
-      question: stripInterviewPrefix(row.prompt),
+      question: row.display_prompt ?? stripInterviewPrefix(row.prompt),
+      origin: row.origin,
       answer: row.response ?? null,
       timestamp: row.timestamp,
       platform: row.platform ?? null,

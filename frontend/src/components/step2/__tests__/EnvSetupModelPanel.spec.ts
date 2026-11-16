@@ -44,13 +44,18 @@ function mountPanel(props: Partial<Record<string, unknown>> = {}) {
       stubs: {
         AiModelPicker: aiPickerStub,
         Field: { template: '<div><slot /></div>' },
-        Select: { template: '<select><slot /></select>' },
       },
     },
   })
 }
 
 describe('EnvSetupModelPanel — AiModelPicker-Integration (#890)', () => {
+  it('offers Chinese and emits its canonical simulation language', async () => {
+    const w = mountPanel()
+    expect(w.find('option[value="zh"]').exists()).toBe(true)
+    await w.get('select').setValue('zh')
+    expect(w.emitted('update:language')?.[0]).toEqual(['zh'])
+  })
   it('rendert AiModelPicker', () => {
     const w = mountPanel()
     expect(w.findComponent(aiPickerStub).exists()).toBe(true)

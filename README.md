@@ -276,6 +276,14 @@ Provider setup and route persistence are described in [`docs/provider-runtime-se
 
 From the repository root, `bun run backend` starts only Flask and `bun run frontend` starts only Vite. The scripts below match the checked-in package configuration:
 
+The interface supports Deutsch, English and 简体中文. Use the language selector on the sign-in page or in the application header; your choice is remembered in this browser. This changes the interface language independently of the agent and report languages.
+
+For Chinese simulation output, choose **简体中文** in the new-run model settings or environment setup. Agent language supports `de`, `en` and `zh`; `AGENT_LANGUAGE=zh` sets the default for new runs. Generated personas, initial posts, and agent posts/replies follow this selection. Existing saved personas keep their original text. Report language is configured separately through `REPORT_LANGUAGE`.
+
+For Chinese reports, set `REPORT_LANGUAGE=Simplified Chinese` (aliases `zh` and `zh-CN` also work) and restart the backend. Outline planning, section writing, extracted natural-language metadata, quality-review responses and report chat use this setting; completeness checks recognize Chinese analysis aspects. The default remains `German`, and `English` is supported. Existing reports and source evidence are not translated: regenerate the report to apply a changed language. Explicitly supplied section titles retain their exact-title contract. Operational diagnostics can still use their original language.
+
+To use an existing TWHIN-BERT directory for Twitter simulations, set `AGORA_TWHIN_BERT_MODEL_DIR` in `.env`. The directory must contain `config.json`, tokenizer files and model weights (`model.safetensors` or `pytorch_model.bin`; sharded weight indexes are also supported). Model and tokenizer load directly from that directory with `local_files_only=True`. Relative paths resolve from the project root; Docker requires a path mounted inside the container. Leave the setting empty or unset to retain Hugging Face cache checks and warmup downloads. A configured invalid directory fails explicitly. Restart the backend after changing this setting.
+
 ```bash
 bun run test:backend      # backend pytest suite
 bun run test:frontend     # frontend Vitest suite

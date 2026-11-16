@@ -19,6 +19,8 @@ from ..contracts.persona_contract import (
     role_corrected_gender,
 )
 from ..contracts.persona_identity_contract import PersonaIdentityBinding
+from ..contracts.simulation_language_contract import is_chinese_persona_name
+from .oasis_profile_demographics import pick_persona_name
 from .entity_reader import EntityNode
 from .persona_identity_binding import (
     build_identity_prompt_block,
@@ -278,6 +280,14 @@ user_name :str ,
     if binding .origin =="source_collective"or binding .name_is_locked :
         return name ,user_name
     display_name =(profile_data .get ("display_name")or "").strip ()
+    if self.language == "zh" and not is_chinese_persona_name(display_name):
+        replacement = pick_persona_name(self, profile_data.get("gender"))
+        if display_name:
+            for field in ("bio", "persona"):
+                text = profile_data.get(field)
+                if isinstance(text, str):
+                    profile_data[field] = text.replace(display_name, replacement)
+        display_name = replacement
     if display_name :
         name =display_name
     handle =(profile_data .get ("handle")or "").strip ()

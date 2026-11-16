@@ -6,6 +6,7 @@ The public compatibility surface remains app.services.simulation_config_generato
 from __future__ import annotations
 
 from typing import Any, Dict, List
+from ..contracts.simulation_language_contract import simulation_language_instruction
 
 
 from ..utils.logger import get_logger
@@ -35,6 +36,7 @@ def _generate_event_config(self, context: str, simulation_requirement: str, enti
     context_truncated = context[:self.EVENT_CONFIG_CONTEXT_LENGTH]
     prompt = f'Based on the following simulation requirements, generate event configuration.\n\nSimulation Requirements: {simulation_requirement}\n\n{context_truncated}\n\n## Available Entity Types and Examples\n{type_info}\n\n## Task\nPlease generate event configuration JSON:\n- Extract hot topic keywords\n- Describe opinion development direction\n- Design initial post content, **each post must specify poster_type (publisher type)**\n\n**Important**: poster_type must be selected from the "Available Entity Types" above so initial posts can be assigned to appropriate agents for publishing.\nExample: Official statements should be published by Official/University type, news by MediaOutlet, student opinions by Student type.\n\nReturn JSON format (no markdown):\n{{\n    "hot_topics": ["keyword1", "keyword2", ...],\n    "narrative_direction": "<description of opinion development direction>",\n    "initial_posts": [\n        {{"content": "post content", "poster_type": "entity type (must select from available types)", "stance": "<supportive/opposing/neutral: the post\'s position on the contested topic>"}},\n        ...\n    ],\n    "reasoning": "<brief explanation>"\n}}'
     system_prompt = 'You are an opinion analysis expert. Return pure JSON format. Note poster_type must match available entity types precisely.'
+    system_prompt += ' ' + simulation_language_instruction(self.language)
     try:
         return self._call_llm_with_retry(prompt, system_prompt, EventConfigResponse)
     except Exception as e:  # noqa: BLE001 — logged and intentionally converted to default config

@@ -12,7 +12,7 @@ describe('deriveRunTabs', () => {
     expect(tabs.map((t) => t.to)).toEqual([
       { name: 'RunOverview', params: { simulationId: 'sim_1' } },
       { name: 'RunGraph', params: { simulationId: 'sim_1' } },
-      { name: 'StepEnvSetup', params: { projectId: 'proj_1' } },
+      { name: 'RunPersonas', params: { simulationId: 'sim_1' } },
       { name: 'RunSimulationFeed', params: { simulationId: 'sim_1' } },
       { name: 'RunReport', params: { simulationId: 'sim_1' } },
       { name: 'RunInterviews', params: { simulationId: 'sim_1' } },

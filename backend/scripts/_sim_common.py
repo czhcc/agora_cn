@@ -881,6 +881,53 @@ class TwhinCacheError(RuntimeError):
 _TWHIN_BERT_REPO_ID = "Twitter/twhin-bert-base"
 
 
+def _install_local_twhin_source() -> bool:
+    """Redirect OASIS's model ID to an explicitly configured local directory."""
+    from app.contracts.twhin_model_contract import TWHIN_MODEL_DIR_ENV, TwhinModelSource
+
+    source = TwhinModelSource(local_model_dir=os.environ.get(TWHIN_MODEL_DIR_ENV))
+    if source.local_model_dir is None:
+        return False
+    directory = source.local_model_dir.expanduser()
+    if not directory.is_absolute():
+        directory = Path(__file__).resolve().parents[2] / directory
+    directory = directory.resolve()
+    if not directory.is_dir():
+        raise TwhinCacheError(f"{TWHIN_MODEL_DIR_ENV}: model directory does not exist: {directory}")
+    if not (directory / "config.json").is_file():
+        raise TwhinCacheError(f"{TWHIN_MODEL_DIR_ENV}: config.json is missing in {directory}")
+    weights = ("model.safetensors", "pytorch_model.bin", "model.safetensors.index.json", "pytorch_model.bin.index.json")
+    tokenizers = ("tokenizer.json", "sentencepiece.bpe.model", "spiece.model", "vocab.txt")
+    if not any((directory / name).is_file() for name in weights):
+        raise TwhinCacheError(f"{TWHIN_MODEL_DIR_ENV}: model weights are missing in {directory}")
+    if not any((directory / name).is_file() for name in tokenizers):
+        raise TwhinCacheError(f"{TWHIN_MODEL_DIR_ENV}: tokenizer files are missing in {directory}")
+
+    from transformers import AutoModel, AutoTokenizer
+
+    def redirect(original: Callable[..., Any]) -> Callable[..., Any]:
+        def load(*args: Any, **kwargs: Any) -> Any:
+            model_name = args[0] if args else kwargs.get("pretrained_model_name_or_path")
+            if isinstance(model_name, str) and model_name in _TWHIN_BERT_MODEL_NAMES:
+                if args:
+                    args = (str(directory), *args[1:])
+                else:
+                    kwargs["pretrained_model_name_or_path"] = str(directory)
+                kwargs["local_files_only"] = True
+            return original(*args, **kwargs)
+
+        load._agora_local_twhin_source = True  # type: ignore[attr-defined]
+        return load
+
+    for loader in (AutoModel, AutoTokenizer):
+        if getattr(loader.from_pretrained, "_agora_local_twhin_source", False) is not True:
+            loader.from_pretrained = redirect(loader.from_pretrained)
+    os.environ["HF_HUB_OFFLINE"] = "1"
+    os.environ["TRANSFORMERS_OFFLINE"] = "1"
+    logging.getLogger("agora._sim_common").info("Using local TWHIN-BERT model directory: %s", directory)
+    return True
+
+
 def ensure_twhin_cache(repo_id: str = _TWHIN_BERT_REPO_ID) -> bool:
     """Stellt sicher, dass ``repo_id`` vollstaendig im lokalen HF-Cache liegt,
     und schaltet den Prozess danach auf Offline-Betrieb um.
@@ -906,6 +953,9 @@ def ensure_twhin_cache(repo_id: str = _TWHIN_BERT_REPO_ID) -> bool:
         TwhinCacheError: wenn weder der lokale Cache vollstaendig ist noch
             ein Download aus dem Hub gelingt.
     """
+    if repo_id == _TWHIN_BERT_REPO_ID and _install_local_twhin_source():
+        return True
+
     try:
         from huggingface_hub import snapshot_download
     except ImportError:

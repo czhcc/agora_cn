@@ -1,0 +1,3834 @@
+{
+  "brand": {
+    "name": "Agora",
+    "tagline": "群体智能，本地或云端运行。"
+  },
+  "nav": {
+    "work": "工作台",
+    "history": "历史记录",
+    "github": "GitHub",
+    "available": "就绪",
+    "running": "运行中",
+    "paused": "已暂停",
+    "stopped": "已停止",
+    "error": "错误",
+    "Dashboard": "仪表盘",
+    "Runs": "运行记录",
+    "RunDetail": "运行详情",
+    "Settings": "设置",
+    "SettingsGeneral": "常规",
+    "SettingsLlmRouting": "大模型路由",
+    "SettingsLlmProviders": "大模型服务商",
+    "SettingsIntegrations": "集成",
+    "SettingsApiKeys": "API 密钥",
+    "SettingsUsersTeams": "用户与团队",
+    "SettingsAuditLogs": "审计日志",
+    "SettingsProfile": "个人资料",
+    "Onboarding": "初始设置"
+  },
+  "common": {
+    "start": "开始",
+    "stop": "停止",
+    "pause": "暂停",
+    "resume": "继续",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "next": "下一步",
+    "back": "返回",
+    "retry": "重试",
+    "loading": "加载中…",
+    "ready": "就绪",
+    "running": "运行中",
+    "completed": "已完成",
+    "incomplete": "未完成",
+    "failed": "失败",
+    "error": "错误",
+    "yes": "是",
+    "no": "否",
+    "close": "关闭",
+    "open": "打开",
+    "edit": "编辑",
+    "view": "查看",
+    "download": "下载",
+    "upload": "上传",
+    "browse": "浏览",
+    "select": "选择",
+    "confirm": "确认",
+    "refresh": "刷新",
+    "scrollToBottom": "跳转到最新内容",
+    "copy": "复制",
+    "copied": "已复制",
+    "send": "发送",
+    "thinking": "思考中…",
+    "processing": "处理中…",
+    "preparing": "准备中…",
+    "starting": "启动中…",
+    "stopping": "停止中…",
+    "saving": "保存中…",
+    "language": "语言",
+    "model": "模型",
+    "more": "更多",
+    "details": "详情",
+    "settings": "设置",
+    "actions": "操作",
+    "status": "状态",
+    "name": "名称",
+    "type": "类型",
+    "date": "日期",
+    "time": "时间",
+    "minutes": "分钟",
+    "seconds": "秒",
+    "round": "轮次",
+    "rounds": "轮次",
+    "of": "/",
+    "and": "和",
+    "or": "或",
+    "all": "全部",
+    "none": "无",
+    "tryAgain": "重试"
+  },
+  "home": {
+    "kicker": "工作室 · 本地",
+    "edition": "01 · 版本",
+    "location": "离线 · 开源",
+    "headline": {
+      "line1": "输入一份文档，",
+      "line2": "生成一个",
+      "line3Italic": "完整世界。"
+    },
+    "lead": "Agora 将文本转换为知识图谱，并创建数百个拥有各自经历、立场和社交圈的智能体，让它们讨论、分享和辩论。你可以实时观察叙事如何传播、阻力在哪里形成、哪些声音改变了讨论的方向。可选本地 Ollama 或云端接口。",
+    "tags": {
+      "engine": "群体模拟引擎",
+      "version": "v0.9.1-dev"
+    },
+    "system": {
+      "kicker": "02 · 系统",
+      "title": "就绪。",
+      "desc": "引擎在你的设备上运行，无须注册账号。上传文档并写下问题，其余交给模拟系统。"
+    },
+    "metrics": {
+      "free": {
+        "value": "免费",
+        "label": "在你的设备上运行"
+      },
+      "private": {
+        "value": "私密",
+        "label": "数据保留在本机"
+      },
+      "openSource": {
+        "value": "打开",
+        "label": "采用 AGPL-3.0 许可证"
+      }
+    },
+    "workflow": {
+      "kicker": "03 · 工作流程"
+    },
+    "console": {
+      "uploadKicker": "01 / 文档",
+      "uploadTitle": "将文档拖放到这里。",
+      "uploadHint": "或点击浏览文件",
+      "uploadAccepted": "PDF · MD · TXT · 最大 50 MB",
+      "promptKicker": "02 / 问题",
+      "promptPlaceholder": "简要描述要模拟的情景。例如：“科隆市中心居民如何看待全面部署监控摄像头？”",
+      "engineLabel": "引擎：Ollama + Neo4j",
+      "startBtn": "启动引擎",
+      "initializing": "初始化中…",
+      "needFiles": "请至少上传一份文档。",
+      "needPrompt": "请填写模拟描述。"
+    },
+    "steps": [
+      {
+        "num": "01",
+        "title": "构建图谱",
+        "desc": "从文档中提取实体和关系，在 Neo4j 中构建知识图谱。"
+      },
+      {
+        "num": "02",
+        "title": "环境",
+        "desc": "生成数百个具有独特性格、偏好和反应特征的智能体画像。"
+      },
+      {
+        "num": "03",
+        "title": "模拟",
+        "desc": "智能体按轮次发帖、回复和辩论，过程可实时观察。"
+      },
+      {
+        "num": "04",
+        "title": "报告",
+        "desc": "报告智能体检索模拟结果、访谈焦点小组并撰写报告。"
+      },
+      {
+        "num": "05",
+        "title": "对话",
+        "desc": "直接与模拟世界中的智能体或报告智能体交流。"
+      }
+    ],
+    "differentiators": [
+      {
+        "title": "有依据的智能体",
+        "desc": "Agora 智能体会调用工具，先检索网络、查询知识图谱，再发帖或回复。"
+      }
+    ],
+    "footer": {
+      "credit": "Agora · 群体智能，本地或云端运行。",
+      "fork": "基于 MiroFish 分支开发",
+      "license": "AGPL-3.0",
+      "code": "GitHub 源码",
+      "by": "开发者",
+      "byName": "Alexander Schneider",
+      "bySite": "alexle135.de",
+      "neo4jBrowser": "Neo4j 浏览器 ↗"
+    }
+  },
+  "history": {
+    "kicker": "04 · 历史记录",
+    "title": "最近的模拟。",
+    "empty": "暂无运行记录。在上方启动首次模拟。",
+    "open": "打开 →",
+    "delete": "删除",
+    "confirmDelete": "确定删除这次运行吗？",
+    "lastRun": "最近：",
+    "createdAt": "创建时间",
+    "documentCount": "{count} 份文档 | {count} 份文档",
+    "agentCount": "{count} 个智能体 | {count} 个智能体",
+    "search": "搜索…",
+    "filters": {
+      "searchLabel": "搜索运行记录",
+      "searchPlaceholder": "搜索运行、项目或分支",
+      "projectLabel": "按项目筛选",
+      "allProjects": "所有项目",
+      "runTypeLabel": "按运行类型筛选",
+      "allTypes": "所有类型",
+      "statusLabel": "按状态筛选",
+      "allStatus": "所有状态",
+      "branchLabel": "按分支筛选",
+      "allBranches": "所有分支"
+    }
+  },
+  "process": {
+    "title": "流水线",
+    "back": "← 返回",
+    "stepper": {
+      "step1": "图谱",
+      "step2": "环境",
+      "step3": "模拟",
+      "step4": "报告",
+      "step5": "对话"
+    }
+  },
+  "step1": {
+    "kicker": "01 · 图谱",
+    "title": "从文档构建知识图谱。",
+    "sub": "GraphRAG 提取实体和关系，并将向量写入 Neo4j。构建完成后，可在下方探索图谱。",
+    "ontology": {
+      "title": "本体",
+      "desc": "提取器应识别哪些属性？系统会根据你的描述自动生成。",
+      "generate": "生成本体",
+      "regenerate": "重新生成",
+      "addType": "添加类型",
+      "removeType": "移除类型",
+      "edit": "编辑",
+      "save": "应用"
+    },
+    "build": {
+      "title": "构建图谱",
+      "desc": "将文档分块，逐块调用大模型提取实体与关系，并写入 Neo4j。",
+      "start": "构建图谱",
+      "rebuild": "重新构建",
+      "running": "正在构建图谱…",
+      "completed": "图谱构建完成。",
+      "insufficient": "不达标",
+      "insufficientDesc": "图谱未达到质量要求。请重新构建后再继续，后续步骤依赖此图谱。",
+      "chunks": "分块：{done} / {total}",
+      "elapsed": "已用时间：{time}"
+    },
+    "graph": {
+      "title": "探索图谱",
+      "nodes": "实体",
+      "edges": "关系",
+      "countsPending": "正在统计，实体和关系总数将在图谱数据加载后显示。",
+      "search": "搜索图谱…",
+      "noResults": "没有匹配结果。",
+      "openInBrowser": "在 Neo4j 浏览器中打开"
+    },
+    "next": "下一步：环境 →",
+    "breadcrumbRuns": "运行记录",
+    "breadcrumbTitle": "图谱构建",
+    "graphIncomplete": "构建已取消，图谱不完整。可以查看或删除，但无法用于后续步骤。"
+  },
+  "step2": {
+    "kicker": "02 · 环境",
+    "title": "生成个性化画像。",
+    "sub": "根据图谱生成数百个智能体画像，每个都有自己的经历、观点、反应速度和影响力。",
+    "platform": {
+      "label": "平台",
+      "twitter": "Twitter / X",
+      "reddit": "Reddit",
+      "parallel": "双平台并行"
+    },
+    "model": {
+      "label": "大模型",
+      "placeholder": "选择模型…",
+      "workspaceDefaultHint": "未选择时，将使用“设置 → 服务商”中的工作区默认模型。",
+      "presetGroup": "推荐",
+      "ollamaGroup": "本地可用",
+      "customGroup": "自定义",
+      "customLabel": "模型名称（手动输入）",
+      "customPlaceholder": "例如 qwen3-coder-next:cloud",
+      "refresh": "刷新列表",
+      "loadingModels": "正在加载可用模型…",
+      "noOllama": "无法连接 Ollama。请在“设置 → 服务商”中配置服务商，或启动 Ollama。",
+      "openAiDefault": "已启用 OpenAI 默认模型。",
+      "default": ".env 默认配置",
+      "ollamaOption": "{model}（Ollama）"
+    },
+    "runtimeProvider": {
+      "toggle": "服务商选项",
+      "label": "服务商",
+      "default": "服务端默认值",
+      "active": "已启用覆盖配置",
+      "google": "Google Gemini",
+      "openai": "OpenAI",
+      "customOpenAi": "OpenAI 兼容接口",
+      "apiKey": "API 密钥",
+      "apiKeyPlaceholder": "仅用于当前浏览器会话",
+      "baseUrl": "基础 URL",
+      "baseUrlPlaceholder": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "missingKey": "已启用服务商覆盖配置，但缺少 API 密钥。",
+      "dbKeyPlaceholder": "将使用服务端密钥（已保存在设置中）",
+      "dbKeyPresentBanner": "将自动使用服务端为 {provider} 保存的密钥（来自“设置 → 大模型服务商”）。",
+      "sessionKeyOverrideToggle": "改用会话密钥",
+      "sessionKeyToggle": "仅为当前浏览器会话使用自己的密钥",
+      "sessionKeyLabel": "会话 API 密钥",
+      "noDbKeyBanner": "“设置 → 大模型服务商”中没有为 {provider} 保存 API 密钥。请先保存，或在此输入。",
+      "checkingKey": "正在检查密钥状态…"
+    },
+    "providerOverride": {
+      "dbKeyPlaceholder": "将使用服务端密钥（已保存在设置中）",
+      "sessionKeyToggle": "仅为当前浏览器会话使用自己的密钥",
+      "sessionKeyLabel": "会话 API 密钥",
+      "noDbKeyBanner": "“设置 → 大模型服务商”中没有为 {provider} 保存 API 密钥。请先保存，或在此输入。",
+      "checkingKey": "正在检查密钥状态…"
+    },
+    "personas": {
+      "title": "生成画像",
+      "count": "智能体数量",
+      "parallel": "并行生成",
+      "useGraph": "从图谱实体生成画像",
+      "generate": "生成画像",
+      "regenerate": "重新生成",
+      "running": "正在生成画像：{done} / {total}…",
+      "floorApplied": "报告需要的画像数量多于图谱中的实体数。系统会循环使用实体池，直到生成 {total} 个画像。",
+      "completed": "已生成 {count} 个画像。",
+      "preview": "预览画像",
+      "edit": "编辑",
+      "save": "保存画像",
+      "saveAll": "保存所有画像"
+    },
+    "quota": {
+      "toggle": "按分组强制分配画像配额",
+      "hintOff": "不设置配额时，每个图谱实体生成一个画像；实体池过小可能导致画像不足。",
+      "hintOn": "分组名称必须与本体中的 entity_type 完全一致。实体不足时将循环分配。",
+      "segmentPlaceholder": "entity_type（例如 SME-CEO）",
+      "addSegment": "+ 添加分组",
+      "total": "总计：{count} 个画像",
+      "invalid": "配额计划无效。"
+    },
+    "persona": {
+      "regenerate": "重新生成",
+      "regenerateHint": "提示词补充（可选）",
+      "regeneratingPill": "正在重新生成",
+      "regeneratingBlock": "暂时无法启动：画像正在重新生成"
+    },
+    "addPersona": {
+      "kicker": "＋ 新建画像",
+      "title": "手动创建画像",
+      "submit": "添加",
+      "fields": {
+        "username": "用户名",
+        "name": "显示名称",
+        "bio": "简介（简短）",
+        "profession": "职业 / 角色",
+        "country": "国家或地区",
+        "age": "年龄",
+        "gender": "性别",
+        "mbti": "MBTI",
+        "topics": "兴趣（逗号分隔）",
+        "persona": "详细画像：立场、表达方式和社会背景"
+      },
+      "placeholders": {
+        "username": "例如 critical_citizen",
+        "name": "Anna Meyer",
+        "bio": "用一句话描述这个人及其立场。",
+        "profession": "城市规划师、活动人士等",
+        "country": "DE",
+        "topics": "监控、数据保护、城市政策",
+        "persona": "自由填写。描述越具体，智能体的反应越有辨识度。"
+      }
+    },
+    "cardGrid": {
+      "manual": "手动",
+      "ruleBased": "占位内容",
+      "delete": "删除画像",
+      "save": "保存画像",
+      "hintCount": "无提示 | 1 条提示 | {count} 条提示"
+    },
+    "detailModal": {
+      "kicker": "画像",
+      "reviewActive": "审核中",
+      "actions": {
+        "edit": "编辑",
+        "reject": "拒绝",
+        "approve": "批准",
+        "save": "保存"
+      },
+      "fields": {
+        "age": "年龄",
+        "gender": "性别",
+        "mbti": "MBTI",
+        "country": "国家或地区",
+        "profession": "职业",
+        "displayName": "显示名称",
+        "bioShort": "简介（简短）",
+        "topicsCsv": "兴趣（逗号分隔）",
+        "personaLong": "画像描述"
+      }
+    },
+    "library": {
+      "title": "画像库",
+      "hint": "已保存的画像可以在后续模拟中复用。",
+      "empty": "暂无已保存的画像。",
+      "refresh": "刷新",
+      "use": "使用"
+    },
+    "language": {
+      "label": "智能体语言",
+      "de": "德语",
+      "en": "英语",
+      "zh": "简体中文",
+      "hint": "决定智能体发帖和回复时使用的语言。"
+    },
+    "agentTools": {
+      "warning": "已启用实验性工具调用：每个智能体每次行动最多调用 {count} 次工具。这会减慢运行并增加大模型调用次数。"
+    },
+    "agentCap": {
+      "label": "限制智能体最大数量",
+      "sliderLabel": "画像数量上限滑块",
+      "numberLabel": "画像数量上限",
+      "unit": "智能体",
+      "minimumHint": "数量上限不能少于 10 个智能体。",
+      "unlimitedHint": "未设置上限时，将为每个符合条件的图谱实体创建一个智能体，但不会低于报告画像表所需的数量。",
+      "reportFloor": "报告的德奥瑞地区画像表至少需要 {floor} 个智能体。"
+    },
+    "activityMode": {
+      "label": "智能体活跃度",
+      "realistic": {
+        "label": "贴近现实",
+        "hint": "根据已有统计，多数参与者每天发帖约一次或更少。若需更多帖子，可增加智能体数量或模拟天数。"
+      },
+      "active": {
+        "label": "活跃",
+        "hint": "采用统计区间的上限：每个参与者每天发布两到三条帖子。"
+      },
+      "applied": "智能体活跃度：{mode}",
+      "legacy": "之前的活跃度模型"
+    },
+    "contestedQuestion": {
+      "label": "争议问题（可选）",
+      "hint": "输入一个可以赞成或反对的陈述。留空则由助手提出。",
+      "tooShort": "争议问题至少需要 10 个字符。",
+      "applied": "争议问题：{statement}",
+      "originAssistant": "（由助手提出）",
+      "originUser": "（由你设定）",
+      "none": "没有争议问题：{reason}",
+      "noneWithoutReason": "没有争议问题"
+    },
+    "personaPool": {
+      "belowQuotaWarning": "实体池数量（{pool}）小于所需配额总和（{quota}），部分分组可能无法填满。"
+    },
+    "next": "下一步：模拟 →"
+  },
+  "llm": {
+    "preset": {
+      "cloud": {
+        "qwen3_coder_next": "Qwen3 Coder（云端）· 推荐"
+      },
+      "ollama": {
+        "qwen2_5_32b": "Qwen 2.5 32B（本地）",
+        "qwen2_5_14b": "Qwen 2.5 14B（本地，低显存）",
+        "llama3_1_8b": "Llama 3.1 8B（本地，快速）",
+        "gpt_oss_20b": "GPT-OSS 20B（本地）"
+      },
+      "bedrock": {
+        "gpt_oss_120b": "GPT-OSS 120B（Bedrock）",
+        "qwen3_235b_a22b_2507": "Qwen3 235B A22B（Bedrock）",
+        "minimax_m2_5": "MiniMax M2.5（Bedrock）",
+        "devstral_2_123b": "Devstral 2 123B（Bedrock）",
+        "nemotron_super_3_120b": "Nemotron Super 3 120B（Bedrock）",
+        "glm_4_7_flash": "GLM-4.7 Flash（Bedrock）"
+      }
+    },
+    "provider": "服务商",
+    "model": "模型",
+    "reasoning_effort": "推理强度",
+    "stages": {
+      "document_ingest": "文档导入",
+      "ontology_generation": "本体生成",
+      "graph_build": "图谱构建",
+      "persona_generation": "画像生成",
+      "simulation_rounds": "模拟轮次",
+      "report_generation": "报告生成",
+      "evaluation": "评估"
+    },
+    "routing": {
+      "global_default": "全局默认值",
+      "stage_overrides": "阶段覆盖配置",
+      "locked": "已锁定",
+      "active_snapshots": "当前快照",
+      "no_snapshots_yet": "暂无快照。",
+      "call_events": "大模型调用",
+      "no_call_events_yet": "尚无大模型调用记录。",
+      "success": "正常",
+      "failed": "失败",
+      "latency": "延迟",
+      "error_type": "错误类型",
+      "model_placeholder": "选择模型…"
+    }
+  },
+  "step3": {
+    "kicker": "03 · 模拟",
+    "config": {
+      "title": "运行参数",
+      "rounds": "轮次数",
+      "days": "天数",
+      "automatic": "自动",
+      "customValue": "自定义值",
+      "graphMemory": "更新图谱记忆",
+      "graphMemoryHint": "模拟过程中，智能体的经历会写回知识图谱。"
+    },
+    "controls": {
+      "start": "启动模拟",
+      "completed": "已完成。"
+    },
+    "status": {
+      "elapsed": "已用时间：{time}"
+    },
+    "feed": {
+      "posts": "帖子：{count}",
+      "replies": "回复：{count}",
+      "filter": "筛选",
+      "all": "全部",
+      "posts_only": "仅帖子",
+      "replies_only": "仅回复",
+      "unread": "没有新帖子 | 1 条新帖子 | {count} 条新帖子"
+    },
+    "live": {
+      "now": "刚刚"
+    }
+  },
+  "reportMode": {
+    "label": "报告模式",
+    "strict": {
+      "label": "严格",
+      "hint": "仅包含已验证的论断，不含假设，严格校验证据锚点。"
+    },
+    "balanced": {
+      "label": "平衡（默认）",
+      "hint": "包含已验证的论断及明确标注的假设。（默认）"
+    },
+    "explorative": {
+      "label": "探索",
+      "hint": "包含所有论断，并显示“探索性”标记，适合头脑风暴和发现线索。"
+    }
+  },
+  "step4": {
+    "kicker": "04 · 报告",
+    "title": "生成报告。",
+    "sub": "报告智能体检索图谱、访谈不同类型的智能体并撰写报告。",
+    "config": {
+      "title": "配置报告",
+      "language": "报告语言",
+      "focus": "关注重点",
+      "audience": "目标读者",
+      "tone": "语气",
+      "length": "篇幅",
+      "lengthShort": "短",
+      "lengthMedium": "中",
+      "lengthLong": "长"
+    },
+    "generate": {
+      "start": "生成报告",
+      "regenerate": "重新生成",
+      "running": "正在撰写报告…",
+      "step": "步骤：{step}",
+      "toolCall": "工具：{tool}",
+      "completed": "报告已就绪。"
+    },
+    "view": {
+      "summary": "摘要",
+      "sections": "章节",
+      "sources": "来源",
+      "agents": "受访智能体",
+      "tools": "工具调用",
+      "raw": "原始输出",
+      "exportMd": "导出 Markdown",
+      "exportPdf": "导出 PDF",
+      "printPdf": "打印为 PDF（浏览器）",
+      "evidenceJson": "证据 JSON"
+    },
+    "model": {
+      "reportLabel": "报告模型",
+      "placeholder": "选择模型…",
+      "regenerate": "重新生成"
+    },
+    "branch": {
+      "namePlaceholder": "分支名称",
+      "modelPlaceholder": "覆盖大模型配置",
+      "languagePlaceholder": "语言",
+      "maxAgentsPlaceholder": "智能体数量上限",
+      "create": "创建分支"
+    },
+    "quote": {
+      "openSource": "打开来源"
+    },
+    "reportConfirm": {
+      "title": "开始生成报告？",
+      "description": "模拟已完成。请选择模型，手动启动报告生成。",
+      "startButton": "开始生成报告",
+      "stopButton": "取消",
+      "stopDisabledTip": "后端第 6 阶段完成后可取消"
+    },
+    "status": {
+      "incomplete": "报告不完整，部分章节生成失败。",
+      "sectionFailed": "章节生成失败",
+      "alreadyRunning": "该运行正在生成报告。当前页面已切换为跟踪该报告。",
+      "pollTransportError": "与服务器失去连接，连续多次获取状态失败。请检查网络，获取成功后页面会自动更新。"
+    },
+    "next": "下一步：对话 →",
+    "export": {
+      "evidenceOmitted": {
+        "contract_violation": "证据图未显示：已保存的证据不符合证据契约。报告正文完整且不受影响。"
+      },
+      "evidencePending": "证据图仍在生成，就绪后即可导出。",
+      "evidenceUnavailable": "此报告没有可用的证据图。"
+    },
+    "reader": {
+      "outlineTitle": "报告",
+      "outlineSectionsCount": "{count} 个章节",
+      "outlineSummary": "摘要",
+      "outlineFullReport": "完整报告",
+      "outlineSection": "第 {num} 节",
+      "appendixTitle": "附录",
+      "appendixHypotheses": "{count} 项假设",
+      "appendixDataGaps": "{count} 项数据缺口",
+      "appendixEvidence": "{count} 条证据",
+      "appendixRedTeam": "{count} 项红队发现",
+      "railTitle": "第 {num} 节的论断",
+      "railEvidenceTitle": "此处的证据",
+      "railGapsTitle": "本节数据缺口",
+      "railRedTeamTitle": "第 {num} 节的红队评估",
+      "railEmpty": "本节没有记录论断。",
+      "railToggleHide": "隐藏证据栏",
+      "railToggleShow": "显示证据栏",
+      "confidence": {
+        "speculative": "推测性",
+        "low": "低",
+        "medium": "中",
+        "high": "高",
+        "verified": "已验证"
+      },
+      "regenerate": {
+        "openButton": "重新生成",
+        "title": "重新生成报告",
+        "description": "选择本次重新生成使用的模型和模式。",
+        "confirmButton": "重新生成",
+        "cancelButton": "取消"
+      }
+    }
+  },
+  "prepare": {
+    "already_completed": "准备已完成。",
+    "task_started": "准备已开始。",
+    "not_started": "尚未开始准备。"
+  },
+  "report": {
+    "generated": "报告已生成。",
+    "failed": "报告生成失败。",
+    "awaiting_task": "等待报告生成…",
+    "provenance": {
+      "title": "模型来源记录",
+      "stage": "阶段",
+      "provider": "服务商",
+      "model": "模型",
+      "promptTokens": "提示词令牌",
+      "completionTokens": "输出令牌",
+      "latencyMs": "延迟",
+      "noMetricsHint": "未记录令牌或延迟指标。"
+    }
+  },
+  "run": {
+    "simulation_stopped": "模拟已停止。",
+    "cancelled_before_start": "用户在模拟开始前取消。",
+    "cancel_requested": "已请求取消，当前阶段完成后停止。",
+    "graph_build_restart_queued": "图谱重新构建已加入队列。",
+    "graph_build_cancelled": "用户已取消。已写入的实体和关系保留在图谱中，图谱标记为不完整。",
+    "graph_build_initializing": "正在初始化图谱构建服务…",
+    "graph_build_chunking": "正在分块文本…",
+    "graph_build_creating_graph": "正在创建图谱…",
+    "graph_build_setting_ontology": "正在设置本体定义…",
+    "graph_build_retrieving": "正在获取图谱数据…",
+    "graph_build_completed": "图谱构建已完成。",
+    "prepare_restart_queued": "模拟准备重启已加入队列。",
+    "prepare_starting": "开始准备模拟环境…",
+    "prepare_completed": "模拟准备已完成。",
+    "simulation_resumed": "模拟已继续。",
+    "simulation_restart_queued": "模拟重启已加入队列。",
+    "simulation_restarted": "模拟已重新启动。",
+    "report_initializing": "正在初始化报告智能体…",
+    "report_resumed": "报告生成已继续。",
+    "simulation_run_queued": "模拟运行已加入队列。",
+    "simulation_run_started": "模拟运行已启动。",
+    "pause_requested": "已请求暂停。",
+    "run_resumed": "运行已继续。",
+    "runner_status_idle": "执行器空闲。",
+    "runner_status_starting": "模拟启动中…",
+    "runner_status_running": "模拟运行中。",
+    "runner_status_paused": "模拟已暂停。",
+    "runner_status_stopping": "模拟停止中…",
+    "runner_status_stopped": "模拟已停止。",
+    "runner_status_completed": "模拟已完成。",
+    "runner_status_failed": "模拟失败。",
+    "runner_status_ready": "执行器已就绪。"
+  },
+  "step5": {
+    "agent": {
+      "interests": "兴趣"
+    }
+  },
+  "graph": {
+    "panel": "图谱",
+    "search": "搜索实体…",
+    "fit": "适应窗口",
+    "reset": "重置",
+    "nodeCount": "{count} 个实体",
+    "edgeCount": "{count} 条关系",
+    "selected": "已选择：{name}",
+    "noSelection": "点击实体查看详情。",
+    "ui": {
+      "toggleEdgeLabels": "关系标签",
+      "pauseLayout": "暂停布局",
+      "resumeLayout": "继续布局",
+      "closePanel": "关闭图谱面板",
+      "exportHtml": "导出独立 HTML",
+      "resetLayout": "重置布局",
+      "minimapTitle": "缩略图",
+      "maximizeLayout": "最大化",
+      "restoreLayout": "还原"
+    },
+    "edgeLabels": {
+      "RELATES_TO": "关联",
+      "RELATED_TO": "关联于",
+      "RELATED": "相关",
+      "ASSOCIATED_WITH": "有关联",
+      "MENTIONS": "提及",
+      "MENTIONED_BY": "被提及",
+      "REFERENCES": "引用",
+      "REFERS_TO": "指向",
+      "KNOWS": "认识",
+      "FRIEND_OF": "朋友",
+      "FRIENDS_WITH": "与之为友",
+      "FAMILY_OF": "家属",
+      "PARENT_OF": "父母",
+      "CHILD_OF": "子女",
+      "MARRIED_TO": "配偶",
+      "PARTNER_OF": "伴侣",
+      "MEMBER_OF": "成员属于",
+      "HAS_MEMBER": "拥有成员",
+      "PART_OF": "组成部分",
+      "BELONGS_TO": "属于",
+      "WORKS_FOR": "就职于",
+      "EMPLOYED_BY": "受雇于",
+      "EMPLOYER_OF": "雇主",
+      "COLLEAGUE_OF": "同事",
+      "MANAGES": "管理",
+      "REPORTS_TO": "汇报对象",
+      "OWNS": "拥有",
+      "OWNED_BY": "归属",
+      "CREATED": "创建了",
+      "CREATED_BY": "创建者",
+      "AUTHORED": "撰写了",
+      "AUTHOR_OF": "作者",
+      "WROTE": "写作",
+      "PUBLISHED": "发布了",
+      "PUBLISHED_BY": "发布者",
+      "FOUNDED": "创立了",
+      "FOUNDED_BY": "创立者",
+      "FOLLOWS": "关注",
+      "FOLLOWED_BY": "被关注",
+      "LIKES": "点赞",
+      "LIKED_BY": "被点赞",
+      "DISLIKES": "不喜欢",
+      "USES": "使用",
+      "USED_BY": "被使用",
+      "INFLUENCES": "影响",
+      "INFLUENCED_BY": "受到影响",
+      "SUPPORTS": "支持",
+      "SUPPORTED_BY": "获得支持",
+      "OPPOSES": "反对",
+      "OPPOSED_BY": "受到反对",
+      "COMMUNICATES_WITH": "沟通",
+      "TALKS_TO": "交谈",
+      "REPLIES_TO": "回复",
+      "QUOTES": "引用了",
+      "QUOTED_BY": "被引用",
+      "LIVES_IN": "居住于",
+      "LOCATED_IN": "位于",
+      "WORKS_AT": "工作于",
+      "VISITS": "访问",
+      "ATTENDS": "出席",
+      "STUDIES_AT": "就读于",
+      "STUDIED": "学习了",
+      "BORN_IN": "出生于",
+      "DIED_IN": "逝世于",
+      "PARTICIPATES_IN": "参与",
+      "ORGANIZES": "组织",
+      "ATTENDED_BY": "出席者",
+      "DISCUSSES": "讨论",
+      "DISCUSSED_BY": "被讨论",
+      "ABOUT": "关于",
+      "TAGGED": "标记",
+      "TAGGED_AS": "标记为",
+      "HAS_TOPIC": "主题为",
+      "HAS_INTEREST": "兴趣为",
+      "INTERESTED_IN": "感兴趣于",
+      "REPRESENTS": "代表",
+      "COMMENTS_ON": "评论",
+      "PLANS_WITH": "共同规划",
+      "OWNERSHIP_STAKE": "持股",
+      "LEADS": "领导",
+      "SELF_RELATIONS_(1)": "自关联（1）"
+    }
+  },
+  "sidebar": {
+    "title": "主导航",
+    "groups": {
+      "library": "资源库",
+      "focus": "关注",
+      "tools": "工具"
+    },
+    "nav": {
+      "runs": "运行记录",
+      "graphs": "图谱",
+      "personas": "画像集",
+      "running": "正在运行",
+      "attention": "待你处理",
+      "compare": "对比",
+      "activity": "活动"
+    },
+    "system": {
+      "label": "系统",
+      "state": {
+        "ok": "所有服务均可访问",
+        "err": "有服务无法访问",
+        "unknown": "系统状态未知"
+      }
+    },
+    "countsError": "部分统计数据加载失败。",
+    "settings": {
+      "label": "设置"
+    },
+    "footer": {
+      "collapse": "收起",
+      "expand": "展开"
+    }
+  },
+  "demoPreview": {
+    "banner": {
+      "text": "演示预览：这些设置由管理员管理。你可以查看，但无法修改。",
+      "manageKeys": "管理自己的服务商密钥"
+    },
+    "static": {
+      "auditLogs": {
+        "title": "审计日志",
+        "bulletCount": "4",
+        "bullet1": "所有任务的实时日志（图谱、画像、模拟、报告）",
+        "bullet2": "按阶段和级别筛选",
+        "bullet3": "通过 SSE 实时推送",
+        "bullet4": "便于追踪任意一次运行"
+      },
+      "apiKeys": {
+        "title": "API 密钥",
+        "bulletCount": "5",
+        "bullet1": "工作区 API 密钥，前缀为“ago_…”",
+        "bullet2": "逐密钥设置权限范围",
+        "bullet3": "加密存储（Fernet）",
+        "bullet4": "可随时撤销",
+        "bullet5": "用于通过 REST API 实现自动化"
+      },
+      "profile": {
+        "title": "个人资料",
+        "bulletCount": "3",
+        "bullet1": "名称",
+        "bullet2": "头像",
+        "bullet3": "界面语言"
+      }
+    }
+  },
+  "cmd": {
+    "navigation": {
+      "nav:dashboard": "新建运行",
+      "nav:runs": "运行记录",
+      "nav:graphs": "图谱",
+      "nav:history": "活动",
+      "nav:settings-general": "设置 — 常规",
+      "nav:settings-integrations": "设置 — 流水线",
+      "nav:settings-llm-routing": "设置 — 配置方案",
+      "nav:settings-llm-providers": "设置 — 服务商",
+      "nav:settings-api-keys": "设置 — 访问权限"
+},
+    "title": "命令面板",
+    "placeholder": "搜索页面或输入命令…",
+    "trigger": "打开命令面板（Cmd+K）",
+    "noResults": "没有结果。",
+    "groups": {
+      "nav": "导航",
+      "sim": "模拟",
+      "report": "报告",
+      "recent": "最近使用"
+    },
+    "hints": {
+      "select": "选择",
+      "navigate": "导航",
+      "close": "关闭"
+    },
+    "dynamic": {
+      "runLabel": "运行：{name}",
+      "reportLabel": "报告：{name}",
+      "statusRunning": "运行中",
+      "statusPaused": "已暂停",
+      "statusPending": "等待中"
+    }
+  },
+  "topbar": {
+    "search": "搜索",
+    "openNavigation": "打开导航",
+    "searchShort": "搜索（Cmd+K）",
+    "newRun": "新建运行",
+    "console": "控制台",
+    "consoleToggle": "显示或隐藏控制台",
+    "consoleUnread": "{count} 条未读错误",
+    "copyIdent": "复制标识符 {ident}",
+    "identCopied": "标识符已复制",
+    "identCopyFailed": "无法复制标识符",
+    "userMenu": {
+      "workspaceLocal": "本地工作区",
+      "appearance": "外观",
+      "theme": {
+        "system": "系统",
+        "light": "浅色",
+        "dark": "深色"
+      },
+      "densityCompact": "紧凑布局",
+      "trigger": "用户菜单，当前用户：{name}",
+      "triggerUnknown": "打开用户菜单",
+      "profile": "个人资料",
+      "settings": "设置",
+      "providerKeys": "你的服务商密钥",
+      "help": "帮助",
+      "workspaces": "工作区",
+      "signOut": "退出登录",
+      "role": {
+        "owner": "所有者",
+        "admin": "管理员",
+        "member": "成员",
+        "viewer": "只读用户"
+      }
+    }
+  },
+  "logs": {
+    "drawer": {
+      "title": "后端日志",
+      "toggle": "显示日志（Ctrl+Shift+L）",
+      "allLevels": "所有级别",
+      "search": "搜索…",
+      "pause": "暂停自动滚动",
+      "empty": "暂无日志。",
+      "loading": "正在加载日志…",
+      "unknownError": "日志加载失败。",
+      "noFileYet": "今天的日志文件尚未生成，后端可以访问。",
+      "connectionError": "SSE 连接中断，浏览器将尝试重新连接…",
+      "reconnectExhausted": "多次重连失败，日志流连接已断开。",
+      "reconnect": "重新连接",
+      "resize": "调整控制台高度（上下方向键）",
+      "levelFilter": "按级别筛选",
+      "reconnecting": "正在重新连接…",
+      "copy": "复制",
+      "copyTitle": "复制可见日志行到剪贴板",
+      "copied": "已复制",
+      "copyFailed": "复制失败，剪贴板不可用。",
+      "showAll": "显示全部",
+      "scopeNote": "仅显示包含“{id}”的行（行内文本搜索，非精确匹配）。",
+      "emptyScoped": "没有包含此运行标识符的日志行。"
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "subtitle": "运行配置。加载顺序：",
+    "subtitleHint": "标记为需要重启的字段，在后端重启后生效。",
+    "loading": "正在加载设置…",
+    "loadFailed": "加载失败：{message}",
+    "saveFailed": "保存失败：{message}",
+    "saved": "已保存。",
+    "savedReloadHint": "已保存。标记为需要重启的字段，在后端重启后生效。",
+    "back": "← 首页",
+    "save": "保存",
+    "discard": "放弃修改",
+    "dirtyCount": "无未保存的更改 | 1 项未保存的更改 | {count} 项未保存的更改",
+    "ariaSection": "设置分区 {section}",
+    "ariaTablist": "设置分区",
+    "ariaUnsaved": "未保存的更改",
+    "table": {
+      "key": "字段",
+      "source": "来源",
+      "value": "值",
+      "flags": "标记"
+    },
+    "source": {
+      "default": "默认值",
+      "env": ".env",
+      "file": "文件",
+      "override": "覆盖"
+    },
+    "flag": {
+      "secret": "密钥",
+      "reload": "需要重启"
+    },
+    "secretInput": {
+      "set": "••••••••（已设置）",
+      "empty": "空"
+    },
+    "bool": {
+      "on": "开",
+      "off": "关"
+    },
+    "modal": {
+      "title": "确认密钥修改",
+      "body": "你即将保存密钥字段的更改（例如 {neoPw} 或 {authToken}）。输入错误可能导致无法访问后端，请仔细核对。",
+      "cancel": "取消",
+      "confirm": "确认并保存"
+    },
+    "sections": {
+      "llm": "大模型",
+      "neo4j": "Neo4j",
+      "embedding": "向量嵌入",
+      "ontology": "本体",
+      "hybrid_search": "混合检索",
+      "agent_tools": "智能体工具",
+      "event_bus": "事件总线",
+      "logging": "日志",
+      "locale": "语言与地区",
+      "ui": "界面",
+      "webtools": "网络工具",
+      "oasis": "OASIS",
+      "budget": "预算",
+      "security": "密钥"
+    },
+    "llmActive": {
+      "tab": "大模型选择",
+      "ariaPanel": "大模型选择",
+      "title": "当前大模型服务商与模型",
+      "subtitle": "此选择用于所有后端大模型调用，明确设置了阶段路由时除外。",
+      "providerLabel": "服务商",
+      "modelLabel": "模型",
+      "providerPlaceholder": "选择服务商…",
+      "providerLoading": "正在加载服务商…",
+      "modelPlaceholder": "选择模型…",
+      "modelLoading": "正在加载模型…",
+      "modelEmpty": "未找到模型",
+      "modelNeedsProvider": "请先选择服务商",
+      "save": "保存",
+      "flashSaved": "选择已保存。",
+      "errorSelectionMissing": "请选择服务商和模型。",
+      "errorLoadProviders": "服务商加载失败",
+      "errorLoadModels": "模型加载失败",
+      "errorLoadActive": "当前选择加载失败",
+      "errorSaveFailed": "保存失败。"
+    },
+    "v4": {
+      "noSections": "此分类下没有设置。",
+      "overlay": {
+        "title": "设置",
+        "back": "返回",
+        "navLabel": "设置分区",
+        "llmRouting": "大模型路由"
+      },
+      "llmRouting": {
+        "title": "大模型路由",
+        "subtitle": "配置各次运行使用的服务商、模型和阶段路由。",
+        "runSelectionTitle": "选择运行",
+        "runSelectionSubtitle": "大模型路由配置按运行分别保存。",
+        "currentRunsLabel": "当前运行",
+        "runIdLabel": "运行 ID",
+        "runSelectPlaceholder": "选择一次运行",
+        "refresh": "刷新",
+        "emptyTitle": "未选择运行",
+        "emptySubtitle": "请选择一次运行，或输入具体运行 ID。",
+        "errors": {
+          "loadRuns": "运行记录加载失败"
+        }
+      },
+      "general": {
+        "title": "常规",
+        "subtitle": "工作区运行设置：大模型、日志、语言、界面、事件总线和密钥。",
+        "workspaceDefaultModel": "此工作区的默认模型"
+      },
+      "integrations": {
+        "title": "集成",
+        "subtitle": "连接外部服务：Neo4j、向量服务商、本体大模型、混合检索、智能体工具、网络工具和 OASIS 执行器。"
+      },
+      "apiKeys": {
+        "title": "API 密钥",
+        "subtitle": "创建和管理 API 访问权限。",
+        "actions": {
+          "create": "创建密钥",
+          "revoke": "撤销",
+          "cancel": "取消",
+          "close": "关闭",
+          "copy": "复制",
+          "copied": "已复制"
+        },
+        "create": {
+          "modalTitle": "创建新的 API 密钥",
+          "modalSubtitle": "为密钥命名并选择权限。",
+          "labelField": "标签",
+          "scopesField": "权限",
+          "scopes": {
+            "read": "读取",
+            "write": "写入",
+            "admin": "管理员"
+          },
+          "submit": "创建密钥"
+        },
+        "created": {
+          "title": "密钥已创建，请立即复制",
+          "warning": "此密钥仅显示一次。如丢失，请重新创建。",
+          "tokenLabel": "明文令牌"
+        },
+        "revoke": {
+          "modalTitle": "撤销密钥？",
+          "modalSubtitle": "现有客户端将立即失去访问权限，此操作无法撤销。",
+          "confirm": "撤销"
+        },
+        "table": {
+          "label": "标签",
+          "prefix": "前缀",
+          "scopes": "权限",
+          "status": "状态",
+          "createdAt": "创建时间",
+          "lastUsedAt": "最后使用时间",
+          "never": "从未使用",
+          "actions": "操作"
+        },
+        "status": {
+          "active": "活跃",
+          "revoked": "已撤销"
+        },
+        "empty": {
+          "title": "暂无 API 密钥",
+          "description": "创建密钥以允许外部客户端访问。"
+        },
+        "errors": {
+          "loadFailed": "API 密钥加载失败。",
+          "createFailed": "密钥创建失败。",
+          "revokeFailed": "密钥撤销失败。",
+          "copyFailed": "无法将密钥复制到剪贴板。"
+        }
+      },
+      "usersTeams": {
+        "title": "用户与团队",
+        "subtitle": "管理成员并配置团队访问权限。",
+        "empty": {
+          "title": "多用户管理即将推出",
+          "description": "Agora 当前为单工作区工具，包含角色与团队的身份模块将在后续阶段推出。"
+        }
+      },
+      "auditLogs": {
+        "title": "审计日志",
+        "subtitle": "查看工作区活动记录。",
+        "empty": {
+          "title": "审计记录即将推出",
+          "description": "身份模块将提供可检测篡改、仅可追加的安全操作日志。"
+        }
+      },
+      "embedding": {
+        "title": "向量嵌入配置",
+        "subtitle": "管理向量服务商、模型和迁移任务。"
+      },
+      "llmProfiles": {
+        "title": "大模型配置方案",
+        "subtitle": "管理多个命名的大模型配置方案，可按运行步骤选择。",
+        "addBtn": "新建配置方案",
+        "nameLabel": "显示名称",
+        "providerLabel": "服务商",
+        "baseUrlLabel": "基础 URL",
+        "modelLabel": "模型",
+        "apiKeyLabel": "API 密钥",
+        "apiKeyPlaceholderEdit": "留空以保留当前值",
+        "clearKeyBtn": "移除密钥",
+        "setDefaultBtn": "设为默认",
+        "defaultBadge": "默认值",
+        "deleteConfirm": "确定删除此配置方案吗？",
+        "saveBtn": "保存",
+        "cancelBtn": "取消",
+        "editBtn": "编辑",
+        "deleteBtn": "删除",
+        "emptyState": "暂无配置方案。",
+        "presets": {
+          "ollama": "Ollama（本地）",
+          "openai": "OpenAI",
+          "gemini": "Gemini",
+          "anthropic": "Anthropic",
+          "custom": "自定义接口"
+        },
+        "errors": {
+          "unknownConnection": "所选服务商连接已不可用，请重新选择模型。"
+        }
+      },
+      "llmProvider": {
+        "title": "大模型服务商",
+        "subtitle": "选择服务商并填写 API 密钥及模型。",
+        "baseUrlLabel": "基础 URL",
+        "apiKeyLabel": "API 密钥",
+        "modelLabel": "模型",
+        "saveBtn": "保存",
+        "savedHint": "已保存。",
+        "presets": {
+          "ollama": "Ollama（本地）",
+          "openai": "OpenAI",
+          "gemini": "Gemini",
+          "anthropic": "Anthropic",
+          "custom": "自定义接口"
+        }
+      },
+      "llmProviders": {
+        "title": "大模型服务商",
+        "subtitle": "连接和测试服务商，并发现可用模型。",
+        "keyPlaceholder": "粘贴新的 API 密钥…",
+        "baseUrlPlaceholder": "https://api.example.com/v1",
+        "localBaseUrlPlaceholder": "http://localhost:11434",
+        "status": {
+          "notConfigured": "未配置",
+          "configured": "已配置（未测试）",
+          "connected": "已连接",
+          "degraded": "降级",
+          "error": "错误",
+          "disconnected": "已断开",
+          "unsupported": "不支持"
+        },
+        "unsupportedNotice": "该服务商属于订阅或 CLI 桥接方式，不支持作为服务商连接。",
+        "actions": {
+          "save": "保存连接",
+          "test": "测试连接",
+          "refreshModels": "刷新模型",
+          "disconnect": "移除连接"
+        },
+        "test": {
+          "available": "已发现 {count} 个模型。",
+          "unavailable": "无法连接服务。",
+          "invalid_credentials": "凭据无效。",
+          "degraded": "服务商连接处于降级状态。",
+          "unsupported": "不支持此服务商。"
+        },
+        "models": {
+          "title": "已发现的模型"
+        },
+        "defaults": {
+          "title": "工作区默认值",
+          "subtitle": "启动新运行时自动应用。",
+          "placeholder": "选择默认模型…"
+        },
+        "list": {
+          "ariaLabel": "服务商"
+        },
+        "session": {
+          "notice": "通过本地 CLI 会话登录：",
+          "loginCommand": "codex login",
+          "tokenHint": "通过以下命令获取长期令牌：",
+          "tokenCommand": "claude setup-token"
+        }
+      }
+    }
+  },
+  "aiModelPicker": {
+    "placeholder": "选择模型…",
+    "searchPlaceholder": "搜索模型…",
+    "empty": "暂无可用模型。",
+    "workspaceDefault": "工作区默认值",
+    "inheritWorkspaceDefault": "使用工作区默认值",
+    "loading": "正在加载模型…",
+    "label": "AI 模型",
+    "refresh": "刷新模型",
+    "discoveryError": "模型加载失败",
+    "retry": "重试",
+    "customProvider": "自定义模型 ID 对应的服务商",
+    "customModel": "自定义模型 ID",
+    "useCustomModel": "使用模型",
+    "badge": {
+      "local": "本地",
+      "cloud": "云端",
+      "degraded": "降级",
+      "unavailable": "不可用",
+      "unsupported": "不支持"
+    },
+    "status": {
+      "available": "可用",
+      "degraded": "降级",
+      "unavailable": "不可用",
+      "unsupported": "不支持",
+      "unknown": "状态未知",
+      "invalid_credentials": "凭据无效"
+    }
+  },
+  "stepModelOverrideChip": {
+    "label": "模型",
+    "modelPlaceholder": "选择模型…",
+    "overrideBadge": "覆盖配置",
+    "clearOverride": "清除覆盖配置 → 使用默认值",
+    "close": "关闭",
+    "lockedBadge": "已锁定",
+    "sourceRun": "来自运行配置",
+    "sourceDefault": "默认"
+  },
+  "activeModel": {
+    "label": "当前模型",
+    "idle": "空闲",
+    "connecting": "连接中…",
+    "reconnecting": "正在重新连接…",
+    "unknown": "未知模型",
+    "failed": "连接已断开",
+    "reload": "重新连接",
+    "provider": {
+      "ollama": "Ollama（本地）",
+      "cloud": "云端",
+      "openai": "OpenAI",
+      "unknown": "未知服务商"
+    },
+    "context": {
+      "chat": "对话",
+      "chat_json": "结构化对话",
+      "embedding": "向量嵌入",
+      "report": "报告",
+      "persona": "画像",
+      "graph": "图谱",
+      "unknown": "未知上下文"
+    }
+  },
+  "branchCompare": {
+    "title": "分支对比",
+    "simulationLabel": "模拟",
+    "branchA": "分支 A",
+    "branchB": "分支 B",
+    "deltas": {
+      "echoChamber": "回音室指数变化",
+      "clusters": "群组数量变化",
+      "bridgeAgents": "桥接智能体数量变化",
+      "avgEvidence": "平均证据量变化",
+      "contradictionRatio": "矛盾率变化",
+      "interactionDensity": "互动密度变化"
+    },
+    "metrics": {
+      "echoChamberIndex": "回音室指数",
+      "clusterCount": "群组",
+      "bridgeAgents": "桥接智能体",
+      "totalAgents": "智能体总数",
+      "totalInteractions": "互动次数",
+      "interactionDensity": "互动密度",
+      "avgEvidencePerClaim": "每条论断的平均证据量",
+      "claimsWithoutEvidenceRatio": "无证据论断",
+      "contradictionRatio": "矛盾率",
+      "confidenceDistribution": "置信度分布",
+      "personaReach": "画像激活情况",
+      "dominantClusters": "主要群组"
+    },
+    "confidence": {
+      "low": "低",
+      "medium": "中",
+      "high": "高",
+      "verified": "已验证"
+    },
+    "clustersOnlyInA": "仅存在于分支 A",
+    "clustersOnlyInB": "仅存在于分支 B",
+    "clustersChanged": "发生变化的群组",
+    "empty": {
+      "sameBranches": "请选择两个不同的分支。",
+      "selectBranches": "请选择两个分支。"
+    },
+    "loading": "正在加载对比结果…",
+    "error": {
+      "generic": "对比结果加载失败"
+    },
+    "completedAt": "已完成"
+  },
+  "graphDiff": {
+    "title": "图谱快照对比",
+    "snapshotA": "快照 A",
+    "snapshotB": "快照 B",
+    "statsNodes": "实体数量变化",
+    "statsEdges": "关系数量变化",
+    "statsClusters": "群组数量变化",
+    "statsDensity": "密度变化",
+    "legend": {
+      "added": "新增",
+      "removed": "移除",
+      "reinforced": "增强",
+      "weakened": "减弱"
+    },
+    "clustersOnlyInA": "仅存在于快照 A",
+    "clustersOnlyInB": "仅存在于快照 B",
+    "clustersChanged": "发生变化的群组",
+    "empty": {
+      "sameSnapshots": "请选择两个不同的快照。"
+    },
+    "loading": "正在加载对比结果…",
+    "error": {
+      "generic": "对比结果加载失败"
+    }
+  },
+  "runs": {
+    "dashboard": {
+      "title": "运行仪表盘",
+      "subtitle": "所有流水线运行的实时概览",
+      "filter": {
+        "all": "全部",
+        "active": "活跃",
+        "done": "已完成",
+        "failed": "失败"
+      },
+      "search_placeholder": "按运行 ID、实体或文档搜索…",
+      "live_label": "实时更新（{interval} 秒）",
+      "empty": "未找到运行记录。",
+      "loading": "正在加载运行记录…",
+      "error": "加载失败：{message}",
+      "columns": {
+        "status": "状态",
+        "type": "类型",
+        "entity": "实体",
+        "started": "开始时间",
+        "progress": "进度"
+      },
+      "back_to_dashboard": "← 返回仪表盘",
+      "replay": {
+        "button": "重放",
+        "dialog_title": "重放运行",
+        "dialog_description": "完全重放会复用清单中的全部参数，变体运行允许覆盖参数。",
+        "mode_identical": "完全重放",
+        "mode_variant": "变体",
+        "field_model": "模型（覆盖）",
+        "field_model_placeholder": "选择模型…",
+        "cancel": "取消",
+        "close": "关闭",
+        "submit": "开始重放",
+        "submitting": "启动中…",
+        "success": "重放已启动，新运行：{run_id}",
+        "error": "重放失败：{message}",
+        "unknown_error": "未知错误",
+        "no_manifest": "没有可用清单，无法重放。",
+        "missing_simulation_params_error": "原始清单未记录启动参数（平台、轮次、图谱记忆更新），无法完全重放。",
+        "route_unresolvable_error": "原始清单中的模型路由已无法解析，例如连接被删除或禁用。请改为选择当前可用的模型并启动变体运行。",
+        "original_params_heading": "原始启动参数（固定）",
+        "original_params_platform": "平台",
+        "original_params_max_rounds": "轮次数上限",
+        "original_params_graph_memory": "图谱记忆更新",
+        "original_params_graph_id": "图谱 ID",
+        "deviations_heading": "与原始运行的差异",
+        "deviations_none": "无差异，已完全重放。",
+        "value_none": "—",
+        "value_true": "开",
+        "value_false": "关"
+      }
+    }
+  },
+  "errors": {
+    "network": "网络错误，服务器是否可以访问？",
+    "authError": "认证失败，请检查服务商凭据（API 密钥）。",
+    "requestError": "请求错误",
+    "serverError": "服务器错误",
+    "backend": "后端错误。",
+    "noNeo4j": "无法连接 Neo4j。",
+    "noLlm": "无法连接大模型。",
+    "noOllama": "无法连接 {url} 上的 Ollama。",
+    "uploadFailed": "上传失败。",
+    "fileTooLarge": "文件过大，最大允许 50 MB。",
+    "fileTypeNotAllowed": "不支持此文件类型。支持：PDF、MD、TXT。",
+    "graphBuildFailed": "图谱构建失败。",
+    "projectFailed": "项目处理失败。",
+    "pendingUploadMissing": "未找到可用于创建项目的待处理文件。",
+    "personaGenFailed": "画像生成失败。",
+    "reportFailed": "报告生成失败。",
+    "unknown": "未知错误。"
+  },
+  "degradation": {
+    "title": {
+      "warning": "已完成，但质量有所下降",
+      "blocking": "结果质量不足，无法继续"
+    },
+    "kind": {
+      "embedding_unavailable": "语义检索不可用",
+      "graph_below_threshold": "图谱未达到质量要求",
+      "persona_rule_based_fallback": "已生成占位画像",
+      "person_represents_organization_merged": "人物与组织被合并为同一个智能体",
+      "persona_name_identity_rejected": "身份冲突的画像已被拒绝",
+      "persona_role_implausible": "年龄与角色明显不符的画像已被拒绝",
+      "ontology_topic_type_missing": "本体中没有争议议题类型",
+      "stance_position_unrepresented": "文档中的某个立场没有对应智能体",
+      "initial_post_stance_conflict": "初始帖子与发送者立场矛盾",
+      "entity_selection_actors_omitted": "文档中的部分参与者未分配画像名额",
+      "agent_config_rule_fallback": "部分智能体使用规则默认值，而非模型配置"
+    },
+    "action": {
+      "embedding_unavailable": "请启动向量服务并重新构建图谱，否则向量检索无法正常工作。",
+      "graph_below_threshold": "请使用更强的模型重新构建，或使用内容更充实的文档。",
+      "persona_rule_based_fallback": "请检查占位画像的陈述，或使用更强的模型重新生成画像。",
+      "person_represents_organization_merged": "请确认将该合并实体作为画像集中的单个参与者是否足够。",
+      "persona_name_identity_rejected": "画像集中没有此画像，请重新生成或手动添加。",
+      "persona_role_implausible": "画像集中没有此画像，请重新生成或手动添加。",
+      "ontology_topic_type_missing": "立场仍关联到参与者。如果图谱需要立场关系，请重新生成本体。",
+      "stance_position_unrepresented": "模拟会继续，但不会反映此立场；请在画像集中添加匹配的参与者。",
+      "initial_post_stance_conflict": "运行开始前，请检查初始帖子及画像集中的发送者。",
+      "entity_selection_actors_omitted": "请提高智能体数量上限或手动添加缺失的参与者，否则它们不会出现在运行中。",
+      "agent_config_rule_fallback": "这些智能体不表态（保持中立或作为媒体观察者）。如需它们表态，请使用更强的模型重新生成配置。"
+    },
+    "occurrences": "发生 {count} 次"
+  },
+  "dashboard": {
+    "title": "仪表盘",
+    "subtitle": "一览当前运行、报告和系统状态。",
+    "hero": {
+      "title": "新建运行",
+      "subtitle": "上传来源文件、选择模型并启动。",
+      "sourceLabel": "来源",
+      "dropHint": "将文件拖到这里或点击选择",
+      "modelLabel": "模型",
+      "modelDefault": "默认值",
+      "modelPlaceholder": "选择模型…",
+      "profileLabel": "配置方案（可选）",
+      "profileNone": "— 不使用配置方案 —",
+      "languageLabel": "语言",
+      "languageDe": "Deutsch",
+      "languageEn": "英语",
+      "languageZh": "简体中文",
+      "startCta": "开始",
+      "disabledHint": "请先选择文件并填写需求。",
+      "servicesUnavailableHint": "尚未确认 Neo4j 就绪。请检查系统状态并重新加载。",
+      "profilesLoadingHint": "正在加载模型配置方案，请稍候。",
+      "workspaceModelRequiredHint": "请从工作区密钥对应的模型中选择。",
+      "requirementLabel": "研究问题 / 需求",
+      "requirementPlaceholder": "例如：“德奥瑞地区预计会出现哪些政治反应？”",
+      "profileDefault": "默认值",
+      "numAgentsLabel": "画像",
+      "numRoundsLabel": "模拟轮次",
+      "numAgentsWarning": "低于建议下限（30），统计意义有限。",
+      "smallSimBadge": "SMALL_SIM",
+      "smallSimActiveTooltip": "已启用 AGORA_ALLOW_SMALL_SIM=1，滑块下限由 30 降至 10，统计意义有限。",
+      "documentRoleLabel": "文档类型",
+      "documentRoles": {
+        "domain_fact": "案例与领域事实",
+        "scenario_statement": "测试案例构建说明",
+        "requirement": "问题 / 简报",
+        "expected_result": "预期结果",
+        "background": "背景"
+      }
+    },
+    "stats": {
+      "activeRuns": "当前运行",
+      "completedToday": "今日完成",
+      "avgConfidence": "平均置信度",
+      "personas": "在线画像"
+    },
+    "active": {
+      "title": "当前运行",
+      "emptyTitle": "暂无正在进行的运行",
+      "emptyHint": "在上方上传来源文件以启动新运行。",
+      "errorLabel": "错误",
+      "stopLabel": "停止运行",
+      "stopConfirm": "确定停止此次运行吗？已有数据会保留。",
+      "stopError": "停止失败：{message}",
+      "columns": {
+        "runId": "运行 ID",
+        "project": "项目",
+        "phase": "阶段",
+        "progress": "进度",
+        "started": "开始时间",
+        "actions": ""
+      },
+      "phase": {
+        "graph_build": "图谱构建",
+        "simulation_prepare": "画像",
+        "simulation_run": "模拟",
+        "report_generate": "报告",
+        "ontology_generate": "正在生成本体"
+      }
+    },
+    "system": {
+      "title": "系统",
+      "ollama": "Ollama",
+      "neo4j": "Neo4j",
+      "oasis": "OASIS",
+      "disk": "磁盘",
+      "diskFree": "可用空间",
+      "statusReachable": "可访问",
+      "statusUnreachable": "离线",
+      "statusIdle": "空闲",
+      "oasisHint": "运行开始后启用。",
+      "ollamaHint": "{n} 个可用模型",
+      "ollamaSkippedHint": "已跳过检查，当前服务商为 {provider}",
+      "providerUnknown": "其他服务商",
+      "error": {
+        "unreachable": "无法访问",
+        "timeout": "探测超时",
+        "auth": "认证失败",
+        "unexpected": "意外错误"
+      }
+    },
+    "reports": {
+      "title": "最近的报告",
+      "emptyTitle": "暂无报告",
+      "emptyHint": "运行完成后会显示在这里。",
+      "columns": {
+        "reportId": "报告 ID",
+        "project": "项目",
+        "personas": "画像",
+        "confidence": "置信度",
+        "date": "日期",
+        "actions": ""
+      }
+    },
+    "quick": {
+      "compare": "对比",
+      "compareHint": "并排对比分支与运行",
+      "history": "历史记录",
+      "historyHint": "查看所有运行",
+      "settings": "设置",
+      "settingsHint": "大模型路由、API 密钥与审计"
+    },
+    "time": {
+      "secondsAgo": "{n} 秒前",
+      "minutesAgo": "{n} 分钟前",
+      "hoursAgo": "{n} 小时前"
+    }
+  },
+  "feed": {
+    "reddit": "Reddit",
+    "twitter": "Twitter",
+    "simBadge": "模拟",
+    "activity": "帖子/分钟",
+    "live": "实时",
+    "actionsTab": "日志",
+    "resonanceBar": "近期帖子的共鸣度（赞成票减反对票）",
+    "threadsPlaceholder": "此次运行暂无讨论串。",
+    "roundsPlaceholder": "尚未开始任何轮次。",
+    "actionsPlaceholder": "暂无行动日志。",
+    "parentThreadMissing": "未记录原帖",
+    "errors": {
+      "snapshotFailed": "快照加载失败"
+    },
+    "rounds": {
+      "error": "轮次加载失败。"
+    },
+    "actionType": {
+      "CREATE_POST": "帖子",
+      "CREATE_COMMENT": "评论",
+      "LIKE_POST": "点赞（帖子）",
+      "DISLIKE_POST": "点踩（帖子）",
+      "LIKE_COMMENT": "点赞（评论）",
+      "DISLIKE_COMMENT": "点踩（评论）",
+      "REPOST": "转发",
+      "QUOTE_POST": "引用",
+      "FOLLOW": "关注",
+      "MUTE": "屏蔽",
+      "SEARCH_POSTS": "帖子搜索",
+      "SEARCH_USER": "用户搜索",
+      "TREND": "趋势查询",
+      "REFRESH": "刷新",
+      "DO_NOTHING": "空闲",
+      "INTERVIEW": "访谈",
+      "OTHER": "其他"
+    },
+    "actionsTable": {
+      "round": "轮次",
+      "time": "时间",
+      "persona": "画像",
+      "platform": "平台",
+      "type": "行动",
+      "target": "目标",
+      "payload": "内容",
+      "loadMore": "加载更多",
+      "empty": "暂无行动日志。",
+      "roleConflict": "角色冲突",
+      "failed": "失败",
+      "noTarget": "—",
+      "noPayload": "—",
+      "loadError": "行动日志加载失败。"
+    }
+  },
+  "modelPicker": {
+    "loading": "正在加载模型…",
+    "error": "模型加载失败",
+    "placeholder": "选择模型…",
+    "noModels": "暂无可用模型"
+  },
+  "router": {
+    "notFound": {
+      "kicker": "404",
+      "title": "页面不存在",
+      "cta": "前往仪表盘"
+    }
+  },
+  "upload": {
+    "pdfVisionDisabledHint": "PDF 视觉识别默认关闭。可通过 ENABLE_PDF_VISION=true 启用（会调用云端并增加延迟）。"
+  },
+  "onboarding": {
+    "wizard": {
+      "title": "初始设置",
+      "progressLabel": "设置进度",
+      "stepIndicator": "第 {current} 步，共 {total} 步",
+      "laterBtn": "稍后设置",
+      "backBtn": "返回",
+      "nextBtn": "下一步",
+      "finishBtn": "完成设置",
+      "dismissConfirm": "稍后继续设置？你可以随时通过“设置 → 个人资料”重新打开。",
+      "stepStatus": {
+        "done": "完成",
+        "current": "当前",
+        "open": "打开"
+      }
+    },
+    "steps": {
+      "welcome": "开始",
+      "profile": "个人资料",
+      "providers": "服务商",
+      "chat_model": "对话模型",
+      "embeddings": "向量嵌入",
+      "privacy": "隐私",
+      "summary": "摘要"
+    },
+    "welcome": {
+      "title": "欢迎使用 Agora",
+      "description": "Agora 是优先本地运行的多智能体模拟器。初始设置只需几分钟，可随时暂停。",
+      "operatingModeLabel": "运行模式",
+      "operatingMode": {
+        "local": {
+          "label": "本地",
+          "description": "所有模型在本机运行（例如 Ollama），数据不会离开设备。"
+        },
+        "hybrid": {
+          "label": "混合",
+          "description": "本地模型与可选云端服务商结合，用于不同步骤。"
+        },
+        "server": {
+          "label": "服务器",
+          "description": "Agora 在中央服务器上运行，服务商也在服务器端配置。"
+        }
+      }
+    },
+    "profile": {
+      "title": "个人资料",
+      "description": "这些信息用于个性化 Agora，并会出现在报告中。"
+    },
+    "providers": {
+      "title": "服务商",
+      "description": "已配置大模型服务商的概览。",
+      "configured": "已配置",
+      "notConfigured": "未配置",
+      "futureNotice": "引导设置将在后续更新中提供，目前可在设置中管理服务商。",
+      "settingsLink": "前往服务商设置"
+    },
+    "chatModel": {
+      "title": "对话模型",
+      "description": "已配置对话模型的状态。",
+      "futureNotice": "引导设置将在后续更新中提供。",
+      "settingsLink": "前往服务商设置"
+    },
+    "embeddings": {
+      "title": "向量嵌入",
+      "description": "已配置向量连接的状态。",
+      "futureNotice": "引导设置将在后续更新中提供。",
+      "settingsLink": "前往服务商设置",
+      "legacyHint": "当前使用 AGORA_EMBEDDING_* 的旧配置。可在向量设置中创建规范配置并启动索引迁移。"
+    },
+    "privacy": {
+      "title": "隐私",
+      "text": "Agora 优先本地运行，文档、知识图谱和模拟结果默认保留在本设备。只有明确配置云端服务商后才会使用云端。",
+      "confirmBtn": "我已了解"
+    },
+    "summary": {
+      "title": "摘要",
+      "profileHeading": "个人资料",
+      "modeHeading": "运行模式",
+      "requirementsHeading": "前置条件",
+      "incompleteNotice": "设置尚未完成，缺少：",
+      "readyNotice": "所有前置条件均已满足。"
+    },
+    "requirements": {
+      "profileValid": "个人资料",
+      "chatModelConfigured": "对话模型",
+      "embeddingConfigured": "向量嵌入"
+    },
+    "errors": {
+      "loadFailed": "无法加载初始设置状态。",
+      "saveFailed": "无法保存此步骤。",
+      "incomplete": "暂时无法完成设置。"
+    }
+  },
+  "profileSettings": {
+    "title": "个人资料",
+    "subtitle": "个人信息与本地设置。",
+    "reopenOnboardingBtn": "重新打开初始设置",
+    "saveBtn": "保存",
+    "saveSuccess": "个人资料已保存。",
+    "saveError": "无法保存个人资料。",
+    "loadError": "无法加载个人资料。",
+    "form": {
+      "avatarLabel": "头像",
+      "avatarUploadBtn": "上传图片",
+      "avatarDeleteBtn": "移除",
+      "avatarTooLarge": "文件超过 2 MB。",
+      "avatarUnsupportedType": "仅支持 PNG、JPEG 或 WebP。",
+      "avatarUploadError": "头像上传失败。",
+      "avatarDeleteError": "无法删除头像。",
+      "displayNameLabel": "显示名称",
+      "displayNameRequired": "显示名称不能为空。",
+      "usernameLabel": "用户名",
+      "roleLabel": "角色",
+      "organisationLabel": "组织",
+      "languageLabel": "语言",
+      "timezoneLabel": "时区",
+      "beijingTimezone": "北京时间（Asia/Shanghai，UTC+8）",
+      "useSystemTimezone": "使用系统时区",
+      "reportLanguageLabel": "报告语言",
+      "themeLabel": "主题",
+      "privacyModeLabel": "隐私模式",
+      "theme": {
+        "system": "系统",
+        "light": "浅色",
+        "dark": "深色"
+      },
+      "privacyMode": {
+        "standard": "标准",
+        "strict": "严格"
+      },
+      "language": {
+        "de": "德语",
+        "en": "英语",
+        "zhCN": "简体中文"
+      }
+    }
+  },
+  "embedding": {
+    "status": {
+      "proposed": "待验证",
+      "probed": "已探测",
+      "reembedding": "正在重新生成向量",
+      "validated": "已校验",
+      "active": "活跃",
+      "rolled_back": "已回滚",
+      "failed": "失败",
+      "unknown": "未知"
+    },
+    "indexStatus": {
+      "building": "构建中",
+      "active": "活跃",
+      "superseded": "已替代",
+      "rolled_back": "已回滚",
+      "retired": "已停用"
+    },
+    "indexVersions": {
+      "title": "运行中的索引",
+      "legacyHint": "没有已记录的索引版本，当前使用未版本化的旧索引。",
+      "servesTraffic": "用于读取和写入。",
+      "notServingYet": "仍在填充，尚未承接请求。切换成功前旧索引继续生效。"
+    },
+    "list": {
+      "error": "无法加载配置",
+      "empty": "暂无向量配置。"
+    },
+    "active": {
+      "title": "当前配置",
+      "legacyHint": "来源：旧版 Config.EMBEDDING_*，请迁移。"
+    },
+    "action": {
+      "test": "探测",
+      "activate": "激活"
+    },
+    "migration": {
+      "title": "向量重建迁移",
+      "intro": "启动迁移以切换向量维度或模型。",
+      "start": "启动迁移",
+      "cancel": "取消"
+    },
+    "ollama": {
+      "download": "下载 Ollama 模型",
+      "downloadInline": "在此下载 Ollama 模型",
+      "title": "下载 Ollama 模型",
+      "hint": "模型名称只能包含 ASCII 字母、数字以及 -、_、:、.，最长 100 个字符。",
+      "model": "模型名称",
+      "configurationId": "服务商连接（可选）",
+      "autoSelect": "自动（第一个 Ollama 连接）",
+      "submit": "开始下载",
+      "modelRequired": "模型名称不能为空"
+    }
+  },
+  "views": {
+    "graphEdit": {
+      "lock": {
+        "title": "图谱已锁定",
+        "unknown": "正在检查锁定状态",
+        "editable": "可编辑",
+        "locked": "已锁定：模拟正在使用此图谱。请创建独立副本后编辑。",
+        "usedBy": "使用者",
+        "simulation": "模拟 {id}",
+        "checkFailed": "无法确定锁定状态。",
+        "reload": "重新加载锁定状态"
+      },
+      "errors": {
+        "locked": "模拟正在使用此图谱，图谱已锁定，未作任何更改。",
+        "conflict": "更改与已有元素冲突，未作任何更改。",
+        "migrationRunning": "向量迁移正在进行，图谱暂时无法编辑。",
+        "embeddingFailed": "无法计算向量，未作任何更改。",
+        "invalidInput": "输入无效。",
+        "other": "更改失败。"
+      },
+      "duplicate": {
+        "nameLabel": "副本名称",
+        "start": "创建副本",
+        "running": "正在创建副本…",
+        "done": "副本已就绪，点击打开",
+        "failed": "未创建副本。",
+        "error": {
+          "buildRunning": "图谱正在构建，可在构建完成后创建副本。",
+          "migrationRunning": "向量迁移正在进行，暂时无法创建副本。",
+          "unavailable": "暂时无法创建副本。",
+          "invalidInput": "副本名称无效。",
+          "other": "无法创建副本。"
+        }
+      },
+      "origin": {
+        "manual": "手动",
+        "edited": "已编辑",
+        "extracted": "已提取",
+        "changedAt": "修改于 {date}"
+      },
+      "view": {
+        "label": "编辑图谱",
+        "net": "网络",
+        "table": "表格",
+        "legend": "虚线关系：由人工创建或修改。",
+        "readonly": "无法修改此次运行的图谱，可创建独立副本后编辑。",
+        "notEditable": "此图谱已锁定，无法编辑。",
+        "busy": "正在保存…",
+        "done": "已保存。",
+        "dismissError": "关闭提示",
+        "entity": {
+          "createTitle": "创建实体",
+          "editTitle": "编辑实体",
+          "name": "名称",
+          "type": "类型",
+          "summary": "描述",
+          "aliases": "别名（逗号分隔）",
+          "submitCreate": "创建实体",
+          "submitSave": "保存更改",
+          "cancel": "取消",
+          "delete": "删除实体",
+          "deleteConfirm": "删除实体及其关系？",
+          "selectPrompt": "请选择一个实体或创建新实体。",
+          "deleted": "实体已删除，已移除 {n} 条关系。"
+        },
+        "relation": {
+          "createTitle": "创建关系",
+          "editTitle": "编辑关系",
+          "source": "起点",
+          "target": "终点",
+          "name": "类型",
+          "fact": "描述语句",
+          "submitCreate": "创建关系",
+          "submitSave": "保存更改",
+          "cancel": "取消",
+          "delete": "删除关系",
+          "deleteConfirm": "删除此关系？",
+          "deleted": "关系已删除。"
+        },
+        "merge": {
+          "open": "打开合并工具",
+          "title": "合并实体",
+          "hint": "保留所选实体，将标记的其他实体合并到其中。",
+          "source": "待合并实体",
+          "submit": "合并",
+          "needSource": "请至少选择一个待合并实体。",
+          "result": "合并完成：重连 {n} 条关系，移除 {d} 条关系。"
+        }
+      }
+    },
+    "newRun": {
+      "title": "新建运行",
+      "close": "关闭对话框",
+      "question": {
+        "legend": "问题",
+        "label": "模拟问题",
+        "belongsToGraph": "问题与图谱绑定。如需提出其他问题，请从来源文件构建新图谱。",
+        "noneStored": "此图谱没有保存问题。",
+        "contestedLater": "图谱构建后，可在准备阶段设置争议问题。"
+      },
+      "graph": {
+        "legend": "图谱",
+        "existing": "选择已有图谱",
+        "selectLabel": "已有图谱",
+        "fromSource": "从来源新建",
+        "none": "不使用图谱",
+        "noneWhy": "此功能尚未开放，将支持模拟和访谈，但无法生成报告。",
+        "noneYet": "暂无已完成的图谱。",
+        "loading": "正在加载图谱…",
+        "loadError": "无法加载图谱。",
+        "rejected": "{n} 个图谱无法读取，未列入选项。"
+      },
+      "source": {
+        "dropHint": "将文件拖到这里或点击选择",
+        "fileList": "已选择的文件"
+      },
+      "personas": {
+        "legend": "画像集",
+        "generate": "生成",
+        "existing": "选择已有图谱",
+        "existingWhy": "将在资源库的画像集功能中提供。",
+        "laterWithSource": "使用新来源时，可在准备阶段设置数量上限。",
+        "set": "使用画像集",
+        "setWhy": "运行会复制此集合中的画像，不使用图谱，也不生成报告。",
+        "chooseSet": "画像集",
+        "noSetChosen": "请选择",
+        "loadingSets": "加载中…",
+        "count": "{n} 个画像",
+        "noSetsYet": "暂无包含画像的集合，请先在资源库中创建。",
+        "noGraphNotice": "此运行不使用图谱，图谱页将显示空状态。"
+      },
+      "models": {
+        "legend": "模型",
+        "scope": "适用于此次运行的全部阶段。各阶段的覆盖配置可在对应启动按钮处设置。"
+      },
+      "scope": {
+        "legend": "规模与预算",
+        "days": "天数（1–365）",
+        "rounds": "轮次（3–30）",
+        "activityLater": "使用新来源时，可在准备阶段设置活跃度模式。",
+        "budgetUnavailable": "将使用本实例的默认限制。",
+        "budgetReplaces": "自定义预算将完全替代默认限制。",
+        "estimateNeedsCap": "未设置画像数量上限时，无法估算。",
+        "estimateBasis": "估算按最多 {agents} 个画像和 {rounds} 个轮次计算。"
+      },
+      "blockers": {
+        "graph": "请选择已有图谱。",
+        "files": "请至少添加一个来源文件。",
+        "question": "缺少模拟问题。",
+        "contested": "争议问题应为 10 至 300 个字符，或留空。",
+        "agents": "画像数量上限至少为 10。",
+        "days": "天数应在 1 至 365 之间。",
+        "rounds": "轮次应在 3 至 30 之间。",
+        "personaSet": "请选择画像集。"
+      },
+      "actions": {
+        "cancel": "取消",
+        "start": "开始",
+        "buildGraph": "构建图谱",
+        "createOnly": "仅创建",
+        "createOnlyWhy": "图谱构建完成后即创建运行。"
+      },
+      "progress": {
+        "create": "正在创建运行…",
+        "prepare": "正在准备画像…"
+      },
+      "errors": {
+        "create": "无法创建运行。",
+        "createShape": "创建运行时收到的响应不完整。",
+        "prepare": "无法启动准备过程。",
+        "prepareAfterCreate": "运行 {id} 已创建，但准备失败：{message}",
+        "openCreated": "前往已创建的运行",
+        "createFromPersonaSet": "无法从画像集创建运行。",
+        "noPersonaSet": "请选择画像集。",
+        "noRequirement": "请填写问题，即使不使用图谱，也需要它为运行命名。"
+      }
+    },
+    "settingsWindow": {
+      "title": "设置",
+      "close": "关闭设置",
+      "navLabel": "章节",
+      "sectionSelect": "选择分区",
+      "operatorOnly": "此分区由管理员管理，仅供预览，无法修改。",
+      "access": {
+        "apiKeys": "API 密钥",
+        "audit": "审计日志",
+        "account": "账号",
+        "security": "安全",
+        "needsAuth": "需要访问令牌或登录。"
+      },
+      "embedding": {
+        "notice": "注意：部分组件仍读取环境变量，此处显示的配置未必已生效。状态："
+      },
+      "appearance": {
+        "groupTheme": "配色方案",
+        "groupText": "密度与字体",
+        "theme": {
+          "label": "外观",
+          "hint": "选择“系统”时跟随设备设置。",
+          "system": "系统",
+          "light": "浅色",
+          "dark": "深色"
+        },
+        "density": {
+          "label": "密度",
+          "hint": "紧凑模式会缩小侧栏和顶栏间距。",
+          "comfortable": "舒适",
+          "compact": "紧凑"
+        },
+        "fontSize": {
+          "label": "字号",
+          "hint": "影响界面的正文、标题和提示文字。",
+          "small": "小",
+          "normal": "标准",
+          "large": "大"
+        },
+        "local": "此选择仅适用于当前浏览器。"
+      },
+      "system": {
+        "groupServices": "服务",
+        "groupApp": "应用",
+        "loading": "正在检查状态…",
+        "loadError": "无法获取系统状态。",
+        "retry": "重新检查",
+        "state": {
+          "ok": "正常",
+          "down": "无法访问",
+          "unknown": "未知",
+          "skipped": "未检查"
+        },
+        "backend": {
+          "label": "后端",
+          "hint": "此实例的应用服务器。"
+        },
+        "neo4j": {
+          "label": "Neo4j",
+          "hint": "存储来源和实体的图数据库。"
+        },
+        "ollama": {
+          "label": "Ollama",
+          "hint": "本地模型服务。",
+          "skipped": "当前服务商为 {provider}，不检查 Ollama。"
+        },
+        "disk": {
+          "label": "上传存储",
+          "free": "可用 {free}",
+          "used": "已使用 {pct}%"
+        },
+        "version": {
+          "label": "版本",
+          "unknown": "未知"
+        },
+        "unreported": "后端目前不报告 Redis 和 PostgreSQL 状态，因此无法在此查看。",
+        "console": {
+          "label": "控制台",
+          "hint": "显示后端日志。",
+          "open": "打开控制台",
+          "unavailable": "仅管理员可用。"
+        }
+      },
+      "budgets": {
+        "intro": "这些默认限制仅适用于未单独设置预算的新运行。启动对话框中的预算将完全替代默认限制。",
+        "noLimit": "0 表示不限制。",
+        "groupLimits": "默认限制",
+        "groupEnforcement": "执行方式",
+        "loading": "正在加载预算…",
+        "loadError": "无法加载预算。",
+        "tokens": {
+          "label": "令牌",
+          "hint": "每次运行的令牌数量上限。"
+        },
+        "cost": {
+          "label": "费用（美元）",
+          "hint": "每次运行的费用上限，例如 12.50。"
+        },
+        "duration": {
+          "label": "时长",
+          "hint": "每次运行的时长上限。",
+          "unit": "单位",
+          "minutes": "分钟",
+          "hours": "小时"
+        },
+        "calls": {
+          "label": "模型调用",
+          "hint": "每次运行调用语言模型的次数上限。"
+        },
+        "enforcement": {
+          "label": "执行方式",
+          "hint": "硬限制会在超限时结束运行，软限制仅发出警告。",
+          "hard": "硬限制（结束运行）",
+          "soft": "软限制（仅警告）"
+        },
+        "invalidNumber": "请输入大于或等于 0 的数字。",
+        "invalidInteger": "请输入大于或等于 0 的整数。",
+        "save": "保存",
+        "saving": "保存中…",
+        "saved": "已保存。",
+        "discard": "放弃修改",
+        "saveError": "保存失败：{message}"
+      },
+      "sections": {
+        "general": "常规",
+        "appearance": "外观",
+        "profile": "个人资料",
+        "providers": "服务商",
+        "profiles": "配置方案",
+        "embedding": "向量嵌入",
+        "pipeline": "流水线",
+        "budgets": "预算",
+        "access": "访问权限",
+        "system": "系统"
+      },
+      "providers": {
+        "managementTitle": "服务商管理",
+        "managementDescription": "各服务商的连接、传输方式、状态与可用模型。",
+        "managementLocked": "服务商管理仅对管理员开放，当前登录无法修改。你可以在下方保存自己的密钥。",
+        "keysTitle": "个人密钥",
+        "keysDescription": "仅适用于当前工作区。已保存的密钥不会再次显示。",
+        "transport": "传输方式",
+        "key": "密钥",
+        "keyStored": "已保存（不显示）",
+        "keyMissing": "未保存",
+        "keyNone": "无须密钥（本地服务）",
+        "keySession": "通过本地 CLI 会话登录",
+        "transports": {
+          "http": "HTTP",
+          "local": "本地服务",
+          "cli": "CLI"
+        }
+      },
+      "profiles": {
+        "modelsTitle": "模型配置方案",
+        "modelsDescription": "每个配置方案保存一个模型，其中一个设为默认。",
+        "stagesTitle": "各阶段默认模型",
+        "stagesDescription": "图谱、画像、模拟和报告各阶段默认使用的模型。",
+        "valuesTitle": "大模型技术参数"
+      }
+    },
+    "history": {
+      "title": "历史记录",
+      "subtitle": "运行与分支历史"
+    },
+    "compare": {
+      "title": "对比",
+      "pickRun": "选择一次运行以对比其分支。"
+    },
+    "library": {
+      "title": "资源库",
+      "runs": {
+        "title": "运行记录",
+        "views": {
+          "label": "筛选运行",
+          "all": "全部",
+          "running": "运行中",
+          "attention": "待你处理",
+          "withReport": "包含报告"
+        },
+        "layout": {
+          "label": "布局",
+          "tiles": "卡片",
+          "list": "列表"
+        },
+        "band": {
+          "title": "关注",
+          "running": "正在运行",
+          "attention": "待你处理"
+        },
+        "state": {
+          "running": "运行中",
+          "paused": "已暂停",
+          "done": "完成",
+          "incomplete": "未完成",
+          "stopped": "已停止",
+          "budget": "预算已用尽",
+          "failed": "失败",
+          "pending": "打开",
+          "unknown": "暂无数据"
+        },
+        "stage": {
+          "list": "运行阶段",
+          "graph": "图谱",
+          "personas": "画像",
+          "simulation": "模拟",
+          "report": "报告",
+          "interviews": "访谈"
+        },
+        "reason": {
+          "user_stop": "你已停止运行。",
+          "stopped": "运行已停止。",
+          "process_restart": "服务器重启中断了任务。",
+          "budget": "本次运行的预算已用尽。",
+          "budget_tokens": "本次运行的令牌预算已用尽。",
+          "budget_cost": "本次运行的费用预算已用尽。",
+          "budget_time": "本次运行的时长预算已用尽。",
+          "budget_calls": "大模型调用预算已用尽。",
+          "failed": "任务失败。",
+          "incomplete": "报告不完整。"
+        },
+        "tile": {
+          "select": "选择运行“{title}”",
+          "source": "来源：",
+          "progress": "进度 {n}%"
+        },
+        "versions": {
+          "count": "{n} 个版本 | {n} 个版本",
+          "openLatest": "打开最新版本",
+          "listLabel": "运行版本",
+          "row": "版本 {n}",
+          "loading": "正在加载版本…",
+          "error": "无法加载版本。",
+          "empty": "此运行没有版本。",
+          "invalid": "{n} 个版本无法读取，未显示。 | {n} 个版本无法读取，未显示。"
+        },
+        "selection": {
+          "count": "已选择 {n} 项",
+          "compare": "对比",
+          "clear": "清除选择",
+          "compareHint": "请选择恰好两次运行进行对比。",
+          "noSimulation": "此运行尚无可供对比的模拟。"
+        },
+        "empty": {
+          "text": "一次运行包含从来源到报告的完整过程：图谱、画像、模拟和报告。",
+          "filtered": "没有符合筛选条件的运行。",
+          "action": "新建运行"
+        }
+      },
+      "newRun": {
+        "title": "新建运行",
+        "subtitle": "从来源启动新运行：上传文件、填写问题、选择模型并设置预算。"
+      },
+      "graphs": {
+        "title": "图谱"
+      }
+    },
+    "run": {
+      "simulation": {
+        "tabsLabel": "模拟视图",
+        "tab": {
+          "feed": "动态",
+          "rounds": "轮次",
+          "diagnostics": "诊断"
+        },
+        "headerSlotLabel": "模拟概览栏",
+        "diagnostics": {
+          "title": "诊断"
+        }
+      },
+      "simRounds": {
+        "title": "模拟轮次",
+        "viewLabel": "查看",
+        "viewRounds": "轮次",
+        "viewActions": "操作",
+        "loading": "正在加载轮次…",
+        "error": "无法加载轮次：{reason}",
+        "retry": "重新加载",
+        "empty": "暂无轮次",
+        "round": "第 {round} 轮",
+        "roundOf": "第 {round} 轮，共 {total} 轮",
+        "startRound": "初始帖子",
+        "running": "运行中",
+        "noActions": "暂无行动",
+        "twitter": "Twitter",
+        "reddit": "Reddit",
+        "openFeed": "在动态中查看",
+        "openFeedForNetwork": "在动态中查看 {network} 的第 {round} 轮",
+        "actionsLoadError": "无法加载行动：{reason}",
+        "filterRound": "轮次",
+        "filterNetwork": "网络",
+        "filterType": "行动类型",
+        "filterAll": "全部"
+      },
+      "simDiagnostics": {
+        "title": "诊断",
+        "noAccess": "日志仅对管理员开放，当前登录无法查看。",
+        "serverTitle": "本次运行的服务端日志",
+        "serverNote": "显示工具调用、错误、警告和进度。通过运行 ID 文本搜索匹配日志，非精确匹配。",
+        "showAll": "显示全部（不精简）",
+        "collapsed": "（已合并 {count} 行）",
+        "processTitle": "模拟进程",
+        "processNote": "本次模拟进程的原始输出：工具调用、错误、警告和进度。",
+        "processEmpty": "模拟进程尚无输出。",
+        "processFiltered": "暂无工具调用、错误或进度日志。点击“显示全部”查看完整输出。",
+        "processError": "无法加载进程日志：{reason}",
+        "retry": "重新加载"
+      },
+      "overview": {
+        "title": "概览",
+        "stagesLabel": "运行阶段",
+        "col": {
+          "stage": "阶段",
+          "state": "状态",
+          "model": "模型",
+          "duration": "时长",
+          "tokens": "令牌",
+          "cost": "费用",
+          "next": "下一步"
+        },
+        "notRecorded": "未记录",
+        "modelDefault": "默认：{model}",
+        "modelDefaultHint": "启动时未另行选择则使用此模型",
+        "modelNone": "未记录默认值",
+        "modelLoadFailed": "无法加载实际运行的模型。",
+        "withModel": "使用 {model}",
+        "stepWithModel": "{step}，使用 {model}",
+        "regenerate": {
+          "button": "重新生成，使用…",
+          "title": "重新生成报告",
+          "description": "创建新版本，已有版本会保留。",
+          "pickLabel": "新版本使用的模型",
+          "pickPlaceholder": "选择模型",
+          "confirm": "重新生成",
+          "cancel": "取消",
+          "pending": "正在创建…",
+          "failed": "无法重新生成报告：{reason}"
+        },
+        "budgetTitle": "预算状态",
+        "budgetNone": "此运行暂无已记录用量的任务。",
+        "cardsLabel": "运行组成",
+        "questionTitle": "问题",
+        "questionMissing": "未记录问题",
+        "graphTitle": "图谱",
+        "graphMissing": "未记录图谱",
+        "openGraph": "查看图谱",
+        "personasTitle": "画像集",
+        "personasCount": "{n} 个画像",
+        "personasMissing": "未记录画像集",
+        "openPersonas": "查看画像",
+        "fallbackUnknown": "是否创建了降级画像仅在报告中显示，没有报告则无此记录。"
+      },
+      "graph": {
+        "title": "图谱"
+      },
+      "header": {
+        "loading": "正在加载运行…",
+        "notFoundTitle": "未找到运行",
+        "notFoundBody": "不存在 ID 为“{id}”的运行。",
+        "errorTitle": "无法加载运行",
+        "retry": "重新加载",
+        "toRuns": "返回运行列表",
+        "questionMissing": "未记录问题",
+        "headline": "{stage}：{state}",
+        "stateLabel": "运行状态"
+      },
+      "tabs": {
+        "label": "运行页签",
+        "overview": "概览",
+        "graph": "图谱",
+        "personas": "画像",
+        "simulation": "模拟",
+        "report": "报告",
+        "interviews": "访谈"
+      },
+      "disabled": {
+        "noProject": "无法解析此运行所属的项目。",
+        "noReport": "此运行尚无报告。",
+        "afterSimulation": "仅在模拟完成后可用。"
+      },
+      "stage": {
+        "graph": "图谱",
+        "personas": "画像",
+        "simulation": "模拟",
+        "report": "报告",
+        "interviews": "访谈"
+      },
+      "state": {
+        "notStarted": "未开始",
+        "queued": "排队中",
+        "running": "运行中",
+        "paused": "已暂停",
+        "done": "完成",
+        "degraded": "存在限制",
+        "fallback": "使用降级方案",
+        "incomplete": "未完成",
+        "stopped": "已停止",
+        "budget": "预算已用尽",
+        "failed": "失败",
+        "notRecorded": "未记录"
+      },
+      "step": {
+        "start": "开始",
+        "resume": "继续",
+        "view": "查看"
+      },
+      "interviews": {
+        "loading": "正在加载访谈…",
+        "retry": "重新加载",
+        "unavailable": "此运行不支持访谈。",
+        "notRun": "模拟完成后可进行访谈，之前的历史记录仍可阅读。",
+        "stateUnknown": "模拟状态尚未确定，在加载完成前无法提问。",
+        "noAnswer": "未收到回答。",
+        "sending": "正在提问…",
+        "budgetExceeded": "预算已用尽，问题未得到回答。",
+        "agentFallback": "智能体 {n}",
+        "list": {
+          "aria": "对话",
+          "heading": "对话",
+          "empty": "暂无对话",
+          "group": "群组：{question}"
+        },
+        "new": {
+          "title": "新建对话",
+          "label": "画像",
+          "placeholder": "选择画像",
+          "open": "打开对话"
+        },
+        "group": {
+          "title": "群组提问",
+          "personas": "选择画像",
+          "question": "向所有人提问",
+          "send": "向群组提问",
+          "large": "同时向 {n} 个画像提问可能超出后端处理时限，部分回答可能缺失。",
+          "summary": "已提问 {asked} 个，已回答 {answered} 个，失败 {failed} 个",
+          "cost": "未选择画像：不调用模型 | 调用一次，计入运行预算 | 调用 {n} 次，每次均计入运行预算"
+        },
+        "persona": {
+          "participants": "参与画像",
+          "feed": "动态中的帖子",
+          "feedCount": "动态中的帖子（{n}）",
+          "feedCountAtLeast": "动态中的帖子（至少 {n}）",
+          "cited": "报告引用次数（{n}）"
+        },
+        "budget": {
+          "title": "已达到运行预算",
+          "explain": "运行已达到预算。本次问题未回答或保存，预算用尽期间无法继续提问。",
+          "reason": "终止原因：{reason}",
+          "figures": "{dimension}：{observed} / {threshold}",
+          "dimensionUnknown": "限制",
+          "persisted": "运行停止前已保存 {n} 条回答，可在历史记录中查看。"
+        },
+        "pane": {
+          "aria": "对话",
+          "choose": "请从列表中选择一段对话。",
+          "none": "暂无对话",
+          "with": "与 {name} 的对话",
+          "noTurns": "尚未向此画像提问。",
+          "you": "你：",
+          "badgeSim": "模拟",
+          "badgeInterview": "访谈",
+          "origin": "报告自动访谈会单独标注；部分旧记录的来源无法确定。",
+          "reportInterview": "报告自动访谈",
+          "unknownPersona": "智能体 {n} 没有画像资料或历史记录，请从列表中选择其他画像。",
+          "failedReason": "未回答：{reason}",
+          "copy": "复制",
+          "copyAnswer": "复制 {name} 的回答",
+          "copied": "回答已复制到剪贴板。",
+          "copyFailed": "复制失败，剪贴板不可用。",
+          "groupCount": "已回答 {answered} / {total}",
+          "cost": "每次提问都会调用模型，并计入运行预算。",
+          "shortcut": "按 Ctrl/Cmd+Enter 发送。",
+          "groupTitle": "群组提问",
+          "groupGone": "此群组问题仅保留在提出问题的当前会话中。",
+          "answeredStatus": "已收到 {name} 的回答。",
+          "inputLabel": "向画像提问",
+          "model": "运行模型：{model}",
+          "modelUnknown": "运行模型：未知",
+          "send": "提问",
+          "notRun": "模拟完成后才能提问。"
+        },
+        "survey": {
+          "selectAll": "全选",
+          "clear": "清除选择",
+          "selected": "未选择画像 | 已选择 1 / {total} 个画像 | 已选择 {n} / {total} 个画像",
+          "blocked": "模拟完成后才能进行调查。",
+          "exportCsv": "导出 CSV",
+          "exported": "已导出包含 {n} 行的 CSV。",
+          "nothingToExport": "没有可导出的回答：所有画像均失败或未回答。"
+        }
+      },
+      "simFeed": {
+        "ariaLabel": "模拟动态",
+        "network": {
+          "label": "网络",
+          "twitter": "Twitter",
+          "reddit": "Reddit"
+        },
+        "filters": {
+          "title": "筛选条件",
+          "persona": "画像",
+          "personaAll": "所有画像",
+          "round": "仅指定轮次",
+          "roundAll": "所有轮次",
+          "search": "文本搜索",
+          "searchPlaceholder": "搜索帖子内容",
+          "reset": "重置筛选",
+          "contested": "争议问题",
+          "contestedNone": "此运行未记录争议问题。"
+        },
+        "toggle": {
+          "showFilters": "显示筛选条件",
+          "hideFilters": "隐藏筛选条件",
+          "showSide": "显示画像和轮次",
+          "hideSide": "隐藏画像和轮次"
+        },
+        "timeline": {
+          "twitter": "Twitter 帖子，最新在前",
+          "reddit": "Reddit 帖子，最新在前"
+        },
+        "scrubber": {
+          "label": "回看",
+          "live": "实时",
+          "liveHint": "动态实时跟随更新。",
+          "status": "显示到第 {round} 轮，最多 {max} 轮",
+          "slider": "截至轮次",
+          "noRounds": "暂无轮次信息。",
+          "pill": "显示 {count} 条新帖子"
+        },
+        "post": {
+          "sim": "模拟",
+          "simText": "模拟发言",
+          "open": "打开 {name} 的帖子",
+          "openLink": "打开帖子",
+          "reposted": "无附言转发",
+          "quoteOf": "已引用",
+          "referenceMissing": "被引用的帖子不在当前已加载范围内。",
+          "round": "第 {round} 轮",
+          "counts": "统计",
+          "replies": "暂无回复 | 1 条回复 | {n} 条回复",
+          "reposts": "暂无转发 | 1 次转发 | {n} 次转发",
+          "likes": "暂无点赞 | 1 次点赞 | {n} 次点赞",
+          "votes": "票数：{n}",
+          "comments": "暂无评论 | 1 条评论 | {n} 条评论"
+        },
+        "persona": {
+          "title": "画像",
+          "interview": "访谈",
+          "none": "请在筛选中选择画像，或选中一条帖子。",
+          "role": "角色",
+          "stance": "立场",
+          "stanceMissing": "未记录立场",
+          "roleMissing": "未记录角色",
+          "bio": "描述",
+          "profileMissing": "此画像暂无资料。"
+        },
+        "roundPanel": {
+          "title": "第 {round} 轮，共 {total} 轮",
+          "titleUnknownTotal": "第 {round} 轮，总轮次未知",
+          "titleNone": "暂无轮次信息",
+          "activity": "活动",
+          "activityLine": "Twitter {twitter} 条 · Reddit {reddit} 条",
+          "activityNone": "本轮暂无帖子。"
+        },
+        "notices": {
+          "error": "动态未能完整加载：{message}",
+          "retry": "重新加载",
+          "truncated": "每个平台仅显示最新 {limit} 条帖子。",
+          "invalid": "{count} 条帖子不符合契约，已丢弃。",
+          "evicted": "由于缓冲区限制，已移除 {count} 条较早帖子。",
+          "unrounded": "{count} 条未标记轮次的帖子会在所有轮次中显示。",
+          "stream": "实时连接已中断，重新加载后才能看到新帖子。"
+        },
+        "states": {
+          "loading": "正在加载动态…",
+          "empty": "此平台暂无帖子。",
+          "emptyFiltered": "没有符合筛选条件的帖子。"
+        },
+        "thread": {
+          "back": "返回动态",
+          "backToReport": "返回报告",
+          "loading": "正在加载帖子…",
+          "rootMissing": "原帖不在当前已加载范围内。",
+          "broken": "此帖回复链异常（存在循环或层级过深），未显示。",
+          "parentMissing": "当前已加载范围中缺少上级帖子。",
+          "replies": "回复",
+          "noReplies": "当前已加载范围中暂无回复。",
+          "quotes": "引用",
+          "reposts": "转发：{count}",
+          "claim": "此陈述的证据",
+          "region": "讨论串"
+        },
+        "tree": {
+          "region": "评论",
+          "collapse": "收起 {name} 的分支",
+          "expand": "展开 {name} 的分支（下方有 {count} 条回复）",
+          "flatOnly": "此运行没有嵌套评论，所有评论均平铺在帖子下方。",
+          "unplaced": "{count} 条评论无法定位（存在循环或嵌套过深）。",
+          "noComments": "当前已加载范围中暂无评论。",
+          "parentMissing": "当前已加载范围中缺少上级评论。"
+        }
+      },
+      "simHeader": {
+        "ariaLabel": "模拟",
+        "round": "第 {current} 轮，共 {total} 轮",
+        "roundTotalUnknown": "第 {current} 轮，总轮次未知",
+        "roundNone": "暂无轮次",
+        "roundLabel": "轮次",
+        "postsLabel": "帖子",
+        "posts": "共 {total} 条（Twitter {twitter} 条 · Reddit {reddit} 条）",
+        "costLabel": "费用",
+        "modelLabel": "模型",
+        "modelPlanned": "{model}（本次启动的默认模型）",
+        "modelNone": "未记录默认值",
+        "notRecorded": "未记录",
+        "start": "开始",
+        "starting": "正在启动…",
+        "restart": "重新开始",
+        "pause": "暂停",
+        "pausing": "正在暂停…",
+        "resume": "继续",
+        "resuming": "正在继续…",
+        "stop": "停止",
+        "stopping": "正在停止…",
+        "stopTitle": "停止模拟？",
+        "stopDescription": "当前模拟将结束。已生成的帖子会保留，运行标记为已停止，而非已完成。",
+        "stopConfirm": "停止模拟",
+        "stopCancel": "继续运行",
+        "cancel": "取消任务",
+        "cancelling": "正在取消…",
+        "cancelTitle": "取消模拟任务？",
+        "cancelDescription": "在任务注册表中正常取消任务，即使停止操作未能结束它。已完成阶段和已生成帖子会保留。",
+        "cancelConfirm": "取消任务",
+        "cancelKeep": "不取消",
+        "reasonStopped": "已停止：{reason}",
+        "reasonBudget": "预算耗尽而结束：{reason}",
+        "reasonFailed": "失败：{reason}",
+        "reasonUnknown": "未记录原因",
+        "blockedPersonas": "画像尚未准备完成，完成后才能启动。",
+        "error": "错误：{message}",
+        "live": "状态：{state}",
+        "empty": {
+          "title": "尚未开始",
+          "explainRounds": "模拟中，画像会按轮次发帖并相互回复。",
+          "explainSynthetic": "这些是模型生成的模拟发言，并非对人类行为的预测。"
+        }
+      },
+      "termination": {
+        "user_stop": "按请求停止",
+        "user_cancel": "按请求取消",
+        "process_restart": "进程已重启",
+        "error": "因错误而结束",
+        "budget_tokens": "令牌预算已用尽",
+        "budget_cost": "费用预算已用尽",
+        "budget_time": "时长预算已用尽",
+        "budget_calls": "调用次数预算已用尽",
+        "completed": "正常结束"
+      },
+      "degradation": {
+        "persona_generation": "降级画像：使用基于规则的占位画像，而非生成的画像",
+        "simulation": "模拟存在限制",
+        "simulation_positioning": "对争议问题表态的声音过少",
+        "interview_agents": "访谈没有结果",
+        "section_generation": "部分章节未正常生成",
+        "section_metadata": "缺少章节元数据",
+        "requirement_checker": "报告正文缺少分析维度",
+        "contract_export": "契约导出受限",
+        "outline_planning": "大纲来自备用结构",
+        "run_cancellation": "取消后缺少章节",
+        "missingSections": "缺少 {count} 个章节",
+        "evidenceOmitted": "证据已省略（evidence_omitted）",
+        "evidenceCheckFailed": "无法核验证据",
+        "reportIncomplete": "报告不完整"
+      },
+      "report": {
+        "label": "本次运行的报告",
+        "noGraph": "此运行没有知识图谱，而报告依赖图谱中的证据。",
+        "header": {
+          "versionLabel": "版本",
+          "versionOption": "版本 {n} · {date} · {state}",
+          "versionOptionModel": "版本 {n} · {date} · {state} · {model}",
+          "versionsLoading": "正在加载版本…",
+          "noVersions": "暂无版本",
+          "stateLabel": "状态",
+          "versionsFailed": "无法加载版本：{reason}",
+          "versionsInvalid": "{n} 个版本违反契约，未显示 | {n} 个版本违反契约，未显示"
+        },
+        "banner": {
+          "label": "报告提示",
+          "titleIncomplete": "未完成：缺少的内容",
+          "titleNotes": "报告说明：缺少的内容",
+          "noDetail": "报告标记为未完成，但后端未说明具体缺失章节或限制。",
+          "missingSections": "缺失章节 | 缺失章节",
+          "degradations": "运行限制",
+          "blocking": "阻断项",
+          "warning": "说明"
+        },
+        "outline": {
+          "label": "报告大纲",
+          "empty": "暂无大纲。",
+          "state": {
+            "ready": "已完成",
+            "missing": "缺失",
+            "failed": "失败",
+            "pending": "进行中"
+          }
+        },
+        "reading": {
+          "loading": "正在加载报告…",
+          "retry": "重新加载",
+          "untitled": "报告",
+          "emptyText": "报告没有正文。",
+          "failedUnknown": "未提供原因。",
+          "sectionKicker": "第 {n} 节",
+          "sectionNote": {
+            "missing": "报告缺少此章节。",
+            "failed": "此章节生成失败，当前文字为替代内容。",
+            "pending": "此章节仍在生成。"
+          },
+          "loadFailed": {
+            "notFound": "未找到报告。",
+            "contract": "后端响应违反契约。",
+            "transport": "无法加载报告。"
+          }
+        },
+        "generation": {
+          "startTitle": "此运行尚无报告。",
+          "startDescription": "报告生成是流水线中费用最高的步骤，确认后才会使用默认模型开始。可通过“重新生成，使用…”选择其他模型。",
+          "startButton": "开始生成报告",
+          "running": "报告正在生成",
+          "sectionsDone": "已完成 {done} / {total} 节",
+          "noSectionsYet": "暂无可用章节。",
+          "transportError": "状态请求持续失败，显示内容可能已过期。",
+          "failed": "生成失败：",
+          "schemaError": "{where} 发生契约违规",
+          "logToggle": "生成日志"
+        },
+        "side": {
+          "label": "证据与问题",
+          "tabsLabel": "切换侧栏",
+          "tab": {
+            "evidence": "证据",
+            "questions": "问题"
+          },
+          "evidencePlaceholder": "所选论断的证据会显示在这里。",
+          "questionsPlaceholder": "向报告智能体提出的问题会显示在这里。",
+          "evidenceLoading": "正在加载证据…",
+          "evidenceFailed": "无法加载证据：{reason}",
+          "evidenceUnsaved": "此版本未保存证据。",
+          "omitted": {
+            "title": "证据已省略（evidence_omitted）",
+            "body": "报告包含证据，但未能以符合契约的格式返回。这不属于数据缺口，而是此视图无法核验证据。"
+          }
+        },
+        "claims": {
+          "title": "论断",
+          "count": "{n} 条论断 | {n} 条论断",
+          "none": "报告没有论断。",
+          "sectionLabel": "第 {n} 节：{title}",
+          "confidence": {
+            "speculative": "推测性",
+            "low": "低",
+            "medium": "中",
+            "high": "高",
+            "verified": "已验证"
+          },
+          "confidenceLine": "置信度：{label}（{pct}%）",
+          "evidenceCount": "{n} 条证据 | {n} 条证据",
+          "hypotheses": {
+            "title": "假设（{n}）",
+            "hint": "合理但证据不足。假设并非论断。",
+            "rationale": "依据：{text}"
+          },
+          "gaps": {
+            "title": "数据缺口（{n}）",
+            "hint": "来源中缺少所需信息。",
+            "reason": "原因：{text}"
+          }
+        },
+        "evidence": {
+          "title": "证据",
+          "noSelection": "选择列表中的论断以查看证据。",
+          "overviewTotal": "报告包含 {n} 条证据 | 报告包含 {n} 条证据",
+          "forClaim": "{id} 的证据",
+          "none": "此论断未绑定证据。",
+          "missing": "证据索引中缺少 {n} 条已绑定证据（契约问题）。 | 证据索引中缺少 {n} 条已绑定证据（契约问题）。",
+          "kind": {
+            "seed_corpus": "文档",
+            "graph_relation": "图谱",
+            "agent_action": "模拟（帖子）",
+            "agent_quote": "声音（访谈引用）",
+            "web_source": "网络",
+            "inferred": "推断，无证据支持"
+          },
+          "origin": "来源",
+          "sourceLabel": "来源",
+          "anchorLabel": "锚点",
+          "voiceLabel": "声音",
+          "groupLabel": "群组",
+          "bindingLabel": "绑定关系",
+          "binding": {
+            "supports": "支持论断",
+            "contradicts": "与论断矛盾",
+            "neutral": "不支持论断"
+          },
+          "entailment": {
+            "SUPPORTED": "蕴涵关系支持",
+            "CONTRADICTED": "蕴涵关系矛盾",
+            "RELATED_ONLY": "仅相关",
+            "INSUFFICIENT": "证据不足"
+          },
+          "copy": "复制摘录",
+          "copied": "摘录已复制。",
+          "copyFailed": "无法复制摘录。",
+          "jump": {
+            "feed": "在动态中显示",
+            "feedLabel": "在动态中显示：{source}",
+            "graph": "在图谱中显示",
+            "graphLabel": "在图谱中显示：{source}，第 {n} / {total} 个节点",
+            "graphNth": "在图谱中显示（{n}/{total}）",
+            "interview": "打开访谈",
+            "interviewLabel": "打开访谈：{source}",
+            "note": {
+              "checking": "正在核对动态中的帖子…",
+              "feedFailed": "无法加载动态，无法检查跳转目标。",
+              "postMissing": "无法跳转：动态中未找到帖子。",
+              "textMismatch": "无法跳转：帖子内容与证据不一致。",
+              "noPostId": "无法跳转：证据未指定自身帖子。",
+              "noNodeId": "无法跳转：证据未指定节点。",
+              "noEdgeId": "无法跳转：证据未指定关系。",
+              "noVoice": "无法跳转：证据未指定声音。",
+              "noTarget": "无法跳转：此类证据在界面中没有对应来源。",
+              "inferred": "无法跳转：内容为推断，未经证实。"
+            }
+          }
+        },
+        "metrics": {
+          "title": "指标",
+          "loading": "加载中…",
+          "unsaved": "此版本未保存。",
+          "failed": "无法加载：{reason}",
+          "omitted": {
+            "title": "{name} 已省略（artifact_omitted）",
+            "body": "已保存文件违反契约，无法在此视图核验。这不属于数据缺口。"
+          },
+          "density": {
+            "title": "证据密度",
+            "noClaims": "报告没有论断，因此无法计算比例。",
+            "claimsTotal": "论断总数",
+            "without": "无证据",
+            "single": "有一条证据",
+            "multi": "有多条证据",
+            "multiIndependent": "有独立证据",
+            "singleRatio": "仅有一条证据的比例"
+          },
+          "stance": {
+            "title": "表态比例",
+            "notApplicable": "运行未设置争议问题",
+            "contested": "争议问题：{text}",
+            "ratio": "{positioned} / {total} 个声音已表态（{pct}）",
+            "camps": {
+              "in_favour": "赞成",
+              "opposed": "反对",
+              "undecided": "未决定"
+            },
+            "unclassified": "{n} 条发言无法分类。 | {n} 条发言无法分类。"
+          }
+        },
+        "checks": {
+          "title": "核验说明（{n}）",
+          "intro": "报告的证据绑定或门禁问题：部分引用和陈述未能绑定到证据。这些不属于数据缺口。",
+          "none": "没有核验说明。",
+          "entry": "论断 {claim}，第 {n} 节：{violation}，操作 {action}。{detail}",
+          "unbound": {
+            "title": "已引用但未绑定的证据",
+            "item": "第 {n} 节（{title}）：{refs}"
+          },
+          "unverified": {
+            "title": "正文中无证据支持的陈述",
+            "item": "第 {n} 节：{text}（{verdict}：{reason}）"
+          },
+          "gate": {
+            "title": "门禁决策"
+          },
+          "degradation": {
+            "title": "已降级论断"
+          }
+        },
+        "export": {
+          "trigger": "导出",
+          "incomplete": "此版本不完整，导出仅包含已有内容。",
+          "noEvidence": "（证据未加载）",
+          "omittedReason": "文件未包含证据（evidence_omitted），无法完整核验。",
+          "running": "正在准备{action}…",
+          "done": "{action}：已完成。",
+          "failed": "{action}失败：{reason}",
+          "warning": "{action}：{reason}",
+          "blocked": {
+            "noVersion": "无法导出：未选择版本。",
+            "loading": "无法导出：报告仍在加载。",
+            "running": "无法导出：报告仍在生成。"
+          },
+          "action": {
+            "md": "Markdown（.md）",
+            "copy": "复制 Markdown",
+            "html": "HTML（.html）",
+            "json": "JSON（.json）",
+            "evidence": "证据（JSON）",
+            "csv-personas": "CSV：画像",
+            "csv-segments": "CSV：分组",
+            "csv-claims": "CSV：论断",
+            "zip": "ZIP 压缩包（全部文件）",
+            "print": "打印"
+          }
+        },
+        "print": {
+          "title": "报告：{title}",
+          "version": "版本 {n}"
+        },
+        "chat": {
+          "unavailable": "至少生成一个报告版本后，才能追问。",
+          "scope": "问题针对整次运行，而非单个版本。历史记录仅保留在当前会话中。",
+          "logLabel": "追问历史",
+          "empty": "尚未提问。",
+          "you": "你",
+          "mark": "模拟",
+          "agentLabel": "报告智能体的模型输出",
+          "sending": "报告智能体正在回答…",
+          "inputLabel": "向报告智能体提问",
+          "hint": "按 Ctrl+Enter 或 Cmd+Enter 发送。",
+          "send": "发送",
+          "clear": "清除历史",
+          "noResponse": "未收到响应。"
+        },
+        "redirect": {
+          "loading": "正在查找报告…",
+          "notFoundTitle": "未找到报告",
+          "notFoundBody": "不存在 ID 为“{id}”的报告。",
+          "errorTitle": "无法解析报告",
+          "retry": "重试",
+          "toRuns": "前往运行列表"
+        }
+      }
+    },
+    "personaSets": {
+      "title": "画像集",
+      "loading": "正在加载画像集…",
+      "errorTitle": "无法加载画像集",
+      "retry": "重试",
+      "editor": {
+        "titleNew": "新建画像",
+        "titleEdit": "编辑画像：{name}",
+        "navLabel": "画像分区",
+        "required": "（必填）",
+        "saving": "正在保存…",
+        "save": "保存",
+        "cancel": "取消",
+        "close": "关闭",
+        "unsaved": "未保存的更改",
+        "locked": "已锁定：已有运行使用此画像集，画像为只读。如需修改，请复制画像集。",
+        "summaryTitle": "{n} 项待检查",
+        "sectionErrors": "{n} 项待检查",
+        "originNote": {
+          "graph": "来自图谱。",
+          "manual": "手动创建。",
+          "ai_draft": "草稿：由 AI 建议，尚未审核。",
+          "fallback": "降级：基于规则的临时画像，尚不完整，请检查并完善。"
+        },
+        "confirm": {
+          "text": "存在未保存的更改，是否放弃？",
+          "keep": "继续编辑",
+          "discard": "放弃修改"
+        },
+        "errors": {
+          "required": "此项必填，请填写。",
+          "tooLong": "内容过长，最多 {max} 个字符。",
+          "tooMany": "条目过多，最多 {max} 项。",
+          "range": "请输入 {min} 至 {max} 之间的值。",
+          "countryCode": "两位字母国家代码，例如 DE。",
+          "wholeNumber": "请输入整数。",
+          "number": "请输入数字，例如 0.5。",
+          "invalid": "值无效。"
+        },
+        "sections": {
+          "identity": {
+            "label": "身份"
+          },
+          "stance": {
+            "label": "立场与目标",
+            "note": "契约没有单独的立场或目标字段，请将二者写入画像描述。"
+          },
+          "language": {
+            "label": "语言与语气",
+            "note": "契约没有单独的语气或风格字段，此处仅可设置语言。请在画像描述中说明语气。"
+          },
+          "activity": {
+            "label": "活动"
+          },
+          "graph": {
+            "label": "图谱关联",
+            "note": "来源与源实体由系统设置，无法在此更改。"
+          }
+        },
+        "fields": {
+          "name": {
+            "label": "名称"
+          },
+          "username": {
+            "label": "用户名",
+            "hint": "在画像集内必须唯一。"
+          },
+          "persona_kind": {
+            "label": "类型"
+          },
+          "profession": {
+            "label": "角色或职业"
+          },
+          "age": {
+            "label": "年龄",
+            "hint": "0 至 {max} 的整数，留空表示未指定。"
+          },
+          "gender": {
+            "label": "性别",
+            "unset": "未指定",
+            "options": {
+              "male": "男性",
+              "female": "女性",
+              "nonbinary": "非二元性别",
+              "other": "其他"
+            }
+          },
+          "country": {
+            "label": "国家或地区",
+            "hint": "两位字母国家代码，例如 DE。"
+          },
+          "location": {
+            "label": "所在地"
+          },
+          "bio": {
+            "label": "简短资料",
+            "hint": "{n} / {max} 个字符。"
+          },
+          "verified": {
+            "label": "已验证",
+            "hint": "将画像标记为已验证。"
+          },
+          "persona": {
+            "label": "画像描述",
+            "hint": "用文字描述背景、立场、目标和语气。{n} / {max} 个字符。"
+          },
+          "interested_topics": {
+            "label": "兴趣",
+            "hint": "每行一个主题，最多 {max} 个。"
+          },
+          "mbti": {
+            "label": "MBTI 类型",
+            "unset": "未指定"
+          },
+          "language": {
+            "label": "语言",
+            "hint": "语言代码，例如 de 或 en。"
+          },
+          "activity_level": {
+            "label": "活跃度",
+            "hint": "0 至 1 的数字，留空表示未指定。"
+          },
+          "time_zone": {
+            "label": "时区",
+            "hint": "例如 Europe/Berlin。"
+          },
+          "source_entity_type": {
+            "label": "源实体类型",
+            "hint": "画像在图谱中对应的源实体类型。"
+          },
+          "origin": {
+            "label": "来源"
+          },
+          "source_entity_uuid": {
+            "label": "源实体（UUID）",
+            "none": "未关联图谱。"
+          }
+        }
+      },
+      "library": {
+        "empty": "暂无画像集。",
+        "count": "{n} 个画像集",
+        "list": "画像集",
+        "new": "新建画像集",
+        "searchLabel": "按名称搜索画像集",
+        "searchPlaceholder": "搜索名称…",
+        "noMatches": "没有匹配“{query}”的画像集。",
+        "matches": "显示 {n} / {total} 个画像集",
+        "personasOne": "1 个画像",
+        "personas": "{n} 个画像",
+        "stateEditable": "可编辑",
+        "stateLocked": "已锁定",
+        "usageNone": "尚未用于任何运行",
+        "usageOne": "已用于 1 次运行",
+        "usage": "已用于 {n} 次运行",
+        "updated": "修改于 {date}",
+        "open": "打开",
+        "duplicate": "复制",
+        "duplicateName": "{name}（副本）",
+        "delete": "删除",
+        "deleteLockedReason": "已锁定：已有运行使用此画像集，无法删除，只能复制。",
+        "importedNote": "“Importiert”集合（ID 为 pset_importiert）保存了从旧模板库迁入的画像。",
+        "tileActions": "{name} 的操作",
+        "create": {
+          "title": "新建画像集",
+          "description": "创建空集合，之后可在集合内添加画像。",
+          "nameLabel": "名称",
+          "descriptionLabel": "描述（可选）",
+          "nameRequired": "请输入名称。",
+          "nameTooLong": "名称最多 {max} 个字符。",
+          "descriptionTooLong": "描述最多 {max} 个字符。",
+          "submit": "创建",
+          "submitting": "正在创建…",
+          "cancel": "取消"
+        },
+        "remove": {
+          "title": "删除画像集？",
+          "body": "“{name}”将被永久删除，此操作无法撤销。",
+          "confirm": "永久删除",
+          "cancel": "取消"
+        },
+        "messages": {
+          "created": "画像集“{name}”已创建。",
+          "duplicated": "画像集“{name}”已复制。",
+          "deleted": "画像集“{name}”已删除。",
+          "locked": "已有运行使用此画像集，因此已锁定。无法删除，但可以复制。",
+          "actionFailed": "操作失败：{error}"
+        }
+      },
+      "detail": {
+        "title": "画像集",
+        "empty": "此画像集暂无画像。",
+        "locked": "已锁定：已有运行使用此画像集，请复制后修改。",
+        "notFound": "未找到画像集。",
+        "backToLibrary": "返回画像集列表",
+        "conflict": "冲突：画像集中已存在此用户名。",
+        "header": {
+          "label": "画像集",
+          "rename": "重命名",
+          "name": "名称",
+          "description": "描述",
+          "save": "保存",
+          "cancel": "取消",
+          "count": "{n} 个画像",
+          "stateLocked": "已锁定",
+          "stateEditable": "可编辑",
+          "duplicate": "复制",
+          "duplicateAndEdit": "复制并编辑",
+          "duplicateName": "{name}（副本）",
+          "usedBy": "使用此集合的运行："
+        },
+        "origin": {
+          "graph": "来自图谱",
+          "manual": "手动",
+          "ai_draft": "AI 草稿",
+          "fallback": "降级方案"
+        },
+        "kind": {
+          "individual": "个人",
+          "collective": "集体"
+        },
+        "card": {
+          "select": "选择 {name}",
+          "noRole": "未填写角色",
+          "fallbackNote": "降级：基于规则的备用画像，非正常生成的画像。",
+          "draftNote": "草稿：由 AI 生成，尚未审核。"
+        },
+        "filter": {
+          "label": "筛选画像",
+          "search": "搜索",
+          "origin": "来源",
+          "kind": "类型",
+          "role": "角色",
+          "all": "全部",
+          "reset": "重置筛选",
+          "count": "{shown} / {total}",
+          "noMatches": "没有符合筛选条件的画像。"
+        },
+        "toolbar": {
+          "label": "画像操作",
+          "add": "＋ 画像",
+          "selectAll": "选择所有已显示项",
+          "deleteSelected": "删除（{n}）",
+          "lockedReason": "画像集已锁定，请复制后修改。"
+        },
+        "confirm": {
+          "label": "确认删除",
+          "text": "永久删除 {n} 个画像？若其中一次删除失败，则不会作任何更改。",
+          "yes": "永久删除",
+          "no": "取消"
+        },
+        "cards": {
+          "label": "画像"
+        },
+        "quality": {
+          "label": "质量提示",
+          "loading": "正在检查质量…",
+          "error": "无法加载质量提示：",
+          "summary": "{total} 个画像，{roles} 种不同角色，{mbti} 种不同 MBTI 类型。",
+          "noGlobalIssues": "没有集合级别的提示。",
+          "issuesFor": "{name} 的提示",
+          "severity": {
+            "error": "错误",
+            "warning": "警告",
+            "info": "说明"
+          }
+        },
+        "editor": {
+          "titleNew": "新建画像",
+          "titleEdit": "编辑画像",
+          "name": "名称",
+          "username": "用户名",
+          "save": "保存",
+          "cancel": "取消",
+          "invalid": "姓名与用户名为必填项。",
+          "lockedHint": "画像集已锁定，画像为只读。"
+        },
+        "announce": {
+          "deleted": "已删除 {n} 个画像。",
+          "saved": "已保存 {name}。",
+          "renamed": "画像集已更新。"
+        },
+        "draft": {
+          "title": "使用 AI 起草",
+          "brief": "希望画像担任什么角色？",
+          "briefPlaceholder": "例如：来自不来梅的职工委员会成员，正面临排班争议",
+          "submit": "生成草稿",
+          "running": "正在生成草稿…",
+          "locked": "已锁定的画像集无法接收草稿，请复制后修改。",
+          "providerError": "无法连接服务商。请求本身正常，请重试。",
+          "previewLabel": "此画像可能如何发言",
+          "dismiss": "关闭预览"
+        }
+      },
+      "run": {
+        "title": "画像",
+        "empty": "此运行暂无画像集视图。"
+      }
+    },
+    "graphLibrary": {
+      "title": "图谱",
+      "errors": {
+        "unknown": "加载时发生未知错误。",
+        "schema": "服务器响应格式与预期不符。",
+        "graphData": "无法加载图谱数据。",
+        "project": "无法加载图谱。",
+        "run": "无法加载运行。",
+        "runs": "无法加载使用此图谱的运行。",
+        "runsPartial": "响应中的 {n} 条运行记录无法读取，未显示。"
+      },
+      "runStatus": {
+        "created": "创建时间",
+        "preparing": "准备中",
+        "ready": "就绪",
+        "idle": "等待中",
+        "starting": "启动中",
+        "running": "运行中",
+        "paused": "已暂停",
+        "stopping": "停止中",
+        "stopped": "已停止",
+        "completed": "完成",
+        "failed": "失败"
+      },
+      "state": {
+        "loading": "正在加载图谱…",
+        "errorTitle": "无法加载图谱",
+        "retry": "重试",
+        "noGraphTitle": "没有图谱",
+        "notBuilt": "图谱尚未构建，或创建运行时未使用图谱。",
+        "failed": "图谱构建失败。",
+        "openBuild": "打开构建视图",
+        "buildingTitle": "图谱正在构建",
+        "buildingNoProgress": "尚无进度信息。",
+        "incomplete": "构建已取消。此图谱不完整，无法用于后续运行。"
+      },
+      "run": {
+        "title": "图谱",
+        "openInLibrary": "在资源库中打开"
+      },
+      "detail": {
+        "newRun": "基于此图谱新建运行",
+        "newRunUnavailable": "图谱完全构建后才能新建运行。",
+        "runsTitle": "使用此图谱的运行",
+        "runsLoading": "正在加载运行…",
+        "runsEmpty": "暂无运行使用此图谱。"
+      },
+      "library": {
+        "loading": "正在加载图谱…",
+        "errorTitle": "无法加载图谱",
+        "empty": "暂无图谱。从来源启动运行后即会创建图谱。",
+        "rejected": "响应中的 {n} 个图谱无法读取，未显示。",
+        "runsUnavailable": "无法加载运行数量。",
+        "runsUnknown": "运行数量未知",
+        "runs": "{n} 次运行",
+        "runsOne": "1 次运行",
+        "moreSources": "另有 {n} 项"
+      },
+      "reader": {
+        "label": "查看图谱",
+        "counts": "{entities} 个实体 · {relations} 条关系",
+        "targetMissing": "请求的目标不属于此图谱。",
+        "export": {
+          "graphml": "导出 GraphML",
+          "running": "正在导出…",
+          "failed": "导出失败。"
+        },
+        "search": {
+          "label": "搜索实体",
+          "placeholder": "名称或别名"
+        },
+        "types": {
+          "label": "类型筛选",
+          "title": "类型",
+          "clear": "所有类型"
+        },
+        "list": {
+          "title": "实体",
+          "empty": "没有符合搜索和筛选条件的实体。",
+          "capped": "显示前 {shown} / {total} 个实体，请缩小搜索或筛选范围。"
+        },
+        "view": {
+          "label": "查看",
+          "net": "网络",
+          "table": "表格"
+        },
+        "net": {
+          "hint": "点击节点或关系，在右侧查看详情。"
+        },
+        "tabs": {
+          "label": "表格",
+          "entities": "实体",
+          "relations": "关系"
+        },
+        "table": {
+          "captionEntities": "图谱实体",
+          "captionRelations": "图谱关系",
+          "emptyEntities": "没有符合搜索和筛选条件的实体。",
+          "emptyRelations": "没有符合搜索和筛选条件的关系。",
+          "capped": "显示前 {shown} / {total} 行，请缩小搜索或筛选范围。",
+          "entity": {
+            "name": "名称",
+            "type": "类型",
+            "degree": "关系",
+            "createdAt": "创建时间"
+          },
+          "relation": {
+            "from": "起点",
+            "label": "关系",
+            "to": "终点",
+            "episodes": "来源片段"
+          }
+        },
+        "detail": {
+          "label": "详情",
+          "none": "选择实体或关系以查看详情。",
+          "aliases": "别名",
+          "description": "描述",
+          "attributes": "属性",
+          "relations": "关系（{n}）",
+          "noRelations": "此实体没有关系。",
+          "outgoing": "出向",
+          "incoming": "入向",
+          "origin": "来源",
+          "episodes": "由 {n} 个来源片段支持",
+          "created": "创建时间：{date}",
+          "noDocument": "图谱数据中未保存文档和章节信息。",
+          "unnamedRelation": "未命名关系",
+          "relationKind": "关系",
+          "between": "连接",
+          "from": "起点",
+          "to": "终点",
+          "fact": "陈述"
+        }
+      }
+    },
+    "activity": {
+      "title": "活动",
+      "tabs": "活动分区",
+      "jobs": {
+        "title": "任务",
+        "caption": "注册表任务，包含类型、所属运行、状态、进度和时长",
+        "col": {
+          "kind": "类型",
+          "run": "运行",
+          "state": "状态",
+          "progress": "进度",
+          "started": "开始时间",
+          "duration": "时长",
+          "actions": "操作"
+        },
+        "filter": {
+          "kind": "类型",
+          "state": "状态",
+          "all": "全部",
+          "none": "重置筛选"
+        },
+        "kind": {
+          "graph_build": "图谱构建",
+          "ontology_generate": "本体",
+          "simulation_prepare": "准备",
+          "simulation_run": "模拟",
+          "report_generate": "报告",
+          "report_generation": "报告"
+        },
+        "state": {
+          "pending": "等待中",
+          "running": "运行中",
+          "paused": "已暂停",
+          "completed": "完成",
+          "stopped": "已停止",
+          "budget": "预算已用尽",
+          "failed": "失败"
+        },
+        "reason": {
+          "user_stop": "用户已停止",
+          "user_cancel": "用户已取消",
+          "process_restart": "进程已重启",
+          "error": "错误",
+          "budget_tokens": "令牌预算",
+          "budget_cost": "费用预算",
+          "budget_time": "时长预算",
+          "budget_calls": "调用预算"
+        },
+        "action": {
+          "toRun": "前往运行",
+          "cancel": "取消",
+          "cancelConfirm": "确定取消此任务吗？",
+          "cancelYes": "确认取消",
+          "cancelNo": "否",
+          "cancelRequested": "已请求取消",
+          "cancelFailed": "取消失败"
+        },
+        "open": "打开任务 {id}",
+        "unknownRun": "无所属运行",
+        "loading": "正在加载任务…",
+        "error": "无法加载任务：{message}",
+        "empty": "暂无任务。",
+        "emptyFiltered": "没有符合筛选条件的任务。"
+      },
+      "log": {
+        "title": "日志",
+        "pageTitle": "后端日志"
+      }
+    },
+    "stepEnvSetup": {
+      "title": "画像",
+      "subtitle": "配置目标群体配额与环境参数"
+    },
+    "stepReport": {
+      "title": "报告",
+      "subtitle": "查看模拟结果和来源引用"
+    },
+    "stepGraphBuild": {
+      "title": "图谱构建",
+      "subtitle": "根据上传的文档构建知识图谱"
+    },
+    "stepSimulation": {
+      "subtitle": "启动并观察多智能体模拟运行"
+    },
+    "simThreads": {
+      "title": "讨论",
+      "subtitle": "此次运行的讨论串，按最近活动排序"
+    },
+    "simThreadFocus": {
+      "title": "讨论串",
+      "subtitle": "包含所有回复的讨论串"
+    },
+    "simRounds": {
+      "title": "轮次",
+      "subtitle": "各模拟轮次的行动统计"
+    },
+    "simActions": {
+      "title": "日志",
+      "subtitle": "全部已记录的模拟行动，支持筛选"
+    },
+    "stepSimulationFeed": {
+      "title": "实时动态",
+      "subtitle": "跟踪正在运行的模拟中的 Reddit 和 Twitter 动态"
+    },
+    "shelf": {
+      "dateYesterday": "昨天",
+      "overview": {
+        "ariaLabel": "概览",
+        "subtitle": "选择左侧对象以打开详情。",
+        "newSource": "拖入来源文件",
+        "headingIdle": "当前没有需要你处理的事项。",
+        "headingLive": "{live} 次运行正在进行。",
+        "headingAttention": "{attn} 项需要你处理。",
+        "headingBoth": "{live} 次运行正在进行，{attn} 项需要你处理。",
+        "attentionTitle": "待你处理",
+        "attentionCount": "{n} 项待处理",
+        "attentionEmpty": "没有等待决策的事项。",
+        "liveTitle": "正在运行",
+        "liveEmpty": "暂无正在进行的运行。",
+        "recentTitle": "最近完成",
+        "recentEmpty": "暂无已完成项。",
+        "openSettings": "打开设置"
+      }
+    },
+    "dossier": {
+      "kpiPersonas": "画像",
+      "kpiJobs": "任务",
+      "kpiSections": "章节",
+      "kpiEvidence": "证据",
+      "kpiClaims": "论断",
+      "evidenceOmittedWarning": "无法显示置信度分布和论断数量：已保存的证据图违反证据契约，未予显示。报告本身不受影响。",
+      "partsOpen": "打开",
+      "parts": {
+        "actors": "参与者",
+        "actorsDesc": "{n} 个画像",
+        "output": "输出",
+        "outputDesc": "{n} 条证据"
+      },
+      "jobsTimelineTitle": "历史记录",
+      "confidenceTitle": "置信度分布",
+      "confidence": {
+        "speculative": "推测性",
+        "low": "低",
+        "medium": "中",
+        "high": "高",
+        "verified": "已验证"
+      },
+      "redTeamTitle": "红队发现"
+    }
+  },
+  "runBudget": {
+    "sectionTitle": "预算（可选）",
+    "enforcementLabel": "执行方式",
+    "enforcementSoft": "软限制",
+    "enforcementHard": "硬限制",
+    "enforcementSoftHint": "超出时发出警告，运行会继续。",
+    "enforcementHardHint": "超出时停止运行。",
+    "maxTokensLabel": "令牌上限",
+    "maxCostLabel": "费用上限（美元）",
+    "maxDurationLabel": "时长上限（分钟）",
+    "maxCallsLabel": "大模型调用次数上限",
+    "placeholderTokens": "例如 100000",
+    "placeholderCost": "例如 1.50",
+    "placeholderDuration": "例如 30",
+    "placeholderCalls": "例如 200",
+    "invalidPositiveInt": "仅允许正整数",
+    "invalidCost": "仅允许正数金额（例如 1.50）",
+    "estimateTitle": "费用估算",
+    "estimateBadge": "估算",
+    "estimateRefresh": "刷新估算",
+    "estimateLoading": "正在估算…",
+    "estimateEmpty": "暂无估算。请检查配置并请求估算。",
+    "estimateTokens": "令牌",
+    "estimateCost": "费用",
+    "estimateDuration": "时长",
+    "estimateModels": "模型",
+    "estimateDataQuality": "数据质量",
+    "estimateWarnings": "估算说明",
+    "qualityHigh": "高",
+    "qualityMedium": "中",
+    "qualityLow": "低",
+    "qualityUnknown": "未知",
+    "monitorTitle": "资源用量",
+    "monitorNoBudget": "未设置预算，用量不受限制。",
+    "dimensionTokens": "令牌",
+    "dimensionCost": "费用",
+    "dimensionTime": "时长",
+    "dimensionCalls": "调用次数",
+    "remainingLabel": "剩余",
+    "ofLimit": "/",
+    "warningsTitle": "预算警告",
+    "budgetStopTitle": "运行因预算限制而停止",
+    "statusOk": "预算内",
+    "statusWarning": "警告",
+    "statusExceeded": "已超出",
+    "breakdownTitle": "用量明细",
+    "totalsTitle": "总用量",
+    "inputTokens": "输入令牌",
+    "outputTokens": "输出令牌",
+    "totalTokens": "令牌总数",
+    "llmCalls": "大模型调用次数",
+    "cost": "费用",
+    "duration": "时长",
+    "byStageTitle": "按阶段统计用量",
+    "byProviderTitle": "按服务商统计用量",
+    "byModelTitle": "按模型统计用量",
+    "topConsumer": "主要用量来源",
+    "estimateVsActualTitle": "估算与实际",
+    "estimatedColumn": "估算",
+    "actualColumn": "实际",
+    "pricingMeta": "定价：{version}（{source}）",
+    "measurementComplete": "完整计量",
+    "measurementPartial": "部分计量",
+    "measurementUnknown": "计量情况未知",
+    "terminationCompleted": "正常完成",
+    "terminationError": "因错误而终止",
+    "terminationUserCancel": "用户已取消",
+    "terminationUserStop": "用户已停止",
+    "terminationBudgetTokens": "已达到令牌预算",
+    "terminationBudgetCost": "已达到费用预算",
+    "terminationBudgetTime": "已达到时长预算",
+    "terminationBudgetCalls": "已达到调用次数预算",
+    "terminationProcessRestart": "进程重启后标记为已结束",
+    "costStatusMeasured": "已计量",
+    "costStatusEstimated": "估算值",
+    "costStatusFree": "可用空间",
+    "costStatusUnknown": "未知",
+    "tokensStatusPartial": "部分跟踪",
+    "colName": "名称",
+    "colStage": "阶段",
+    "colProvider": "服务商",
+    "colModel": "模型"
+  },
+  "shelf": {
+    "action": {
+      "watch": "观察",
+      "resume": "继续",
+      "inspectFailure": "检查失败原因",
+      "inspectStopped": "查看部分结果",
+      "preparePersonas": "生成画像",
+      "reviewPersonas": "审核画像",
+      "readReport": "阅读报告",
+      "createReport": "创建报告",
+      "viewGraph": "查看图谱"
+    },
+    "activity": "{n} 项进行中",
+    "back": "返回",
+    "cancel": "取消",
+    "cancelRequested": "已请求取消，等待当前阶段完成。",
+    "dossier": {
+      "derive": "派生新运行",
+      "deriveFailed": "无法派生运行。",
+      "deriveName": "派生自 {title}",
+      "emptyHint": "未选择对象。请选择左侧对象以查看概览。",
+      "graphEntities": "实体",
+      "graphRelations": "关系",
+      "idLabel": "ID",
+      "personaBio": "简介",
+      "personaCountry": "国家或地区",
+      "personaProfession": "职业",
+      "personaTopics": "兴趣",
+      "startFailed": "无法创建运行。",
+      "startFromPersona": "使用这些画像运行",
+      "startName": "使用 {title} 运行"
+    },
+    "empty": "暂无对象。拖入来源文件以开始。",
+    "filter": {
+      "alle": "全部",
+      "lauf": "运行记录",
+      "bericht": "报告",
+      "personasatz": "画像",
+      "graph": "图谱",
+      "jobs": "所有任务"
+    },
+    "newObject": "新建对象：拖入来源文件",
+    "newObjectHint": "PDF、Markdown、文本、网页",
+    "partialLoad": "4 个来源中有 {n} 个不可用，列表不完整。",
+    "pause": "暂停",
+    "resume": "继续",
+    "stack": "堆叠",
+    "status": {
+      "completed": "完成",
+      "failed": "失败",
+      "jobs": "{n} 个任务",
+      "paused": "已暂停",
+      "pending": "等待中",
+      "personaTemplate": "可复用画像集",
+      "processing": "运行中",
+      "project_created": "已创建，尚无图谱",
+      "project_failed": "图谱构建失败",
+      "project_graph_building": "正在构建图谱",
+      "project_graph_completed": "图谱完整",
+      "project_graph_incomplete": "图谱不完整（已取消）",
+      "project_ontology_generated": "本体已就绪",
+      "reportSections": "{n} 个章节",
+      "report_completed": "报告已完成",
+      "report_failed": "报告失败",
+      "report_generating": "正在撰写报告",
+      "report_incomplete": "报告不完整",
+      "report_pending": "报告排队中",
+      "report_planning": "正在生成大纲",
+      "stopped": "已取消"
+    },
+    "subtitle": "{n} 个对象，最近更新的在前",
+    "table": {
+      "toggleList": "列表",
+      "toggleTable": "表格",
+      "toggleAria": "选择视图",
+      "colTitle": "事项",
+      "colStatus": "状态",
+      "colProgress": "进度",
+      "colPersonas": "画像",
+      "colUpdatedAt": "更新时间",
+      "colNextAction": "下一步",
+      "colType": "类型",
+      "colMessage": "消息",
+      "compare": "对比"
+    },
+    "title": "工作架",
+    "undo": "撤销",
+    "undoHint": "{s} 秒后取消"
+  },
+  "stepper": {
+    "stepAria": "第 {n} 步：{label}"
+  },
+  "auth": {
+    "login": {
+      "title": "登录",
+      "emailLabel": "电子邮箱",
+      "passwordLabel": "密码",
+      "submit": "登录",
+      "submitting": "正在登录…",
+      "forgotPassword": "忘记密码？",
+      "toRegister": "还没有账号？立即注册",
+      "errorGeneric": "登录失败，请检查凭据。",
+      "resetDone": "密码已修改，请重新登录。",
+      "tokenTitle": "管理员登录",
+      "tokenLabel": "访问令牌",
+      "tokenHint": "请输入此安装实例 .env 中 AGORA_AUTH_TOKEN 的值。",
+      "tokenInvalid": "令牌无效，请检查输入的值。"
+    },
+    "workspaceProviderKeys": {
+      "title": "你的服务商密钥",
+      "description": "密钥仅适用于当前工作区。Agora 不会再次显示已保存的密钥。",
+      "keyLabel": "{provider} 的 API 密钥",
+      "configured": "密钥已保存",
+      "missing": "未保存密钥",
+      "save": "保存密钥",
+      "delete": "删除密钥",
+      "saved": "密钥已保存。",
+      "deleted": "密钥已删除。",
+      "readOnly": "只有所有者和管理员可以修改密钥。",
+      "loadError": "无法加载密钥。",
+      "saveError": "无法保存密钥。",
+      "deleteError": "无法删除密钥。"
+    },
+    "register": {
+      "title": "创建账号",
+      "emailLabel": "电子邮箱",
+      "passwordLabel": "密码",
+      "passwordHint": "至少 12 个字符",
+      "confirmLabel": "确认密码",
+      "submit": "注册",
+      "submitting": "正在注册…",
+      "toLogin": "已有账号？登录",
+      "successMessage": "请验证电子邮箱，确认链接已发送至你的邮箱。",
+      "errorPasswordTooShort": "密码至少需要 12 个字符。",
+      "errorPasswordMismatch": "两次输入的密码不一致。",
+      "errorGeneric": "注册失败，请重试。"
+    },
+    "reset": {
+      "title": "重置密码",
+      "emailLabel": "电子邮箱",
+      "newPasswordLabel": "新密码",
+      "confirmPasswordLabel": "确认新密码",
+      "passwordHint": "至少 12 个字符",
+      "submitRequest": "获取链接",
+      "submitNew": "设置密码",
+      "submitting": "处理中…",
+      "toLogin": "返回登录",
+      "successMessage": "如果此邮箱对应账号存在，我们已发送密码重置链接。",
+      "errorPasswordTooShort": "密码至少需要 12 个字符。",
+      "errorPasswordMismatch": "两次输入的密码不一致。",
+      "errorGeneric": "无法设置密码，请重新获取链接。"
+    },
+    "confirm": {
+      "title": "验证邮箱",
+      "checking": "正在验证…",
+      "successMessage": "邮箱已验证，正在跳转…",
+      "errorInvalidLink": "确认链接无效或已过期。",
+      "toLogin": "前往登录"
+    }
+  },
+  "language": {
+    "label": "界面语言"
+  }
+}

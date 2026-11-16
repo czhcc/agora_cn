@@ -43,7 +43,7 @@ const router = useRouter()
 
 // Statische Commands einmalig bauen und mit aktuellem Locale verknuepfen
 const staticCommands = computed<Command[]>(() =>
-  store.buildStaticCommands(router, locale.value as 'de' | 'en'),
+  store.buildStaticCommands(router, locale.value),
 )
 
 // Gefilterte und nach Recent geordnete Commands

@@ -14,6 +14,9 @@ PROVIDER_BEDROCK = "bedrock"
 PROVIDER_CLOUD = "cloud"
 PROVIDER_UNKNOWN = "unknown"
 
+# Explicit protocol selection takes precedence over unknown URL detection.
+NATIVE_TOOL_CONNECTION_TYPES = frozenset({PROVIDER_OPENAI_COMPATIBLE})
+
 # Issue #1284: nativer Anthropic-Chat-Transport (roher HTTP-POST im
 # OpenAI-Format an https://api.anthropic.com) wird nicht unterstuetzt — die
 # Base-URL hat kein "/v1"-Suffix fuer den Chat-Pfad, und der OpenAI-SDK-Client

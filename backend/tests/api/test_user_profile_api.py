@@ -88,6 +88,14 @@ class TestGetProfile:
 
 
 class TestPutProfile:
+    def test_chinese_preferences_persist_and_reload(self, client) -> None:
+        prefs = {"language": "zh-CN", "report_language": "zh-CN", "timezone": "Asia/Shanghai"}
+        response = client.put("/api/profile", json={"display_name": "Alex", **prefs})
+        assert response.status_code == 200
+        loaded = client.get("/api/profile").get_json()["data"]["profile"]
+        for field, value in prefs.items():
+            assert loaded[field] == value
+
     def test_invalid_schema_returns_400(self, client) -> None:
         resp = client.put("/api/profile", json={"theme": "not-a-real-theme"})
         assert resp.status_code == 400

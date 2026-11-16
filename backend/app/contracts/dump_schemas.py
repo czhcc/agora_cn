@@ -15,6 +15,7 @@ import json
 import sys
 from pathlib import Path
 
+from app.contracts.simulation_language_contract import SimulationLanguageSelection
 from app.contracts.branch_comparison import BranchComparison
 from app.contracts.branch_request_contract import BranchOverrides
 from app.contracts.graph_diff import GraphDiff
@@ -266,6 +267,7 @@ CONTRACTS: dict[str, type] = {
     "persona-draft-example-post.schema.json": PersonaDraftExamplePost,
     "persona-draft-response.schema.json": PersonaDraftResponse,
     "create-from-personas-response.schema.json": CreateFromPersonasResponse,
+    "simulation-language-selection.schema.json": SimulationLanguageSelection,
     # Persona-Ziel für den Fortschrittszähler (Issue #1034)
     "persona-target.schema.json": PersonaTargetContract,
     # Status-Antworten mit message_key (Issue #1174, Muster aus #1458)

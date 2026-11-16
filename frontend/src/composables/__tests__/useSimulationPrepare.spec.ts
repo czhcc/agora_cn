@@ -111,6 +111,35 @@ afterEach(() => {
 // -------------------------------------------------------------------------
 
 describe('useSimulationPrepare', () => {
+  it('does not report a config-only restore as completed', async () => {
+    mockGetConfig.mockResolvedValue(makeConfigEnvelope({ time_config: {} }))
+    const state = useSimulationPrepare()
+    const onStatusChange = vi.fn()
+    await state.probeAlreadyPrepared('sim_1', { onLog: vi.fn(), onStatusChange })
+    expect(state.phase.value).toBe(0)
+    expect(onStatusChange).not.toHaveBeenCalledWith('completed')
+    state.reset()
+  })
+
+  it('rejects an already-prepared response when profiles are missing', async () => {
+    mockPrepare.mockResolvedValue(makePrepareEnvelope({ already_prepared: true }) as ApiEnvelope<TaskStatusData>)
+    mockGetConfig.mockResolvedValue(makeConfigEnvelope({ time_config: {} }))
+    const state = useSimulationPrepare()
+    const onStatusChange = vi.fn()
+    expect(await state.startPrepare({ payload: { simulation_id: 'sim_1' }, onLog: vi.fn(), onStatusChange })).toBe(false)
+    expect(state.error.value).toBeTruthy()
+    expect(state.isPreparing.value).toBe(false)
+    expect(onStatusChange).toHaveBeenCalledWith('error')
+    state.reset()
+  })
+
+  it('exposes profile read failures to the page', async () => {
+    mockGetProfiles.mockRejectedValue(new Error('Profile request failed: invalid simulation ID'))
+    const state = useSimulationPrepare()
+    await state.probeAlreadyPrepared('proj_wrong', { onLog: vi.fn(), onStatusChange: vi.fn() })
+    expect(state.error.value).toContain('invalid simulation ID')
+    state.reset()
+  })
   describe('Case 1 — Erfolgsfall: startPrepare ruft API korrekt auf und setzt State', () => {
     it('ruft prepareSimulation mit korrektem Body, gibt true zurück, setzt isPreparing=true', async () => {
       mockPrepare.mockResolvedValue(makePrepareEnvelope() as ApiEnvelope<TaskStatusData>)

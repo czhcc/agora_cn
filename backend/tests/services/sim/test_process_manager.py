@@ -322,14 +322,26 @@ class TestIsProcessAlive:
     def test_process_lookup_error_is_dead(self):
         from app.services.sim.process_manager import is_process_alive
 
-        with patch("os.kill", side_effect=ProcessLookupError):
+        with patch("app.services.sim.process_manager.IS_WINDOWS", False), patch("os.kill", side_effect=ProcessLookupError):
             assert is_process_alive(4242) is False
 
     def test_permission_error_is_conservatively_alive(self):
         from app.services.sim.process_manager import is_process_alive
 
-        with patch("os.kill", side_effect=PermissionError):
+        with patch("app.services.sim.process_manager.IS_WINDOWS", False), patch("os.kill", side_effect=PermissionError):
             assert is_process_alive(4242) is True
+
+    @pytest.mark.parametrize("exists", [True, False])
+    def test_windows_uses_native_pid_probe_without_signalling(self, exists):
+        from app.services.sim import process_manager
+
+        with (
+            patch.object(process_manager, "IS_WINDOWS", True),
+            patch.object(process_manager.psutil, "pid_exists", return_value=exists) as probe,
+            patch("os.kill", side_effect=AssertionError("Windows liveness must not signal a process")),
+        ):
+            assert process_manager.is_process_alive(4242) is exists
+            probe.assert_called_once_with(4242)
 
 
 # ---------------------------------------------------------------------------

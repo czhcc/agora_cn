@@ -14,6 +14,15 @@ export const ALLOWED_AVATAR_MIME_TYPES: ReadonlySet<string> = new Set([
 
 export const MAX_AVATAR_BYTES = 2 * 1024 * 1024
 
+/** Browser/workstation timezone; persisted profiles always use an IANA identifier. */
+export function systemTimezone(): string {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'
+  } catch {
+    return 'UTC'
+  }
+}
+
 /** Gängige IANA-Zeitzonen als Datalist-Vorschläge (Freitextfeld bleibt möglich). */
 export const TIMEZONE_SUGGESTIONS: readonly string[] = [
   'Europe/Berlin',
@@ -25,6 +34,7 @@ export const TIMEZONE_SUGGESTIONS: readonly string[] = [
   'America/New_York',
   'America/Los_Angeles',
   'America/Chicago',
+  'Asia/Shanghai',
   'Asia/Tokyo',
   'Asia/Singapore',
   'Asia/Dubai',

@@ -9,7 +9,13 @@ unter Last. Diese Tests nageln die Zusage fest, jetzt an einer Stelle.
 
 from __future__ import annotations
 
-import fcntl
+import errno
+import os
+
+if os.name == "nt":
+    import msvcrt
+else:
+    import fcntl
 
 import pytest
 
@@ -51,12 +57,21 @@ class TestFileLock:
         eigene Beschreibung und läuft in ``BlockingIOError``, solange der
         erste Lock gehalten wird.
         """
-        with open(path, "w", encoding="utf-8") as probe:
+        with open(path, "a", encoding="utf-8") as probe:
+            probe.seek(0)
             try:
-                fcntl.flock(probe, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except BlockingIOError:
+                if os.name == "nt":
+                    msvcrt.locking(probe.fileno(), msvcrt.LK_NBLCK, 1)
+                else:
+                    fcntl.flock(probe, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except OSError as exc:
+                if exc.errno not in (errno.EACCES, errno.EAGAIN):
+                    raise
                 return False
-            fcntl.flock(probe, fcntl.LOCK_UN)
+            if os.name == "nt":
+                msvcrt.locking(probe.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                fcntl.flock(probe, fcntl.LOCK_UN)
             return True
 
     def test_lock_is_exclusive_while_held(self, store):

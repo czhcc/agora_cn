@@ -22,7 +22,7 @@ import { getProject } from '@/api/graph'
 import { getRun, listRuns } from '@/api/runs'
 import { getRunLlmRouting } from '@/api/llmRouting'
 import { getReportEvidence, listReports } from '@/api/report'
-import { RunDetailSchema, RunsListResponseSchema } from '@/contracts/runsContract'
+import { RunDetailSchema, RunsListResponseSchema, RunWorkspaceSimulationSchema } from '@/contracts/runsContract'
 import { RunUsageSchema, TerminationReasonSchema, type RunUsage } from '@/contracts/runBudgetContract'
 import { ReportListItemSchema } from '@/contracts/reportContract'
 import { ProjectSchema } from '@/contracts/projectContract'
@@ -37,14 +37,6 @@ import {
   type StageRow,
 } from './runStageState'
 import { deriveRunTabs, type RunTab } from './runTabs'
-
-const SimulationLookupSchema = z
-  .object({
-    simulation_id: z.string().min(1),
-    project_id: z.string().nullable().optional(),
-    status: z.string().optional(),
-  })
-  .passthrough()
 
 /** `GET /api/runs/<id>`: Run-Detail samt Verbrauch und Abbruchgrund (#764). */
 const RunJobDetailSchema = RunDetailSchema.extend({
@@ -162,15 +154,33 @@ function toJob(run: z.infer<typeof RunJobDetailSchema>): JobInfo {
   }
 }
 
-async function loadJobs(simulationId: string): Promise<JobInfo[]> {
-  const res = await listRuns({ simulation_id: simulationId, limit: 100 })
-  if (!res?.success) throw new Error(res?.error || res?.message || 'listRuns')
-  const parsed = RunsListResponseSchema.safeParse(res.data)
-  if (!parsed.success) throw new Error(`Vertragsbruch GET /api/runs: ${parsed.error.message}`)
+async function loadJobs(simulationId: string, projectId: string | null, graphId: string | null): Promise<JobInfo[]> {
+  // Graph jobs precede simulation creation and therefore only carry project/graph links.
+  const [res, graphRes] = await Promise.all([
+    listRuns({ simulation_id: simulationId, limit: 100 }),
+    projectId && graphId ? listRuns({ project: projectId, run_type: 'graph_build', limit: 200 }) : null,
+  ])
+  function readRuns(response: typeof res) {
+    if (!response?.success) throw new Error(response?.error || response?.message || 'listRuns')
+    const parsed = RunsListResponseSchema.safeParse(response.data)
+    if (!parsed.success) throw new Error(`Vertragsbruch GET /api/runs: ${parsed.error.message}`)
+    return parsed.data.runs
+  }
+  const runs = readRuns(res)
+  if (graphRes) {
+    runs.push(...readRuns(graphRes).filter((run) =>
+      run.run_type === 'graph_build' &&
+      (run.linked_ids['project_id'] === projectId || run.entity_id === projectId) &&
+      (run.linked_ids['graph_id'] ?? run.summary?.graph_id) === graphId,
+    ))
+  }
 
   // Neuester Job je Jobtyp; für diesen nachladen, weil nur das Detail den Verbrauch trägt.
   const newest = new Map<string, z.infer<typeof RunDetailSchema>>()
-  for (const run of parsed.data.runs) {
+  for (const run of runs) {
+    // Do not substitute a newer build for another graph belonging to the same project.
+    const linkedGraph = run.linked_ids['graph_id'] ?? run.summary?.graph_id
+    if (run.run_type === 'graph_build' && graphId && linkedGraph && linkedGraph !== graphId) continue
     const cur = newest.get(run.run_type)
     if (!cur || run.updated_at > cur.updated_at) newest.set(run.run_type, run)
   }
@@ -250,11 +260,12 @@ export function useRunWorkspace(simulationId: () => string): RunWorkspace {
         }
         throw new Error(typeof simRes?.error === 'string' && simRes.error ? simRes.error : 'getSimulation')
       }
-      const sim = SimulationLookupSchema.safeParse(simRes.data)
+      const sim = RunWorkspaceSimulationSchema.safeParse(simRes.data)
       if (!sim.success) throw new Error(`Vertragsbruch GET /api/simulation/${id}: ${sim.error.message}`)
       const projectId = sim.data.project_id || null
+      let graphId = sim.data.graph_id || null
 
-      let hasGraph = false
+      let hasGraph = !!graphId
       question.value = null
       graphName.value = null
       if (projectId) {
@@ -264,14 +275,15 @@ export function useRunWorkspace(simulationId: () => string): RunWorkspace {
           if (pp?.success) {
             question.value = pp.data.simulation_requirement?.trim() || null
             graphName.value = pp.data.name || null
-            hasGraph = !!pp.data.graph_id
+            graphId ||= pp.data.graph_id
+            hasGraph = !!graphId
           }
         } catch {
           // Die Frage ist Zusatz; sie fehlt dann sichtbar ("nicht erfasst").
         }
       }
 
-      const [jobs, reports] = await Promise.all([loadJobs(id), loadReports(id)])
+      const [jobs, reports] = await Promise.all([loadJobs(id, projectId, graphId), loadReports(id)])
       if (mine !== token) return
 
       // Zweite Quelle für die Frage: der Bericht trägt sie mit.

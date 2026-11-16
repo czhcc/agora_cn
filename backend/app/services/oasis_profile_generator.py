@@ -11,6 +11,7 @@ Optimization improvements:
 import re
 from typing import TYPE_CHECKING, Callable, Dict, Any, List, Optional
 
+from ..contracts.simulation_language_contract import parse_simulation_language
 from ..config import Config
 from ..contracts import PersonaQuotaPlan
 from ..contracts.persona_contract import VOICE_REGISTER_VALUES
@@ -259,8 +260,8 @@ class OasisProfileGenerator:
                 Config.LLM_API_KEY if self.base_url == Config.LLM_BASE_URL else None
             )
         self.model_name = model_name or Config.LLM_MODEL_NAME
-        # Language for generated personas ("de" or "en"); affects prompts and bio language.
-        self.language = (language or Config.AGENT_LANGUAGE or "de").lower()
+        # Language for generated personas ("de", "en" or "zh"); affects prompts and bio language.
+        self.language = parse_simulation_language(language or Config.AGENT_LANGUAGE) or "de"
 
         if not self.api_key:
             if provider_type:

@@ -181,7 +181,7 @@ export function useRunInterviews(
           !rows.some(
             (r) =>
               r.agent_id === s.agentId &&
-              stripInterviewPrefix(r.prompt) === s.turn.question &&
+              (r.display_prompt ?? stripInterviewPrefix(r.prompt)) === s.turn.question &&
               (r.response ?? null) === s.turn.answer,
           ),
       )

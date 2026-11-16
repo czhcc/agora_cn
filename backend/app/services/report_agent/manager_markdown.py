@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import re
+from html import escape
 from typing import Any, List, Optional
 
 from pydantic import ValidationError
 
 from ...contracts.report_v3 import ReportV3
+from ...contracts.report_language_contract import report_quote_labels
+from ...config import Config
 from ...models.report import ReportOutline
 from ...utils.logger import get_logger
 from .markdown_renderer import render_report_v3
@@ -37,20 +40,24 @@ _SIMULATED_QUOTE_ATTR_RE = re.compile(r'(\w+)\s*=\s*["\']([^"\']*)["\']')
 _HEADING_RE = re.compile(r"^(#{1,6})\s+(.+)$")
 
 
-def _render_simulated_quote_blocks(content: str) -> str:
+def _render_simulated_quote_blocks(content: str, language: str | None = None) -> str:
     """Ersetzt <simulated_quote>-Tags durch Markdown-Blockquotes mit Anker-Header."""
+
+    labels = report_quote_labels(language if language is not None else Config.REPORT_LANGUAGE)
 
     def _replace(match: "re.Match[str]") -> str:
         attrs = dict(_SIMULATED_QUOTE_ATTR_RE.findall(match.group(1) or ""))
         text = match.group(2).strip()
-        persona_id = attrs.get("persona_id", "unbekannt")
-        seed_anchor = attrs.get("seed_anchor", "unbekannt")
-        header = (
-            f"> **Simulierter Persona-O-Ton** "
-            f"(persona_id: {persona_id}, seed_anchor: {seed_anchor})"
-        )
+        persona_id = escape(attrs.get("persona_id", labels.unknown))
+        seed_anchor = escape(attrs.get("seed_anchor", labels.unknown))
+        header = f"> **{labels.title}** | {persona_id}"
         body_lines = [f"> {line}" if line else ">" for line in text.split("\n")]
-        return "\n\n" + "\n".join([header, *body_lines]) + "\n\n"
+        details = [
+            ">", "> <details>", f"> <summary>{labels.details}</summary>", ">",
+            f"> {labels.persona}: {persona_id}<br>",
+            f"> {labels.evidence}: {seed_anchor}", ">", "> </details>",
+        ]
+        return "\n\n" + "\n".join([header, *body_lines, *details]) + "\n\n"
 
     return _SIMULATED_QUOTE_TAG_RE.sub(_replace, content)
 

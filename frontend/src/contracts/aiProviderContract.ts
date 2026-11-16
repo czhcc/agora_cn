@@ -57,6 +57,7 @@ export const PublicBaseUrlSchema = z.string().regex(PUBLIC_BASE_URL_PATTERN).sup
     const parsed = new URL(value)
     const hostname = parsed.hostname.replace(/^\[|\]$/g, '').toLowerCase()
     const isIpv4Private = /^10\./.test(hostname)
+      || /^(?:0|22[4-9]|23\d|24\d|25[0-5])\./.test(hostname)
       || /^127(?:\.\d{1,3}){3}$/.test(hostname)
       || /^169\.254\./.test(hostname)
       || /^192\.168\./.test(hostname)
@@ -77,6 +78,23 @@ export const PublicBaseUrlSchema = z.string().regex(PUBLIC_BASE_URL_PATTERN).sup
     context.addIssue({ code: 'custom', message: 'base_url must be a public HTTP(S) base URL' })
   }
 })
+
+// Spiegel von backend/app/contracts/ai_provider_contract.py::
+const IPV4_OCTET = String.raw`(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])`
+const LAN_BASE_URL_PATTERN = new RegExp(
+  String.raw`^https?://(?:10\.${IPV4_OCTET}\.${IPV4_OCTET}\.${IPV4_OCTET}|172\.(?:1[6-9]|2[0-9]|3[01])\.${IPV4_OCTET}\.${IPV4_OCTET}|192\.168\.${IPV4_OCTET}\.${IPV4_OCTET})(?::[0-9]{1,5})?(?:/[^\s?#]*)?$`,
+)
+export const LanBaseUrlSchema = z.string().regex(LAN_BASE_URL_PATTERN).superRefine((value, context) => {
+  try {
+    const parsed = new URL(value)
+    if (parsed.port && !(Number(parsed.port) >= 1 && Number(parsed.port) <= 65535)) {
+      context.addIssue({ code: 'custom', message: 'base_url must use a valid port' })
+    }
+  } catch {
+    context.addIssue({ code: 'custom', message: 'base_url must be an RFC1918 LAN HTTP(S) base URL' })
+  }
+})
+const CompatibleBaseUrlSchema = z.union([PublicBaseUrlSchema, LanBaseUrlSchema])
 
 // Spiegel von backend/app/contracts/ai_provider_contract.py::
 // _LOCAL_OLLAMA_HOSTNAMES. `host.docker.internal` ist im Container-Betrieb
@@ -116,7 +134,7 @@ export const ProviderConnectionBaseSchema = z.object({
   display_name: z.string().min(1),
   transport: z.enum(['http', 'local', 'cli']),
   auth_mode: z.enum(['none', 'api_key', 'oauth', 'session']),
-  base_url: z.union([PublicBaseUrlSchema, LocalOllamaBaseUrlSchema]).nullable().default(null),
+  base_url: z.union([PublicBaseUrlSchema, LanBaseUrlSchema, LocalOllamaBaseUrlSchema]).nullable().default(null),
   enabled: z.boolean().default(true),
   status: z.enum(['unknown', 'connected', 'degraded', 'disconnected', 'error']).default('unknown'),
   status_message: z.string().nullable().default(null),
@@ -138,7 +156,8 @@ function refineConnectionBaseUrl(
   // über die URL-Prüfung statt pauschal die Public-URL-Regel.
   const isLocal = value.provider_kind === 'ollama'
     || (localTransportIsLocal && value.provider_kind === 'unknown' && value.transport === 'local')
-  const baseUrlSchema = isLocal ? LocalOllamaBaseUrlSchema : PublicBaseUrlSchema
+  const baseUrlSchema = isLocal ? LocalOllamaBaseUrlSchema
+    : ['custom', 'openai_compatible'].includes(value.provider_kind) ? CompatibleBaseUrlSchema : PublicBaseUrlSchema
   const result = baseUrlSchema.safeParse(value.base_url)
   if (!result.success) {
     context.addIssue({ code: 'custom', path: ['base_url'], message: result.error.issues[0]?.message ?? 'invalid base_url' })
@@ -160,7 +179,7 @@ export const ProviderConnectionUpsertRequestSchema = z.object({
   if (value.base_url === null) return
   const baseUrlSchema = value.provider_kind === 'ollama'
     ? LocalOllamaBaseUrlSchema
-    : PublicBaseUrlSchema
+    : ['custom', 'openai_compatible'].includes(value.provider_kind) ? CompatibleBaseUrlSchema : PublicBaseUrlSchema
   const result = baseUrlSchema.safeParse(value.base_url)
   if (!result.success) {
     context.addIssue({ code: 'custom', path: ['base_url'], message: result.error.issues[0]?.message ?? 'invalid base_url' })
@@ -287,7 +306,7 @@ export const LegacyStageRouteOptionsSchema = z.object({
 }).strict()
 
 export const AiProviderOptionsSchema = z.object({
-  base_url: PublicBaseUrlSchema.nullable().optional(),
+  base_url: z.union([PublicBaseUrlSchema, LanBaseUrlSchema, LocalOllamaBaseUrlSchema]).nullable().optional(),
   num_ctx: z.number().int().positive().optional(),
   secret_ref: z.string().min(1).optional(),
   connection_only: z.boolean().optional(),

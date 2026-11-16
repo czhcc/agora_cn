@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Tuple
 
 from ...llm.providers.codex_cli import CLI_TRANSPORT_VALUE, TRANSPORT_ENV_KEY
+from ...contracts.twhin_model_contract import TWHIN_MODEL_DIR_ENV
 from ...services.llm_routing_seed import WORKSPACE_SECRET_ENV_MARKER
 
 #: Env-Var, die dem Subprozess die Lese-FD einer Pipe mit dem JSON-codierten
@@ -19,6 +20,17 @@ WORKSPACE_PAYLOAD_FD_ENV_NAME = "AGORA_SECRET_ENV_FD"  # noqa: S105 -- env key n
 SAFE_ENV_KEYS: frozenset[str] = frozenset(
     {
         "PATH", "PYTHONPATH", "PYTHONUTF8", "PYTHONIOENCODING", "TZ",
+        # Windows DLL/Winsock initialization requires SystemRoot. os.environ
+        # normalizes Windows keys to uppercase; TEMP/TMP keep temporary files
+        # in the workstation's configured writable directory.
+        "SYSTEMROOT", "WINDIR", "TEMP", "TMP",
+        # pathlib/transformers need the same user-home and model-cache paths
+        # as the parent, including Windows where there is no pwd fallback.
+        "HOME", "USERPROFILE", "HOMEDRIVE", "HOMEPATH",
+        "HF_HOME", "HF_HUB_CACHE", "HUGGINGFACE_HUB_CACHE", "HF_ASSETS_CACHE",
+        "TRANSFORMERS_CACHE", "SENTENCE_TRANSFORMERS_HOME", "HF_ENDPOINT",
+        "HF_HUB_OFFLINE", "TRANSFORMERS_OFFLINE",
+        TWHIN_MODEL_DIR_ENV,
         "LLM_BASE_URL", "LLM_MODEL_NAME", "LLM_MAX_OUTPUT_TOKENS",
         "OLLAMA_THINKING", "REDIS_URL", "HF_TOKEN",
         "AGORA_CODEX_CLI_BIN", "AGORA_CODEX_CLI_TIMEOUT_SECONDS",

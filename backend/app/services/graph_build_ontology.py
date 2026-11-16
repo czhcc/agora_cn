@@ -72,49 +72,42 @@ def _terminalize_ai_model_ref_sync_failure(
 ) -> Iterator[None]:
     from . import graph_build as _gb
 
-    effective_failure_message = (
-        failure_message or _gb.AI_MODEL_REF_ROUTING_FAILURE_MESSAGE
+    effective_failure_message = failure_message or (
+        _gb.AI_MODEL_REF_ROUTING_FAILURE_MESSAGE if ai_model_ref is not None
+        else "Model routing could not be finalized; check the model profile and provider connection"
     )
 
     try:
         yield
     except Exception as exc:
-        if ai_model_ref is not None:
-            task_id = task_id_getter() if task_id_getter is not None else None
-            _gb.logger.warning(
-                "AiModelRef synchronous graph operation failed "
-                "[project_id=%s, run_id=%s, task_id=%s, phase=%s, error_type=%s]",
-                project.project_id,
-                run_id,
-                task_id,
-                phase,
-                type(exc).__name__,
+        task_id = task_id_getter() if task_id_getter is not None else None
+        _gb.logger.warning(
+            "Synchronous graph operation failed "
+            "[project_id=%s, run_id=%s, task_id=%s, phase=%s, error_type=%s]",
+            project.project_id, run_id, task_id, phase, type(exc).__name__,
+        )
+        if task_id is not None and task_manager is not None:
+            task_manager.fail_task(task_id, effective_failure_message)
+        project.status = _gb.ProjectStatus.FAILED
+        project.error = effective_failure_message
+        # Every created run needs a terminal state, including profile/env routes.
+        _gb.ProjectManager.save_project(project)
+        try:
+            _gb.run_registry.update_run(
+                run_id, status="failed", message=effective_failure_message,
+                error=effective_failure_message,
             )
-            if task_id is not None and task_manager is not None:
-                task_manager.fail_task(task_id, effective_failure_message)
-            project.status = _gb.ProjectStatus.FAILED
-            project.error = effective_failure_message
-            # Projektstatus zuerst persistieren: schlägt das Registry-I/O fehl,
-            # darf der FAILED-Zustand nicht nur im Speicher stehen, während auf
-            # Platte weiterhin GRAPH_BUILDING/CREATED klebt.
-            _gb.ProjectManager.save_project(project)
-            try:
-                _gb.run_registry.update_run(
-                    run_id,
-                    status="failed",
-                    message=effective_failure_message,
-                    error=effective_failure_message,
-                )
-            except Exception:  # noqa: BLE001 — Terminalisierung darf nicht am Registry-I/O scheitern
-                _gb.logger.exception(
-                    "run_registry.update_run failed during terminalization [run_id=%s]",
-                    run_id,
-                )
+        except Exception:  # noqa: BLE001 - preserve the original operation failure
+            _gb.logger.exception(
+                "run_registry.update_run failed during terminalization [run_id=%s]", run_id,
+            )
+        if ai_model_ref is not None:
             if isinstance(exc, TimeoutError):
                 raise TimeoutError from None
             if not isinstance(exc, AiModelRefRoutingInputError):
                 raise AiModelRefPostValidationError from None
         raise
+
 
 
 def chunk_project_text(

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useGraphTypeLabel } from '@/composables/graph-library/useGraphTypeLabel'
+const typeLabel = useGraphTypeLabel()
 /**
  * Bearbeitbare Graph-Ansicht (#1808, Etappe 8, ADR-0022).
  *
@@ -304,7 +306,7 @@ function originMark(entity: ReaderEntity): ReturnType<typeof originOf> {
               >
                 <span aria-hidden="true" class="gev__check">{{ activeTypes.has(type.name) ? '✓' : '' }}</span>
                 <span aria-hidden="true" class="gev__glyph">{{ type.glyph }}</span>
-                <span>{{ type.name }}</span>
+                <span>{{ typeLabel(type.name) }}</span>
                 <span class="gev__num">{{ type.count }}</span>
               </button>
             </li>

@@ -12,6 +12,7 @@ import json
 import os
 from typing import Any, Dict, List, Literal, TypedDict
 
+from ..contracts.provider_types import NATIVE_TOOL_CONNECTION_TYPES
 from ..utils.logger import get_logger
 from ..utils.retry import llm_call_with_retry
 from .request_plan import (
@@ -216,7 +217,8 @@ def _chat_with_tools(
     )
     # ``openrouter`` bleibt wie ``unknown`` im XML-Fallback: der eigene
     # Detection-Wert aendert nur ``reasoning_effort``, nicht den Tools-Pfad.
-    if provider in ("unknown", "openrouter") and not is_cli_shim_provider:
+    explicit_native_connection = getattr(self, "_configured_provider_type", None) in NATIVE_TOOL_CONNECTION_TYPES
+    if provider in ("unknown", "openrouter") and not (is_cli_shim_provider or explicit_native_connection):
         logger.info(
             "LLMClient.chat_with_tools: provider=unknown (model=%s, base=%s) — "
             "skipping tools= and falling back to chat() for XML-tool-call parsing",

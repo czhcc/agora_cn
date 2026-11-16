@@ -17,6 +17,10 @@ import { useRunsPolling } from '@/composables/useRunsPolling'
 import type { RunDetail } from '@/contracts/runsContract'
 import { t } from '@/i18n/translate'
 import { reportTarget } from '@/utils/reportRoute'
+import zhCN from '@/i18n/locales/zh-CN.json'
+import de from '@/i18n/locales/de.json'
+import en from '@/i18n/locales/en.json'
+import { isUiLocale } from '@/contracts/locale'
 
 export interface Command {
   id: string
@@ -29,10 +33,10 @@ export interface Command {
 
 // Statische Nav-Commands, unabhaengig von einer Router-Instanz definierbar.
 // action wird beim Aufruf von buildStaticCommands() mit router.push verdrahtet.
+const COMMAND_LABELS = { de: de.cmd.navigation, en: en.cmd.navigation, 'zh-CN': zhCN.cmd.navigation }
+
 interface StaticCommandDef {
-  id: string
-  labelDe: string
-  labelEn: string
+  id: keyof typeof en.cmd.navigation
   routeName: string
   /** Abschnitt des Einstellungsfensters (Route `SettingsWindow`). */
   section?: string
@@ -42,19 +46,19 @@ interface StaticCommandDef {
 const STATIC_DEFS: StaticCommandDef[] = [
   // Etappe 2 (#1797): die Ids bleiben (gespeicherte „zuletzt benutzt“-Eintraege),
   // die Ziele sind die neuen Adressen. `nav:dashboard` ist der Einstieg „Neuer Lauf“.
-  { id: 'nav:dashboard',              labelDe: 'Neuer Lauf',      labelEn: 'New run',         routeName: 'NewRun',                group: 'nav' },
-  { id: 'nav:runs',                   labelDe: 'Läufe',           labelEn: 'Runs',            routeName: 'LibraryRuns',           group: 'nav' },
-  { id: 'nav:graphs',                 labelDe: 'Graphen',         labelEn: 'Graphs',          routeName: 'LibraryGraphs',         group: 'nav' },
-  { id: 'nav:history',                labelDe: 'Aktivität',       labelEn: 'Activity',        routeName: 'ActivityJobs',          group: 'nav' },
-  { id: 'nav:settings-general',       labelDe: 'Einstellungen — Allgemein',    labelEn: 'Settings — General',       routeName: 'SettingsGeneral',       group: 'nav' },
+  { id: 'nav:dashboard',              routeName: 'NewRun',                group: 'nav' },
+  { id: 'nav:runs',                   routeName: 'LibraryRuns',           group: 'nav' },
+  { id: 'nav:graphs',                 routeName: 'LibraryGraphs',         group: 'nav' },
+  { id: 'nav:history',                routeName: 'ActivityJobs',          group: 'nav' },
+  { id: 'nav:settings-general',       routeName: 'SettingsGeneral',       group: 'nav' },
   // Etappe 3 (#1799): die alten Einstellungsadressen sind Weiterleitungen; die
   // Eintraege fuehren direkt in den Abschnitt des Einstellungsfensters. Die Ids
   // bleiben (gespeicherte „zuletzt benutzt“-Eintraege); Audit-Protokoll und
   // Nutzer & Teams liegen im Abschnitt „Zugang“ und haben keinen eigenen Eintrag mehr.
-  { id: 'nav:settings-integrations',  labelDe: 'Einstellungen — Pipeline',     labelEn: 'Settings — Pipeline',      routeName: 'SettingsWindow', section: 'pipeline',  group: 'nav' },
-  { id: 'nav:settings-llm-routing',   labelDe: 'Einstellungen — Profile',      labelEn: 'Settings — Profiles',      routeName: 'SettingsWindow', section: 'profiles',  group: 'nav' },
-  { id: 'nav:settings-llm-providers', labelDe: 'Einstellungen — Anbieter',     labelEn: 'Settings — Providers',     routeName: 'SettingsWindow', section: 'providers', group: 'nav' },
-  { id: 'nav:settings-api-keys',      labelDe: 'Einstellungen — Zugang',       labelEn: 'Settings — Access',        routeName: 'SettingsWindow', section: 'access',    group: 'nav' },
+  { id: 'nav:settings-integrations',  routeName: 'SettingsWindow', section: 'pipeline',  group: 'nav' },
+  { id: 'nav:settings-llm-routing',   routeName: 'SettingsWindow', section: 'profiles',  group: 'nav' },
+  { id: 'nav:settings-llm-providers', routeName: 'SettingsWindow', section: 'providers', group: 'nav' },
+  { id: 'nav:settings-api-keys',      routeName: 'SettingsWindow', section: 'access',    group: 'nav' },
 ]
 
 /** Leitet einen lesbaren Label aus einem RunDetail ab. */
@@ -99,10 +103,11 @@ export const useCommandsStore = defineStore('commands', () => {
    * Baut statische Commands und verdrahtet router.push.
    * Wird einmalig in CommandPalette.vue beim Setup aufgerufen.
    */
-  function buildStaticCommands(router: Router, locale: 'de' | 'en' = 'de'): Command[] {
+  function buildStaticCommands(router: Router, locale: string = 'de'): Command[] {
+    const labels = COMMAND_LABELS[isUiLocale(locale) ? locale : 'de']
     return STATIC_DEFS.map((def) => ({
       id: def.id,
-      label: locale === 'en' ? def.labelEn : def.labelDe,
+      label: labels[def.id],
       group: def.group,
       action: () => {
         router

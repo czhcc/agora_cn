@@ -261,6 +261,7 @@ const {
               <select :id="id('lang')" v-model="language" class="nr__select">
                 <option value="de">{{ t('dashboard.hero.languageDe') }}</option>
                 <option value="en">{{ t('dashboard.hero.languageEn') }}</option>
+                <option value="zh">{{ t('dashboard.hero.languageZh') }}</option>
               </select>
             </div>
             <p class="nr__hint">{{ t('views.newRun.models.scope') }}</p>

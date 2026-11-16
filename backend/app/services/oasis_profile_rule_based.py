@@ -5,6 +5,8 @@ The public compatibility surface remains app.services.oasis_profile_generator.
 
 from __future__ import annotations
 
+from .oasis_profile_demographics import pick_persona_name
+
 from typing import TYPE_CHECKING, Any
 
 
@@ -169,7 +171,7 @@ demographic_slot :Optional [PersonaDemographicSlot ]=None ,
 
         # Personen-Fallback: echter DACH-Name + breite Altersstreuung + realistisches Gender.
     if entity_type_lower in ["student","alumni"]:
-        dach =self ._pick_dach_name (assigned_gender )
+        dach =pick_persona_name (self, assigned_gender )
         return {
         "display_name":dach ,
         "handle":dach .lower ().replace (" ","_"),
@@ -185,7 +187,7 @@ demographic_slot :Optional [PersonaDemographicSlot ]=None ,
         }
 
     elif entity_type_lower in ["publicfigure","expert","faculty"]:
-        dach =self ._pick_dach_name (assigned_gender )
+        dach =pick_persona_name (self, assigned_gender )
         profession_str =entity_attributes .get ("occupation","Fachexpertin/Fachexperte")
         return {
         "display_name":dach ,
@@ -203,7 +205,7 @@ demographic_slot :Optional [PersonaDemographicSlot ]=None ,
 
         # Institutionen-Fallback: ECHTE PERSON als Repräsentant/in der Organisation.
     elif entity_type_lower in ["mediaoutlet","socialmediaplatform"]:
-        dach =self ._pick_dach_name (assigned_gender )
+        dach =pick_persona_name (self, assigned_gender )
         return {
         "display_name":dach ,
         "handle":dach .lower ().replace (" ","_"),
@@ -219,7 +221,7 @@ demographic_slot :Optional [PersonaDemographicSlot ]=None ,
         }
 
     elif entity_type_lower in ["university","governmentagency","ngo","organization"]:
-        dach =self ._pick_dach_name (assigned_gender )
+        dach =pick_persona_name (self, assigned_gender )
         return {
         "display_name":dach ,
         "handle":dach .lower ().replace (" ","_"),
@@ -264,7 +266,7 @@ assigned_mbti :Optional [str ],
     den Entitaetstyp, was Berufsbezeichnungen wie "AIProvider" oder
     "WorkingGroup" ergab. Wo nichts abzuleiten ist, bleibt das Feld leer.
     """
-    dach =self ._pick_dach_name (assigned_gender )
+    dach =pick_persona_name (self, assigned_gender )
     persona =(
     f"{dach } steht im Szenario für „{entity_name }“. {entity_summary }".strip ()
     if entity_summary

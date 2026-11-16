@@ -585,6 +585,10 @@ def get_interview_history(
             )
         )
 
+    from ...contracts.interview_presentation_contract import present_interview_prompt
+
+    for row in results:
+        row.update(present_interview_prompt(str(row.get("prompt") or "")).model_dump())
     results.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
     if len(platforms) > 1 and len(results) > limit:
         results = results[:limit]

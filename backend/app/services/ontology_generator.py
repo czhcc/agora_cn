@@ -11,6 +11,7 @@ from ..config import Config
 from ..contracts.ontology_type_contract import (
     ONTOLOGY_KIND_CONTESTED_TOPIC,
     ONTOLOGY_KIND_ENTITY,
+    OntologyDisplayMetadata,
     OntologyTypeMetadata,
     contested_topic_type_names,
 )
@@ -55,7 +56,7 @@ class OntologySourceTarget(BaseModel):
     target: str = Field(..., description="Target entity type name")
 
 
-class OntologyEdgeType(BaseModel):
+class OntologyEdgeType(OntologyDisplayMetadata):
     """Edge-/Relationship-Typ in der Ontology-Definition."""
 
     name: str = Field(..., description="Relationship type name (English, UPPER_SNAKE_CASE)")
@@ -92,6 +93,12 @@ class OntologyDefinition(BaseModel):
 ONTOLOGY_SYSTEM_PROMPT = """You are a professional knowledge graph ontology design expert. Your task is to analyze given text content and simulation requirements, and design entity types and relationship types suitable for **social media opinion simulation**.
 
 **Important: You must output valid JSON format data, do not output anything else.**
+
+Language rules: Keep entity type names in English PascalCase, relationship type names in
+English UPPER_SNAKE_CASE and attribute keys in English snake_case. For every entity and
+relationship type, supply display_name_zh: a concise Simplified Chinese display label.
+This label is presentation metadata, never an identifier. Keep example entity names in
+the document's original language: do not translate Chinese names into English.
 
 ## Core Task Background
 

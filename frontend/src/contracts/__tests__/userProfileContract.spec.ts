@@ -17,6 +17,15 @@ import {
 } from '../userProfileContract'
 
 describe('canonical user-profile / onboarding contracts', () => {
+  it('accepts Chinese preferences in both API directions and mirrors the generated enum', () => {
+    const prefs = { language: 'zh-CN', report_language: 'zh-CN', timezone: 'Asia/Shanghai' }
+    expect(UserProfileUpdateRequestSchema.parse(prefs)).toMatchObject(prefs)
+    expect(UserProfileSchema.parse({
+      ...prefs, display_name: 'Alex', created_at: '2026-11-16T00:00:00Z', updated_at: '2026-11-16T00:00:00Z',
+    })).toMatchObject(prefs)
+    expect(userProfileJsonSchema.properties.language.enum).toEqual(['de', 'en', 'zh-CN'])
+  })
+
   it('keeps Zod top-level fields aligned with generated Pydantic schemas', () => {
     expect(Object.keys(UserProfileSchema.shape).sort()).toEqual(
       Object.keys(userProfileJsonSchema.properties).sort(),

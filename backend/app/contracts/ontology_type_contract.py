@@ -35,7 +35,16 @@ ONTOLOGY_KIND_ENTITY: OntologyTypeKind = "entity"
 ONTOLOGY_KIND_CONTESTED_TOPIC: OntologyTypeKind = "contested_topic"
 
 
-class OntologyTypeMetadata(BaseModel):
+class OntologyDisplayMetadata(BaseModel):
+    """Human-readable labels never replace machine type identifiers."""
+
+    display_name_zh: str | None = Field(
+        default=None, max_length=80,
+        description="Concise Simplified Chinese display label; name remains the English identifier.",
+    )
+
+
+class OntologyTypeMetadata(OntologyDisplayMetadata):
     """Metadaten eines Ontologie-Entitätstyps (Streitgegenstand, Akteurstauglichkeit)."""
 
     model_config = ConfigDict(extra="forbid")

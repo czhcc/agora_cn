@@ -1,8 +1,9 @@
 import { createI18n } from 'vue-i18n'
 import de from './locales/de.json'
 import en from './locales/en.json'
+import zhCN from './locales/zh-CN.json'
+import { isUiLocale, type UiLocale } from '@/contracts/locale'
 
-const SUPPORTED: string[] = ['de', 'en']
 const STORAGE_KEY = 'agora.locale'
 const DEFAULT_LOCALE = 'de'
 
@@ -39,9 +40,9 @@ function writeStored(locale: string): void {
   }
 }
 
-function detectLocale(): string {
+function detectLocale(): UiLocale {
   const stored = readStored()
-  if (stored && SUPPORTED.includes(stored)) return stored
+  if (stored && isUiLocale(stored)) return stored
   return DEFAULT_LOCALE
 }
 
@@ -50,12 +51,12 @@ const i18n = createI18n({
   globalInjection: true,
   locale: detectLocale(),
   fallbackLocale: 'en',
-  messages: { de, en },
+  messages: { de, en, 'zh-CN': zhCN },
 })
 
 export function setLocale(locale: string): void {
-  if (!SUPPORTED.includes(locale)) return
-  i18n.global.locale.value = locale as 'de' | 'en'
+  if (!isUiLocale(locale)) return
+  i18n.global.locale.value = locale
   writeStored(locale)
   safeDocument()?.documentElement.setAttribute('lang', locale)
 }

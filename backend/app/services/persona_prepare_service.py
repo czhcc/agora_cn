@@ -21,6 +21,7 @@ import os
 from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, get_args
 
+from ..contracts.simulation_language_contract import parse_simulation_language
 from ..config import Config
 from ..contracts.persona_contract import PERSONA_SCHEMA_VERSION
 from ..contracts.persona_set_contract import PersonaOrigin
@@ -81,6 +82,7 @@ def prepare_from_personas(
     personas: List[Dict[str, Any]],
     persona_set_id: Optional[str] = None,
     degradations: Optional[DegradationCollector] = None,
+    language: Optional[str] = None,
 ) -> "SimulationState":
     """Bereitet eine frisch angelegte Simulation aus Bibliotheks-Personas vor.
 
@@ -130,7 +132,7 @@ def prepare_from_personas(
     _write_twitter_csv(sim_dir, profiles)
     _persist_identity_bindings(state, sim_dir, profiles)
 
-    config = _build_config(state, profiles)
+    config = _build_config(state, profiles, language=language)
     manager._store.write_json(simulation_id, "simulation_config", config)
 
     state.entities_count = len(profiles)
@@ -344,7 +346,7 @@ def _build_agent_configs(profiles: List[Dict[str, Any]]) -> List[AgentActivityCo
     return configs
 
 
-def _build_config(state: "SimulationState", profiles: List[Dict[str, Any]]) -> Dict[str, Any]:
+def _build_config(state: "SimulationState", profiles: List[Dict[str, Any]], language: Optional[str] = None) -> Dict[str, Any]:
     """Baut eine schema-kompatible ``simulation_config.json`` ohne LLM/Graph.
 
     Nutzt bewusst nur die Datenklassen aus ``simulation_config_generator``
@@ -403,7 +405,7 @@ def _build_config(state: "SimulationState", profiles: List[Dict[str, Any]]) -> D
         reddit_config=reddit_config,
         llm_model=Config.LLM_MODEL_NAME,
         llm_base_url=Config.LLM_BASE_URL,
-        language=Config.AGENT_LANGUAGE,
+        language=parse_simulation_language(language or Config.AGENT_LANGUAGE) or "de",
         enable_agent_tools=getattr(Config, "ENABLE_AGENT_TOOLS", False),
         max_tool_calls_per_action=getattr(Config, "MAX_TOOL_CALLS_PER_ACTION", 2),
         neo4j_uri=Config.NEO4J_URI,

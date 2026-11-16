@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
+from ..contracts.simulation_language_contract import parse_simulation_language
 from ..contracts import PersonaQuotaPlan
 from ..contracts.ai_provider_contract import AiModelRef
 from ..contracts.run_budget_contract import RunBudgetConfig
@@ -448,9 +449,7 @@ def _collect_prepare_inputs(data: "dict[str, Any]", project, state) -> PrepareIn
             )
         ) from exc
 
-    agent_language_override = (_coerce_optional_str(data.get('language')) or '').strip().lower() or None
-    if agent_language_override and agent_language_override not in ('de', 'en'):
-        agent_language_override = None
+    agent_language_override = parse_simulation_language(data.get('language'))
 
     return PrepareInputs(
         simulation_requirement=simulation_requirement,

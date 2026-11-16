@@ -153,12 +153,19 @@ def test_process_lock_covers_read_modify_write_cycle(
     original_read = store._read_raw
     original_replace = provider_connection_store.os.replace
 
-    def track_flock(_fh: object, flag: int) -> None:
+    from contextlib import contextmanager
+
+    original_lock = provider_connection_store.process_file_lock
+
+    @contextmanager
+    def track_lock(path):
         nonlocal lock_depth
-        if flag == provider_connection_store.fcntl.LOCK_EX:
+        with original_lock(path) as handle:
             lock_depth += 1
-        elif flag == provider_connection_store.fcntl.LOCK_UN:
-            lock_depth -= 1
+            try:
+                yield handle
+            finally:
+                lock_depth -= 1
 
     def read_while_locked() -> dict:
         assert lock_depth == 1
@@ -168,7 +175,9 @@ def test_process_lock_covers_read_modify_write_cycle(
         assert lock_depth == 1
         original_replace(source, destination)
 
-    monkeypatch.setattr(provider_connection_store.fcntl, "flock", track_flock)
+    monkeypatch.setattr(provider_connection_store, "process_file_lock", track_lock)
+    secrets_store_module = importlib.import_module("app.services.llm_provider_secrets_store")
+    monkeypatch.setattr(secrets_store_module, "process_file_lock", track_lock)
     monkeypatch.setattr(store, "_read_raw", read_while_locked)
     monkeypatch.setattr(provider_connection_store.os, "replace", replace_while_locked)
 

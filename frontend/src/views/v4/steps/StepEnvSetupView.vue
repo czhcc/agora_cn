@@ -4,6 +4,7 @@
 <template>
   <div>
     <PageHeader
+      v-if="!embedded"
       :title="$t('views.stepEnvSetup.title')"
       :subtitle="$t('views.stepEnvSetup.subtitle')"
     >
@@ -11,7 +12,14 @@
         <StepModelOverrideChip stage-id="persona_generation" />
       </template>
     </PageHeader>
-    <PipelineStepper :current-step="2" />
+    <div v-else class="persona-heading">
+      <div>
+        <h2>{{ $t('views.stepEnvSetup.title') }}</h2>
+        <p>{{ $t('views.stepEnvSetup.subtitle') }}</p>
+      </div>
+      <StepModelOverrideChip stage-id="persona_generation" />
+    </div>
+    <PipelineStepper v-if="!embedded" :current-step="2" />
     <Step2EnvSetup
       :simulation-id="simulationId"
       @next-step="handleNextStep"
@@ -34,11 +42,14 @@ import { crumbForId, useShellBreadcrumbs } from '@/composables/useShellBreadcrum
 
 const props = defineProps<{
   projectId: string
+  simulationId?: string
+  embedded?: boolean
 }>()
 
 const route = useRoute()
 const router = useRouter()
 const simulationId = computed(() => {
+  if (props.simulationId) return props.simulationId
   const querySimulationId = route.query.simulationId
   return typeof querySimulationId === 'string' && querySimulationId.length > 0
     ? querySimulationId
@@ -87,6 +98,10 @@ function handleNextStep(payload: {
 }
 
 function handleGoBack(): void {
+  if (props.embedded) {
+    void router.push({ name: 'RunGraph', params: { simulationId: simulationId.value } })
+    return
+  }
   void router.push({
     name: 'StepGraphBuild',
     params: { projectId: props.projectId },
@@ -94,5 +109,18 @@ function handleGoBack(): void {
   })
 }
 
-useShellBreadcrumbs(crumbs)
+if (!props.embedded) useShellBreadcrumbs(crumbs)
 </script>
+
+<style scoped>
+.persona-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.persona-heading h2 { margin: 0 0 8px; }
+.persona-heading p { margin: 0; color: var(--fg2); }
+</style>

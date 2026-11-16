@@ -23,7 +23,8 @@
         {
           "enum": [
             "de",
-            "en"
+            "en",
+            "zh-CN"
           ],
           "type": "string"
         },
@@ -68,7 +69,8 @@
         {
           "enum": [
             "de",
-            "en"
+            "en",
+            "zh-CN"
           ],
           "type": "string"
         },

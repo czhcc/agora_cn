@@ -7,7 +7,7 @@
         class="detail-type-badge"
         :style="{ background: item.color, color: 'var(--mono-50)' }"
       >
-        {{ item.entityType }}
+        {{ typeLabel(item.entityType) }}
       </span>
       <button class="detail-close" @click="$emit('close')">×</button>
     </div>
@@ -45,7 +45,7 @@
         <div class="section-title">Labels:</div>
         <div class="labels-list">
           <span v-for="label in item.data.labels" :key="label" class="label-tag">
-            {{ label }}
+            {{ typeLabel(label) }}
           </span>
         </div>
       </div>
@@ -67,7 +67,7 @@
           >
             <div class="self-loop-item-header" @click="$emit('toggle-self-loop', loop.uuid || idx)">
               <span class="self-loop-index">#{{ idx + 1 }}</span>
-              <span class="self-loop-name">{{ loop.name || loop.fact_type || 'RELATED' }}</span>
+              <span class="self-loop-name">{{ typeLabel(loop.name || loop.fact_type || 'RELATED') }}</span>
               <span class="self-loop-toggle">{{ expandedSelfLoops.has(loop.uuid || idx) ? '−' : '+' }}</span>
             </div>
 
@@ -82,7 +82,7 @@
               </div>
               <div v-if="loop.fact_type" class="detail-row">
                 <span class="detail-label">Type:</span>
-                <span class="detail-value">{{ loop.fact_type }}</span>
+                <span class="detail-value">{{ typeLabel(loop.fact_type) }}</span>
               </div>
               <div v-if="loop.created_at" class="detail-row">
                 <span class="detail-label">Created:</span>
@@ -101,7 +101,7 @@
 
       <template v-else>
         <div class="edge-relation-header">
-          {{ item.data.source_name }} → {{ item.data.name || 'RELATED_TO' }} → {{ item.data.target_name }}
+          {{ item.data.source_name }} → {{ typeLabel(item.data.name || 'RELATED_TO') }} → {{ item.data.target_name }}
         </div>
 
         <div class="detail-row">
@@ -110,11 +110,11 @@
         </div>
         <div class="detail-row">
           <span class="detail-label">Label:</span>
-          <span class="detail-value">{{ item.data.name || 'RELATED_TO' }}</span>
+          <span class="detail-value">{{ typeLabel(item.data.name || 'RELATED_TO') }}</span>
         </div>
         <div class="detail-row">
           <span class="detail-label">Type:</span>
-          <span class="detail-value">{{ item.data.fact_type || 'Unknown' }}</span>
+          <span class="detail-value">{{ typeLabel(item.data.fact_type || 'Unknown') }}</span>
         </div>
         <div v-if="item.data.fact" class="detail-row">
           <span class="detail-label">Fact:</span>
@@ -145,6 +145,8 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useGraphTypeLabel } from '@/composables/graph-library/useGraphTypeLabel'
+const typeLabel = useGraphTypeLabel()
 
 import { formatDateTime } from './graphPanelUtils'
 

@@ -349,12 +349,13 @@ def test_collect_prepare_inputs_defaults_and_language_guard(app_ctx, monkeypatch
     assert inputs.agent_language_override is None
 
 
-def test_collect_prepare_inputs_keeps_supported_language(app_ctx, monkeypatch):
+@pytest.mark.parametrize("language", ["de", "en", "zh"])
+def test_collect_prepare_inputs_keeps_supported_language(app_ctx, monkeypatch, language):
     monkeypatch.setattr(mod.ProjectManager, "get_extracted_text", staticmethod(lambda _pid: ""))
 
-    inputs = mod._collect_prepare_inputs({"language": " DE "}, _project(), _state())
+    inputs = mod._collect_prepare_inputs({"language": f" {language.upper()} "}, _project(), _state())
 
-    assert inputs.agent_language_override == "de"
+    assert inputs.agent_language_override == language
 
 
 def test_collect_prepare_inputs_tolerates_non_string_language(app_ctx, monkeypatch):

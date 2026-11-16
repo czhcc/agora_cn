@@ -95,10 +95,12 @@ def _validate_public_base_url(value: str) -> str:
     try:
         address = ip_address(hostname)
     except ValueError:
+        if re.fullmatch(r"[0-9.]+", hostname):
+            raise ValueError("base_url must contain a valid IP address") from None
         # DNS-Namen werden nicht aufgeloest: Der Validator darf keinen
         # netzwerkabhaengigen SSRF-Check vortaeuschen.
         return value
-    if not address.is_global:
+    if not address.is_global or address.is_multicast or address.is_reserved:
         raise ValueError("base_url must be a public HTTP(S) base URL")
     return value
 
@@ -108,6 +110,37 @@ PublicBaseUrl = Annotated[
     Field(pattern=_PUBLIC_BASE_URL_PATTERN),
     AfterValidator(_validate_public_base_url),
 ]
+
+# Explicit LAN gateways for custom/OpenAI-compatible providers. Do not use
+# is_private: it also includes link-local and other non-routable addresses.
+_IPV4_OCTET = r"(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])"
+_LAN_BASE_URL_PATTERN = (
+    rf"^https?://(?:10\.{_IPV4_OCTET}\.{_IPV4_OCTET}\.{_IPV4_OCTET}"
+    rf"|172\.(?:1[6-9]|2[0-9]|3[01])\.{_IPV4_OCTET}\.{_IPV4_OCTET}"
+    rf"|192\.168\.{_IPV4_OCTET}\.{_IPV4_OCTET})"
+    r"(?::[0-9]{1,5})?(?:/[^\s?#]*)?$"
+)
+
+
+def _validate_lan_base_url(value: str) -> str:
+    if re.fullmatch(_LAN_BASE_URL_PATTERN, value) is None:
+        raise ValueError("base_url must be an RFC1918 LAN HTTP(S) base URL")
+    parsed = urlsplit(value)
+    if parsed.port is not None and not 1 <= parsed.port <= 65535:
+        raise ValueError("base_url must use a valid port")
+    return value
+
+
+LanBaseUrl = Annotated[
+    str, Field(pattern=_LAN_BASE_URL_PATTERN), AfterValidator(_validate_lan_base_url),
+]
+
+
+def _validate_compatible_base_url(value: str) -> str:
+    try:
+        return _validate_lan_base_url(value)
+    except ValueError:
+        return _validate_public_base_url(value)
 
 
 # Hostnamen, die einen lokalen Ollama-Server bezeichnen, aber keine
@@ -189,7 +222,7 @@ class LegacyStageRouteOptions(TypedDict, closed=True):  # type: ignore[call-arg]
 class AiProviderOptions(TypedDict, total=False, closed=True):  # type: ignore[call-arg]  # mypy lacks PEP 728
     """Secret-free options currently consumed by Agora routing."""
 
-    base_url: PublicBaseUrl | LocalOllamaBaseUrl | None
+    base_url: PublicBaseUrl | LanBaseUrl | LocalOllamaBaseUrl | None
     num_ctx: Annotated[int, Field(gt=0)]
     secret_ref: Annotated[str, Field(min_length=1)]
     connection_only: bool
@@ -231,7 +264,7 @@ class ProviderConnection(BaseModel):
     display_name: str = Field(min_length=1)
     transport: ProviderTransport
     auth_mode: ProviderAuthMode
-    base_url: PublicBaseUrl | LocalOllamaBaseUrl | None = None
+    base_url: PublicBaseUrl | LanBaseUrl | LocalOllamaBaseUrl | None = None
     enabled: bool = True
     status: ProviderStatus = "unknown"
     status_message: str | None = None
@@ -247,6 +280,8 @@ class ProviderConnection(BaseModel):
             return self
         if self.provider_kind == "ollama":
             _validate_local_ollama_base_url(self.base_url)
+        elif self.provider_kind in {"custom", "openai_compatible"}:
+            _validate_compatible_base_url(self.base_url)
         else:
             _validate_public_base_url(self.base_url)
         return self
@@ -269,6 +304,8 @@ class ProviderConnectionUpsertRequest(BaseModel):
             return self
         if self.provider_kind == "ollama":
             _validate_local_ollama_base_url(self.base_url)
+        elif self.provider_kind in {"custom", "openai_compatible"}:
+            _validate_compatible_base_url(self.base_url)
         else:
             _validate_public_base_url(self.base_url)
         return self
@@ -412,7 +449,7 @@ def provider_connection_from_descriptor(
     """Read a legacy descriptor into the canonical public contract."""
 
     timestamp = now or datetime.now(timezone.utc)
-    base_url, base_url_was_sanitized = _sanitize_legacy_base_url(descriptor.base_url)
+    base_url, base_url_was_sanitized = _sanitize_legacy_base_url(descriptor.base_url, allow_lan=descriptor.type in {"custom", "openai_compatible"})
     return ProviderConnection(
         id=descriptor.id,
         # Statische Verengung; unsupported Kinds lehnt der BeforeValidator
@@ -440,11 +477,12 @@ def provider_connection_from_descriptor(
     )
 
 
-def _sanitize_legacy_base_url(value: str | None) -> tuple[str | None, bool]:
+def _sanitize_legacy_base_url(value: str | None, *, allow_lan: bool = False) -> tuple[str | None, bool]:
     if value is None:
         return None, False
+    validate = _validate_compatible_base_url if allow_lan else _validate_public_base_url
     try:
-        return _validate_public_base_url(value), False
+        return validate(value), False
     except ValueError:
         pass
 
@@ -459,7 +497,7 @@ def _sanitize_legacy_base_url(value: str | None) -> tuple[str | None, bool]:
         sanitized = urlunsplit(
             (parsed.scheme, f"{hostname}{port}", parsed.path, "", "")
         )
-        return _validate_public_base_url(sanitized), True
+        return validate(sanitized), True
     except ValueError:
         return None, True
 
@@ -628,7 +666,7 @@ def llm_profile_to_canonical(
     """Read a legacy profile without copying its secret value."""
 
     unresolved_legacy_secret = bool(profile.api_key) and secret_ref is None
-    base_url, base_url_was_sanitized = _sanitize_legacy_base_url(profile.base_url)
+    base_url, base_url_was_sanitized = _sanitize_legacy_base_url(profile.base_url, allow_lan=profile.provider in {"custom", "openai_compatible"})
     degradation_reasons = []
     if unresolved_legacy_secret:
         degradation_reasons.append("Legacy API key has no resolved secret_ref")

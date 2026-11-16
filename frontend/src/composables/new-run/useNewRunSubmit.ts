@@ -10,6 +10,7 @@
  * sichtbar (`createdSimulationId`): der Dialog nennt ihn, ein erneuter Versuch
  * legt keinen zweiten an.
  */
+import { SimulationLanguageSchema } from '@/contracts/simulationLanguage'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -197,6 +198,7 @@ export function useNewRunSubmit() {
       const res = await createSimulationFromPersonas({
         simulation_requirement: input.simulationRequirement,
         persona_set_id: input.personaSetId,
+        language: SimulationLanguageSchema.parse(input.language),
       })
       if (!res.success) {
         error.value = failure(res, t('views.newRun.errors.createFromPersonaSet'))

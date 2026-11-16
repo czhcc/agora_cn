@@ -84,7 +84,7 @@ vi.mock('../../composables/useSystemLog', () => ({
 }))
 
 import Step2EnvSetup from '@/components/v4/steps/Step2EnvSetup.vue'
-import { getAvailableModels, prepareSimulation, getPrepareStatus } from '../../api/simulation'
+import { getAvailableModels, prepareSimulation, getPrepareStatus, getSimulationConfigRealtime } from '../../api/simulation'
 
 const i18n = createI18n({
   legacy: false,
@@ -364,6 +364,32 @@ const globalConfigModelRef = {
 }
 
 describe('Step2EnvSetup — kanonische AiModelRef-Selektion (Issue #890)', () => {
+  it('regeneration forces a new prepare job and renders failures on the page', async () => {
+    const wrapper = mount(Step2EnvSetup, {
+      props: { simulationId: 'sim_existing', systemLogs: [] },
+      global: globalConfigModelRef,
+    })
+    await flushPromises()
+    ;(wrapper.vm as unknown as { phase: number }).phase = 3
+    await triggerPrepare(wrapper)
+    expect(lastPayload()).toMatchObject({ simulation_id: 'sim_existing', force_regenerate: true })
+    expect(wrapper.get('[data-testid="prepare-error"]').attributes('role')).toBe('alert')
+    wrapper.unmount()
+  })
+
+  it('shows progress while a prepare task is running', async () => {
+    ;(prepareSimulation as ReturnType<typeof vi.fn>).mockResolvedValue({ success: true, data: { task_id: 'task_live' } })
+    const wrapper = mount(Step2EnvSetup, {
+      props: { simulationId: 'sim_live', systemLogs: [] },
+      global: globalConfigModelRef,
+    })
+    await flushPromises()
+    await triggerPrepare(wrapper)
+    expect(wrapper.get('[data-testid="prepare-progress"]').text()).toContain('0%')
+    expect(lastPayload()).not.toHaveProperty('force_regenerate')
+    wrapper.unmount()
+  })
+
   beforeEach(() => {
     vi.clearAllMocks()
     localStorageMock.clear()
@@ -618,6 +644,9 @@ describe('Step2EnvSetup — UAT-004 widerspruchsfreie Statusanzeige', () => {
     // und isPreparing=false.
     const prepareStatusTask = _capturedPollingTasks[0]
     expect(typeof prepareStatusTask).toBe('function')
+    ;(getSimulationConfigRealtime as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      success: true, data: { config: { time_config: {} } },
+    })
     await prepareStatusTask()
     await flushPromises()
     await nextTick()

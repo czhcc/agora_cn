@@ -35,6 +35,7 @@
         />
       </section>
       <Step1GraphBuild
+        :failed="!!error && currentPhase < 2"
         :currentPhase="currentPhase"
         :projectData="projectData"
         :ontologyProgress="ontologyProgress"

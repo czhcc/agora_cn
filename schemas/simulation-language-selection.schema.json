@@ -1,0 +1,25 @@
+{
+  "$id": "https://alexle135.de/schemas/simulation-language-selection.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "language": {
+      "anyOf": [
+        {
+          "enum": [
+            "de",
+            "en",
+            "zh"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Language"
+    }
+  },
+  "title": "SimulationLanguageSelection",
+  "type": "object"
+}

@@ -25,7 +25,7 @@ import _sim_common as sc  # noqa: E402
 
 @pytest.fixture(autouse=True)
 def _clean_offline_env(monkeypatch: pytest.MonkeyPatch) -> None:
-    for var in ("HF_HUB_OFFLINE", "TRANSFORMERS_OFFLINE"):
+    for var in ("HF_HUB_OFFLINE", "TRANSFORMERS_OFFLINE", "AGORA_TWHIN_BERT_MODEL_DIR"):
         monkeypatch.delenv(var, raising=False)
 
 
@@ -43,6 +43,83 @@ def remove_load_report_filter():
 
 
 class TestEnsureTwhinCache:
+    def test_relative_model_directory_is_resolved_from_project_root(self, tmp_path, monkeypatch):
+        from types import SimpleNamespace
+
+        directory = tmp_path / "models" / "twhin"
+        directory.mkdir(parents=True)
+        for name in ("config.json", "tokenizer.json", "model.safetensors"):
+            (directory / name).write_text("{}", encoding="utf-8")
+        monkeypatch.setattr(sc, "__file__", str(tmp_path / "backend" / "scripts" / "_sim_common.py"))
+        monkeypatch.setenv("AGORA_TWHIN_BERT_MODEL_DIR", "models/twhin")
+        load = mock.Mock()
+        transformer = SimpleNamespace(AutoModel=SimpleNamespace(from_pretrained=load), AutoTokenizer=SimpleNamespace(from_pretrained=load))
+        with mock.patch.dict(sys.modules, {"transformers": transformer}):
+            assert sc.ensure_twhin_cache() is True
+            transformer.AutoModel.from_pretrained("Twitter/twhin-bert-base")
+        load.assert_called_once_with(str(directory.resolve()), local_files_only=True)
+
+    @pytest.mark.parametrize("weight_file", ["model.safetensors", "pytorch_model.bin"])
+    def test_configured_directory_redirects_model_and_tokenizer_without_hub(
+        self, tmp_path, monkeypatch, weight_file,
+    ):
+        from types import SimpleNamespace
+
+        directory = tmp_path / "本地 模型"
+        directory.mkdir()
+        for filename in ("config.json", "tokenizer.json", weight_file):
+            (directory / filename).write_text("{}", encoding="utf-8")
+        monkeypatch.setenv("AGORA_TWHIN_BERT_MODEL_DIR", str(directory))
+        calls = []
+
+        def original(*args, **kwargs):
+            calls.append((args, kwargs))
+            return "loaded"
+
+        model = SimpleNamespace(from_pretrained=original)
+        tokenizer = SimpleNamespace(from_pretrained=original)
+        hub = mock.Mock()
+        with mock.patch.dict(sys.modules, {
+            "transformers": SimpleNamespace(AutoModel=model, AutoTokenizer=tokenizer),
+            "huggingface_hub": hub,
+        }):
+            assert sc.ensure_twhin_cache() is True
+            first_wrapper = model.from_pretrained
+            assert sc.ensure_twhin_cache() is True
+            assert model.from_pretrained is first_wrapper
+            assert model.from_pretrained("Twitter/twhin-bert-base", local_files_only=False) == "loaded"
+            assert tokenizer.from_pretrained(pretrained_model_name_or_path="Twitter/twhin-bert-base") == "loaded"
+            assert model.from_pretrained("another/model", revision="main") == "loaded"
+        hub.snapshot_download.assert_not_called()
+        assert calls == [
+            ((str(directory.resolve()),), {"local_files_only": True}),
+            ((), {"pretrained_model_name_or_path": str(directory.resolve()), "local_files_only": True}),
+            (("another/model",), {"revision": "main"}),
+        ]
+
+    @pytest.mark.parametrize("missing", ["directory", "config.json", "weights", "tokenizer"])
+    def test_invalid_configured_directory_fails_without_download(self, tmp_path, monkeypatch, missing):
+        directory = tmp_path / "model"
+        if missing != "directory":
+            directory.mkdir()
+            for filename, category in (("config.json", "config.json"), ("model.safetensors", "weights"), ("tokenizer.json", "tokenizer")):
+                if missing != category:
+                    (directory / filename).write_text("{}", encoding="utf-8")
+        monkeypatch.setenv("AGORA_TWHIN_BERT_MODEL_DIR", str(directory))
+        hub = mock.Mock()
+        with mock.patch.dict(sys.modules, {"huggingface_hub": hub}):
+            with pytest.raises(sc.TwhinCacheError, match="AGORA_TWHIN_BERT_MODEL_DIR"):
+                sc.ensure_twhin_cache()
+        hub.snapshot_download.assert_not_called()
+
+    @pytest.mark.parametrize("empty", ["", "  "])
+    def test_empty_local_directory_keeps_default_cache_flow(self, monkeypatch, empty):
+        monkeypatch.setenv("AGORA_TWHIN_BERT_MODEL_DIR", empty)
+        hub = mock.Mock()
+        with mock.patch.dict(sys.modules, {"huggingface_hub": hub}):
+            assert sc.ensure_twhin_cache() is True
+        hub.snapshot_download.assert_called_once_with(repo_id="Twitter/twhin-bert-base", local_files_only=True)
+
     def test_cache_complete_sets_offline_env_without_second_download(
         self, monkeypatch: pytest.MonkeyPatch
     ) -> None:

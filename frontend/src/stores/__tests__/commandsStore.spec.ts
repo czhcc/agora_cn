@@ -72,6 +72,15 @@ const routerMock = {
 }
 
 describe('commandsStore', () => {
+  it('uses Chinese navigation labels and keeps navigation targets unchanged', () => {
+    setActivePinia(createPinia())
+    const commands = useCommandsStore().buildStaticCommands(routerMock as never, 'zh-CN')
+    expect(commands.find((command) => command.id === 'nav:dashboard')?.label).toBe('新建运行')
+    expect(commands.find((command) => command.id === 'nav:settings-api-keys')?.label).toBe('设置 — 访问权限')
+    expect(commands.every((command) => /[\u4e00-\u9fff]/.test(command.label))).toBe(true)
+    commands.find((command) => command.id === 'nav:runs')?.action()
+    expect(routerMock.push).toHaveBeenCalledWith({ name: 'LibraryRuns' })
+  })
   beforeEach(() => {
     lsMock.clear()
     mockRuns.value = []

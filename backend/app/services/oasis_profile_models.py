@@ -50,7 +50,7 @@ class PersonaProfileSchema(BaseModel):
     in der Post-Processing-Logik. strict-Mode erzwingt gültiges JSON nach Schema.
     """
 
-    display_name: str = Field(..., description="Real first + last name (DACH)")
+    display_name: str = Field(..., description="Personal name following the requested simulation language; synthetic Chinese personas use 2-4 Han characters. Preserve source-bound names.")
     handle: str = Field(..., description="Lowercase social handle without spaces/digits")
     bio: str = Field("", description="Social media bio, <=200 chars")
     persona: str = Field("", description="Detailed persona description, pure text")

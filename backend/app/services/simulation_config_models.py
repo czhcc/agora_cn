@@ -177,7 +177,7 @@ class SimulationParameters:
     llm_model: str = ""
     llm_base_url: str = ""
 
-    # Agent language ("de" or "en") — controls posts/replies language inside OASIS.
+    # Agent language ("de", "en" or "zh") — controls posts/replies language inside OASIS.
     language: str = "de"
 
     # Tool-use configuration (injected into subprocess for agent tool calling)

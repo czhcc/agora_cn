@@ -152,7 +152,7 @@ SETTINGS_FIELDS: tuple[FieldSpec, ...] = (
 
     # ===== Locale =====
     FieldSpec('AGENT_LANGUAGE', 'locale', 'enum', default='de',
-              enum_values=('de', 'en')),
+              enum_values=('de', 'en', 'zh')),
     FieldSpec('TIME_PROFILE', 'locale', 'string', default='dach_default'),
     FieldSpec('REPORT_LANGUAGE', 'locale', 'string', default='German'),
 

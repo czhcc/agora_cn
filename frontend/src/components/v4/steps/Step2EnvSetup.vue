@@ -75,6 +75,9 @@ const {
 const {
   phase,
   isPreparing,
+  prepareProgress,
+  progressMessage,
+  error: prepareError,
   profiles,
   expectedTotal,
   personaFloorApplied,
@@ -269,6 +272,7 @@ async function triggerPrepare() {
   const payload = {
     simulation_id: props.simulationId,
     use_llm_for_profiles: true,
+    ...(phase.value > 0 ? { force_regenerate: true } : {}),
     language: language.value,
     ...(activityModeChosen.value ? { activity_mode: activityMode.value } : {}),
   }
@@ -335,6 +339,11 @@ onMounted(async () => {
   <div class="step-panel">
     <div class="scroll">
 
+      <p v-if="prepareError" role="alert" data-testid="prepare-error">{{ t('errors.personaGenFailed') }}: {{ prepareError }}</p>
+      <div v-if="isPreparing" role="status" data-testid="prepare-progress">
+        <p>{{ t('common.processing') }} {{ prepareProgress }}% {{ progressMessage }}</p>
+        <progress max="100" :value="prepareProgress" :aria-label="t('common.processing')" />
+      </div>
       <!-- Card 0: Setup -->
       <article class="card" :class="{ 'is-active': phase < 1 }">
         <header class="card-head">

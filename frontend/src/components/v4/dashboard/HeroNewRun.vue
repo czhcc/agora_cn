@@ -129,6 +129,7 @@ const {
           <select id="hero-lang" v-model="language" class="hero-select">
             <option value="de">{{ $t('dashboard.hero.languageDe') }}</option>
             <option value="en">{{ $t('dashboard.hero.languageEn') }}</option>
+            <option value="zh">{{ $t('dashboard.hero.languageZh') }}</option>
           </select>
         </div>
         <div class="hero-field">

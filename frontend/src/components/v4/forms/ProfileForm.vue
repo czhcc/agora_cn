@@ -16,6 +16,7 @@ import {
   ALLOWED_AVATAR_MIME_TYPES,
   MAX_AVATAR_BYTES,
   TIMEZONE_SUGGESTIONS,
+  systemTimezone,
 } from './profileFormConstants'
 import type { UserProfile, UserProfileUpdateRequest } from '@/contracts/userProfileContract'
 
@@ -47,7 +48,7 @@ const username = ref('')
 const role = ref('')
 const organisation = ref('')
 const language = ref('de')
-const timezone = ref('Europe/Berlin')
+const timezone = ref(systemTimezone())
 const reportLanguage = ref('de')
 const theme = ref('system')
 const privacyMode = ref('standard')
@@ -58,7 +59,7 @@ function syncFromProfile(profile: UserProfile | null): void {
   role.value = profile?.role ?? ''
   organisation.value = profile?.organisation ?? ''
   language.value = profile?.language ?? 'de'
-  timezone.value = profile?.timezone ?? 'Europe/Berlin'
+  timezone.value = profile?.timezone ?? systemTimezone()
   reportLanguage.value = profile?.report_language ?? 'de'
   theme.value = profile?.theme ?? 'system'
   privacyMode.value = profile?.privacy_mode ?? 'standard'
@@ -71,6 +72,7 @@ watch(() => props.profile, syncFromProfile, { immediate: true })
 const languageOptions = computed(() => [
   { value: 'de', label: t('profileSettings.form.language.de') },
   { value: 'en', label: t('profileSettings.form.language.en') },
+  { value: 'zh-CN', label: t('profileSettings.form.language.zhCN') },
 ])
 const themeOptions = computed(() => [
   { value: 'system', label: t('profileSettings.form.theme.system') },
@@ -232,12 +234,18 @@ defineExpose({ canSave, handleSubmit })
         <input
           v-model="timezone"
           list="profile-form-timezones"
+          data-testid="profile-form-timezone"
           class="v4-input v4-state-interactive"
           :disabled="saving"
         />
         <datalist id="profile-form-timezones">
-          <option v-for="tz in TIMEZONE_SUGGESTIONS" :key="tz" :value="tz" />
+          <option v-for="tz in TIMEZONE_SUGGESTIONS" :key="tz" :value="tz"
+            :label="tz === 'Asia/Shanghai' ? t('profileSettings.form.beijingTimezone') : tz" />
         </datalist>
+        <Button type="button" variant="secondary" size="sm" :disabled="saving"
+          data-testid="profile-form-system-timezone" @click="timezone = systemTimezone()">
+          {{ t('profileSettings.form.useSystemTimezone') }}
+        </Button>
       </Field>
 
       <Field :label="t('profileSettings.form.reportLanguageLabel')">

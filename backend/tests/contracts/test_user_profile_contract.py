@@ -47,6 +47,14 @@ class TestUserProfileDefaults:
 
 
 class TestUserProfileTimezone:
+    def test_chinese_language_and_beijing_timezone(self) -> None:
+        prefs = {"language": "zh-CN", "report_language": "zh-CN", "timezone": "Asia/Shanghai"}
+        for contract in (UserProfile, UserProfileUpdateRequest):
+            profile = contract(display_name="Alex", **prefs)
+            assert profile.language == "zh-CN"
+            assert profile.report_language == "zh-CN"
+            assert profile.timezone == "Asia/Shanghai"
+
     def test_invalid_timezone_raises(self) -> None:
         with pytest.raises(ValidationError, match="timezone"):
             UserProfile(display_name="Alex", timezone="Mars/Olympus")

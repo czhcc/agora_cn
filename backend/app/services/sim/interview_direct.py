@@ -29,6 +29,7 @@ from contextvars import copy_context
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional
 
+from ...contracts.simulation_language_contract import simulation_language_instruction
 from ...utils.logger import get_logger
 from ...utils.path_safety import safe_join_within_root, validate_path_id
 from ..artifact_store import resolve_default_store
@@ -242,7 +243,7 @@ def build_persona_messages(
     Prompt byte-identisch zum Aufruf ohne diesen Parameter.
     """
     label = _persona_label(persona, agent_id)
-    language = "Deutsch" if str(context.get("language", "de")).startswith("de") else "Englisch"
+    language_instruction = simulation_language_instruction(context.get("language", "de"))
     requirement = context.get("requirement") or "(keine Fragestellung hinterlegt)"
 
     history_block = _render_persona_history_block(persona_history) if persona_history else ""
@@ -259,7 +260,8 @@ def build_persona_messages(
         "- Erfinde keine Zahlen, Studien, Zitate oder Fakten ueber reale Personen "
         "oder Unternehmen.\n"
         "- Wenn du etwas aus deiner Rolle heraus nicht wissen kannst, sage das offen.\n"
-        f"- Antworte auf {language}, 2 bis 6 Saetze, konkret und ohne Marketingsprache.\n"
+        f"- {language_instruction}\n"
+        "- Antworte in 2 bis 6 Saetzen, konkret und ohne Marketingsprache.\n"
         "- Deine Antwort ist eine Simulation, keine Aussage einer realen Person."
     )
     return [

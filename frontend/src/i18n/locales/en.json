@@ -1,4 +1,5 @@
 {
+  "language": { "label": "Language" },
   "brand": {
     "name": "Agora",
     "tagline": "Swarm intelligence — local or cloud."
@@ -406,6 +407,7 @@
       "label": "Agent language",
       "de": "German",
       "en": "English",
+      "zh": "Simplified Chinese",
       "hint": "Determines the language agents post and reply in."
     },
     "agentTools": {
@@ -875,6 +877,17 @@
     }
   },
   "cmd": {
+    "navigation": {
+      "nav:dashboard": "New run",
+      "nav:runs": "Runs",
+      "nav:graphs": "Graphs",
+      "nav:history": "Activity",
+      "nav:settings-general": "Settings — General",
+      "nav:settings-integrations": "Settings — Pipeline",
+      "nav:settings-llm-routing": "Settings — Profiles",
+      "nav:settings-llm-providers": "Settings — Providers",
+      "nav:settings-api-keys": "Settings — Access"
+},
     "title": "Command Palette",
     "placeholder": "Search routes or enter a command…",
     "trigger": "Open command palette (Cmd+K)",
@@ -1505,6 +1518,7 @@
       "languageLabel": "Language",
       "languageDe": "Deutsch",
       "languageEn": "English",
+      "languageZh": "Simplified Chinese",
       "startCta": "Start",
       "disabledHint": "Select a file and enter a requirement first.",
       "servicesUnavailableHint": "Neo4j readiness has not been confirmed. Check system status and reload.",
@@ -1791,6 +1805,8 @@
       "organisationLabel": "Organisation",
       "languageLabel": "Language",
       "timezoneLabel": "Timezone",
+      "beijingTimezone": "Beijing time (Asia/Shanghai, UTC+8)",
+      "useSystemTimezone": "Use system timezone",
       "reportLanguageLabel": "Report language",
       "themeLabel": "Theme",
       "privacyModeLabel": "Privacy mode",
@@ -1805,7 +1821,8 @@
       },
       "language": {
         "de": "German",
-        "en": "English"
+        "en": "English",
+        "zhCN": "Chinese (Simplified)"
       }
     }
   },
@@ -2501,7 +2518,8 @@
           "you": "You:",
           "badgeSim": "SIM",
           "badgeInterview": "Interview",
-          "origin": "Entries may also come from interviews the report conducted; they cannot be told apart here.",
+          "origin": "Automatic report interviews are labeled; the origin of some older entries is unknown.",
+          "reportInterview": "Automatic report interview",
           "unknownPersona": "There is no persona profile and no history for agent {n}. Choose a persona from the list.",
           "failedReason": "No answer: {reason}",
           "copy": "Copy",

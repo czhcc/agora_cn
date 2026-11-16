@@ -68,6 +68,17 @@ _TEXT_EN = {
     "handle": "skeptic_{agent_id}",
 }
 
+_TEXT_ZH = {
+    "bio": "模拟生成的反对声音：质疑争议命题，并提出批判性意见。",
+    "persona": (
+        "你是本次讨论中持怀疑态度的反对声音。你反对争议命题“{subject}”，"
+        "并希望阻止按原方案实施。你质疑假设，要求可靠证据，指出被忽略的风险、成本和后果。"
+        "发帖时明确表达反对立场，并简明、客观地说明理由。你是模拟生成的声音，"
+        "并非真实人物或特定组织。不要编造姓名、职业或生平，也不要代表真实人物或机构发言。"
+    ),
+    "handle": "skeptic_{agent_id}",
+}
+
 
 def _as_int(value: Any) -> Optional[int]:
     if isinstance(value, bool):
@@ -111,7 +122,7 @@ def build_skeptic_profiles(
         return []
     taken = {profile.user_id for profile in existing_profiles}
     lang = (language or Config.AGENT_LANGUAGE or "de").lower()
-    texts = _TEXT_EN if lang.startswith("en") else _TEXT_DE
+    texts = _TEXT_ZH if lang == "zh" else (_TEXT_EN if lang.startswith("en") else _TEXT_DE)
     subject = _contested_subject(config)
 
     profiles: List[OasisAgentProfile] = []

@@ -34,6 +34,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Sequence
 
 from ...config import Config
+from ...contracts.report_language_contract import resolve_report_language
 from .run_degradation import _entry
 
 if TYPE_CHECKING:  # pragma: no cover — nur für Typprüfung
@@ -54,11 +55,7 @@ COMPONENT = "requirement_checker"
 #: schlechteste Ausfallrichtung.
 LANG_DE = "de"
 LANG_EN = "en"
-
-#: Unbekannte Sprachwerte fallen konservativ auf Deutsch: das ist der
-#: Projekt-Default (``Config.REPORT_LANGUAGE = 'German'``) und die Sprache
-#: der Referenzlaeufe.
-_DEFAULT_LANG = LANG_DE
+LANG_ZH = "zh"
 
 
 def resolve_language(raw: Optional[str] = None) -> str:
@@ -68,12 +65,7 @@ def resolve_language(raw: Optional[str] = None) -> str:
     weil der Wert aus einer freien Nutzereinstellung stammt und ein Tippfehler
     keinen Report unpruefbar machen darf.
     """
-    value = str(raw if raw is not None else Config.REPORT_LANGUAGE or "").strip().lower()
-    if value.startswith("en"):
-        return LANG_EN
-    if value.startswith("de") or value.startswith("ger"):
-        return LANG_DE
-    return _DEFAULT_LANG
+    return resolve_report_language(raw if raw is not None else Config.REPORT_LANGUAGE)
 
 
 @dataclass(frozen=True)
@@ -85,7 +77,7 @@ class Requirement:
     die Checkliste stellt Vollständigkeit fest, keine Formulierungstreue.
 
     ``patterns`` sind die Muster der Berichtssprache Deutsch;
-    ``patterns_en`` die englischen Entsprechungen. Die Auswahl **ersetzt**
+    ``patterns_en``/``patterns_zh`` die englischen/chinesischen Entsprechungen. Die Auswahl **ersetzt**
     die Musterliste, sie ergaenzt sie nicht: sonst wuerde ein deutscher
     Bericht durch englische Treffer als vollstaendig gelten und die
     Checkliste verlaere ihre Aussage.
@@ -96,11 +88,14 @@ class Requirement:
     description: str
     patterns: tuple[str, ...]
     patterns_en: tuple[str, ...] = ()
+    patterns_zh: tuple[str, ...] = ()
 
     def patterns_for(self, language: str) -> tuple[str, ...]:
-        """Muster der gewaehlten Sprache; ohne englische Muster bleibt Deutsch."""
+        """Chinese checks never fall back to German patterns."""
         if language == LANG_EN and self.patterns_en:
             return self.patterns_en
+        if language == LANG_ZH:
+            return self.patterns_zh
         return self.patterns
 
     def satisfied_by(self, text: str, language: Optional[str] = None) -> bool:
@@ -140,6 +135,7 @@ DEFAULT_REQUIREMENT_CHECKLIST: tuple[Requirement, ...] = (
             r"controvers",
             r"disagree",
         ),
+        patterns_zh=(r"矛盾", r"冲突", r"分歧", r"争议"),
     ),
     Requirement(
         id="fruehwarnindikatoren",
@@ -155,6 +151,7 @@ DEFAULT_REQUIREMENT_CHECKLIST: tuple[Requirement, ...] = (
             r"leading indicator",
             r"warning signals?\b",
         ),
+        patterns_zh=(r"预警", r"早期.{0,4}(?:信号|指标)", r"先行指标"),
     ),
     Requirement(
         id="stop_bedingungen",
@@ -180,6 +177,7 @@ DEFAULT_REQUIREMENT_CHECKLIST: tuple[Requirement, ...] = (
             r"abort criteri",
             r"when to abort",
         ),
+        patterns_zh=(r"(?:停止|中止|终止|暂停|退出).{0,6}(?:条件|标准|阈值)", r"何时.{0,3}(?:停止|中止|终止)"),
     ),
     Requirement(
         id="expand_bedingungen",
@@ -198,6 +196,7 @@ DEFAULT_REQUIREMENT_CHECKLIST: tuple[Requirement, ...] = (
             r"scale[- ]up (criteri|conditions?)",
             r"when to (expand|scale up)",
         ),
+        patterns_zh=(r"(?:扩大|扩展|推广|扩容|扩张).{0,6}(?:条件|标准|阈值)", r"何时.{0,3}(?:扩大|扩展|推广)"),
     ),
     Requirement(
         id="positionswechsel",
@@ -218,6 +217,7 @@ DEFAULT_REQUIREMENT_CHECKLIST: tuple[Requirement, ...] = (
             r"shifted position",
             r"no position shift (was )?observed",
         ),
+        patterns_zh=(r"(?:立场|态度|观点).{0,6}(?:变化|转变|改变|转向)",),
     ),
     Requirement(
         id="koalitionen",
@@ -235,6 +235,7 @@ DEFAULT_REQUIREMENT_CHECKLIST: tuple[Requirement, ...] = (
             r"blocs?\b",
             r"no coalition(s)? (was |were )?formed",
         ),
+        patterns_zh=(r"联盟", r"结盟", r"联合阵线", r"阵营"),
     ),
 )
 
@@ -252,6 +253,12 @@ _EXPAND_STOP_TRIGGERS: tuple[str, ...] = (
     "phased",
     "roll-out",
     "scale up",
+    "试点",
+    "分阶段",
+    "逐步",
+    "推广",
+    "扩大",
+    "扩容",
 )
 
 
@@ -353,6 +360,7 @@ __all__ = [
     "DEFAULT_REQUIREMENT_CHECKLIST",
     "LANG_DE",
     "LANG_EN",
+    "LANG_ZH",
     "Requirement",
     "checklist_for_intent",
     "collect_requirement_degradations",

@@ -36,6 +36,7 @@ from datetime import datetime
 from queue import Queue
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
+import psutil
 from opentelemetry import trace
 from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
 
@@ -133,9 +134,8 @@ def _is_starting_state_fresh(state: "SimulationRunState") -> bool:
 def is_process_alive(pid: Optional[int]) -> bool:
     """True wenn ``pid`` einen (noch) existierenden Prozess bezeichnet.
 
-    Liveness-Muster wie ``SimulationIPCClient.check_env_alive``
-    (``simulation_ipc.py``): ``os.kill(pid, 0)`` sendet kein Signal, prüft
-    nur Existenz/Berechtigung.
+    Windows uses psutil's native PID lookup; POSIX uses ``os.kill(pid, 0)``
+    to check existence and permission without sending a signal.
 
     ``pid`` fehlend/``None``/``<= 0`` → tot (konservativ: kein PID heißt kein
     verifizierbarer laufender Prozess). ``ProcessLookupError`` → tot.
@@ -145,6 +145,10 @@ def is_process_alive(pid: Optional[int]) -> bool:
     """
     if not isinstance(pid, int) or pid <= 0:
         return False
+    if IS_WINDOWS:
+        # os.kill(pid, 0) is not a reliable non-signalling existence probe
+        # on Windows. psutil uses the native process APIs.
+        return psutil.pid_exists(pid)
     try:
         os.kill(pid, 0)
     except ProcessLookupError:

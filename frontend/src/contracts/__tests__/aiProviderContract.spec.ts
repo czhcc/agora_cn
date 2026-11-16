@@ -18,6 +18,24 @@ import {
 } from '../aiProviderContract'
 
 describe('canonical AI provider contracts', () => {
+  it.each(sharedFixtures.base_urls.lan)('accepts LAN gateways consistently: %s', (base_url) => {
+    for (const provider_kind of ['custom', 'openai_compatible']) {
+      const connection = {
+        id: 'lan', display_name: 'LAN', provider_kind, transport: 'http', auth_mode: 'api_key', base_url,
+      }
+      expect(ProviderConnectionSchema.safeParse(connection).success).toBe(true)
+      expect(ProviderConnectionUpsertRequestSchema.safeParse({ display_name: 'LAN', provider_kind, base_url }).success).toBe(true)
+      expect(AiRouteSchema.safeParse({ source: 'runtime', provider_options: { base_url } }).success).toBe(true)
+      expect(ProviderConnectionSchema.safeParse({ ...connection, provider_kind: 'openai' }).success).toBe(false)
+    }
+  })
+
+  it.each(sharedFixtures.base_urls.unsafe_lan)('rejects unsafe LAN URLs: %s', (base_url) => {
+    expect(AiProviderOptionsSchema.safeParse({ base_url }).success).toBe(false)
+    expect(ProviderConnectionUpsertRequestSchema.safeParse({
+      display_name: 'LAN', provider_kind: 'openai_compatible', base_url,
+    }).success).toBe(false)
+  })
   const connectionWithBaseUrl = (base_url: string) => ({
     id: 'provider-1',
     provider_kind: 'openai_compatible',

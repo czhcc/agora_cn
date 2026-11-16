@@ -4,6 +4,9 @@ Lifecycle and metadata endpoints split from the main simulation API module.
 
 import os
 
+from pydantic import ValidationError
+from ..contracts.simulation_language_contract import SimulationLanguageSelection
+
 from flask import current_app, request
 from opentelemetry import trace
 
@@ -286,6 +289,10 @@ def create_simulation_from_personas():
     ``CreateFromPersonasResponse``.
     """
     data = request.get_json() or {}
+    try:
+        language = SimulationLanguageSelection.model_validate(data).language
+    except ValidationError:
+        return json_error(ApiErrorCode.VALIDATION_FAILED, message='language must be de, en or zh')
 
     requirement = (data.get('simulation_requirement') or '').strip()
     if not requirement:
@@ -345,7 +352,7 @@ def create_simulation_from_personas():
     state = manager.create_simulation(project_id=project.project_id, graph_id="")
 
     if persona_set_service is None or persona_set_id is None:
-        prepare_from_personas(manager, state.simulation_id, personas)
+        prepare_from_personas(manager, state.simulation_id, personas, language=language)
         return json_success(
             CreateFromPersonasResponse(
                 simulation_id=state.simulation_id,
@@ -365,6 +372,7 @@ def create_simulation_from_personas():
         personas,
         persona_set_id=persona_set_id,
         degradations=degradations,
+        language=language,
     )
     # Erst jetzt sperren: ein gescheitertes Anlegen laesst den Satz offen.
     persona_set_service.record_run(persona_set_id, state.simulation_id)

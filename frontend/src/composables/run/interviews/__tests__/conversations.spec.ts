@@ -21,6 +21,11 @@ function item(over: Partial<InterviewHistoryItem> & { agent_id: number }): Inter
 }
 
 describe('stripInterviewPrefix', () => {
+  it('uses the backend display question and retains the report origin', () => {
+    const [conversation] = buildConversations([item({ agent_id: 1, prompt: 'internal model instructions', display_prompt: '1. 你怎么看？', origin: 'report' })])
+    expect(conversation!.turns[0]!.question).toBe('1. 你怎么看？')
+    expect(conversation!.turns[0]!.origin).toBe('report')
+  })
   it('schneidet den festen Backend-Präfix ab', () => {
     expect(stripInterviewPrefix(`${INTERVIEW_PROMPT_PREFIX}Was denken Sie?`)).toBe('Was denken Sie?')
     expect(stripInterviewPrefix(`${INTERVIEW_PROMPT_PREFIX} Was denken Sie?`)).toBe('Was denken Sie?')

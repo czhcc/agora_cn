@@ -9,6 +9,19 @@ import { describe, it, expect } from 'vitest'
 import { renderMarkdown } from '../markdown'
 
 describe('renderMarkdown', () => {
+  it('keeps simulated quote details collapsed and the quote body visible', () => {
+    const markdown = '> **模拟人物发言** | 外媒_898\n> 这是模拟发言。\n>\n> <details>\n> <summary>引用详情</summary>\n>\n> 人物标识（persona_id）: 外媒_898<br>\n> 证据编号（seed_anchor）: ev_123\n>\n> </details>'
+    const element = document.createElement('div')
+    element.innerHTML = renderMarkdown(markdown)
+    const details = element.querySelector('details')!
+    expect(details).not.toBeNull()
+    expect(details.hasAttribute('open')).toBe(false)
+    expect(details.querySelector('summary')?.textContent).toBe('引用详情')
+    expect(details.textContent).toContain('ev_123')
+    expect(details.textContent).not.toContain('这是模拟发言。')
+    expect(element.querySelector('blockquote')?.textContent).toContain('这是模拟发言。')
+  })
+
   it('rendert Standard-Markdown', () => {
     const html = renderMarkdown('# Title\n\n**bold**')
     expect(html).toContain('<h1>')

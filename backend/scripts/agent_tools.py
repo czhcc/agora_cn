@@ -1091,7 +1091,7 @@ def build_agent_prompt_with_tools(
         observation: Current environment observation (from OASIS)
         available_actions: List of action types the agent can take
         tools: Tool registry (for descriptions)
-        language: Response language ('de' or 'en')
+        language: Response language ('de', 'en' or 'zh')
         stance: Persona attitude ("supportive"/"opposing"/"neutral"/"observer")
             from AgentActivityConfig. ``None`` for legacy configs without it —
             the "Deine Haltung" section is then omitted, not defaulted.
@@ -1107,7 +1107,9 @@ def build_agent_prompt_with_tools(
     """
     action_names = ", ".join(available_actions)
 
-    lang_instruction = "German" if language == "de" else "English"
+    from app.contracts.simulation_language_contract import simulation_language_name
+
+    lang_instruction = simulation_language_name(language)
 
     stance_section = build_stance_section(
         stance,

@@ -46,6 +46,8 @@ export const InterviewHistoryItemSchema = z
     agent_id: AgentIdSchema,
     response: z.string().nullish(),
     prompt: z.string(),
+    display_prompt: z.string().optional(),
+    origin: z.enum(['user', 'report', 'unknown']).optional(),
     timestamp: z.string(),
     platform: z.string().nullish(),
   })

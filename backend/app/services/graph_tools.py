@@ -412,7 +412,9 @@ class GraphToolsService:
             + stance_prompt_requirement(contested_statement)
             + "\n"
         )
-        optimized_prompt = f"{INTERVIEW_PROMPT_PREFIX}{combined_prompt}"
+        from ..contracts.interview_presentation_contract import REPORT_QUESTION_MARKER
+
+        optimized_prompt = f"{INTERVIEW_PROMPT_PREFIX}{REPORT_QUESTION_MARKER}{combined_prompt}"
 
         # Issue #1382: Der Panel-Tracker darf nur verbuchen, was auch eine
         # Stimme gebracht hat. Bis hierher wurde die volle Auswahl gebucht —

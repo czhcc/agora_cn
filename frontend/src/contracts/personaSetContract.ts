@@ -1,3 +1,4 @@
+import { SimulationLanguageSchema } from './simulationLanguage'
 /**
  * Zod-Spiegel von `backend/app/contracts/persona_set_contract.py` (#1807,
  * Etappe 7): Personasätze unter `/api/persona-sets`. Die Formen folgen den
@@ -230,6 +231,7 @@ export type PersonaSetEntryUpdate = z.input<typeof PersonaSetEntryUpdateSchema>
  */
 export const CreateFromPersonasRequestSchema = z
   .object({
+    language: SimulationLanguageSchema.optional(),
     simulation_requirement: z.string(),
     persona_set_id: z.string().trim().min(1).optional(),
     template_ids: z.array(z.string()).optional(),

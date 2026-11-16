@@ -54,6 +54,12 @@ def created_id(manager: SimulationManager) -> str:
 MINIMAL_PERSONA = {"username": "alice", "name": "Alice"}
 
 
+def test_selected_chinese_language_is_persisted(manager, created_id):
+    persona_prepare_service.prepare_from_personas(manager, created_id, [MINIMAL_PERSONA], language="zh")
+    config = manager._store.read_json(created_id, "simulation_config", default=None)
+    assert config["language"] == "zh"
+
+
 class TestPersonaSetOrigin:
     """``persona_set_origin`` und Rückverweis bei einem Lauf aus einem Satz (#1807)."""
 

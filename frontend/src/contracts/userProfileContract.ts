@@ -14,7 +14,7 @@
 import { z } from 'zod'
 
 // === Literale (müssen exakt den Pydantic-Literalen entsprechen) ===
-export const ProfileLanguageSchema = z.enum(['de', 'en'])
+export const ProfileLanguageSchema = z.enum(['de', 'en', 'zh-CN'])
 export type ProfileLanguage = z.infer<typeof ProfileLanguageSchema>
 
 export const ProfileThemeSchema = z.enum(['system', 'light', 'dark'])

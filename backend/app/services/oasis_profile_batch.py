@@ -5,6 +5,9 @@ The public compatibility surface remains app.services.oasis_profile_generator.
 
 from __future__ import annotations
 
+from .oasis_profile_demographics import pick_persona_name
+from ..contracts.simulation_language_contract import is_chinese_persona_name
+
 from typing import TYPE_CHECKING, Any
 
 from . import oasis_profile_generator as _legacy
@@ -66,7 +69,9 @@ new_name :str ,
         target =new_parts [idx ]if idx <len (new_parts )else new_parts [-1 ]
         replacements .append ((part ,target ))
     for source ,target in sorted (replacements ,key =lambda pair :-len (pair [0 ])):
-        pattern =re .compile (rf"\b{re .escape (source )}\b",re .IGNORECASE )
+        # Chinese names directly adjoin prose; Unicode word boundaries do not separate them.
+        expression = re.escape(source) if is_chinese_persona_name(source) else rf"\b{re.escape(source)}\b"
+        pattern = re.compile(expression, re.IGNORECASE)
         profile .persona =pattern .sub (target ,profile .persona )
         profile .bio =pattern .sub (target ,profile .bio )
 
@@ -138,18 +143,18 @@ seen_last_names :set ,
         return
     norm_name =(profile .name or "").strip ().lower ()
     last_name =generator ._last_name (profile .name or "")
-    collides =norm_name in seen_names or (
+    collides = (getattr(generator, "language", "de") == "zh" and not is_chinese_persona_name(profile.name or "")) or norm_name in seen_names or (
     last_name is not None and last_name in seen_last_names
     )
     if not (norm_name and collides ):
         return
-    new_name =generator ._pick_dach_name (profile .gender )
+    new_name =pick_persona_name (generator, profile .gender )
     attempts =0
     while (
     new_name .lower ()in seen_names
     or (generator ._last_name (new_name )or "")in seen_last_names
     )and attempts <30 :
-        new_name =generator ._pick_dach_name (profile .gender )
+        new_name =pick_persona_name (generator, profile .gender )
         attempts +=1
     old_name =profile .name or ""
     profile .name =new_name

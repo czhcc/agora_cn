@@ -10,7 +10,11 @@ import logging
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
-from pydantic import BaseModel, ConfigDict, Field
+from ..contracts.ner_extraction_contract import (
+    NerEntity as NerEntity,
+    NerExtractionResult as NerExtractionResult,
+    NerRelation as NerRelation,
+)
 
 from ..utils.llm_client import LLMClient
 
@@ -28,7 +32,6 @@ logger = logging.getLogger('agora.ner_extractor')
 # stattdessen klarer ValidationError → Retry-Trigger.
 # ---------------------------------------------------------------------------
 
-_PYDANTIC_TOLERANT = ConfigDict(extra="ignore", str_strip_whitespace=True)
 
 # ---------------------------------------------------------------------------
 # Pronomen- und Rückverweis-Blockliste (Issue #1470, Slice 4.4).
@@ -54,38 +57,6 @@ _PRONOUN_BLOCKLIST: frozenset[str] = frozenset(
     }
 )
 
-
-class NerEntity(BaseModel):
-    """Eine extrahierte Entität. Tolerant gegen unsaubere LLM-Outputs
-    (extra-Felder werden ignoriert, Strings getrimmt)."""
-
-    model_config = _PYDANTIC_TOLERANT
-
-    name: str = Field(min_length=1, description="Kanonischer Name der Entität")
-    type: str = Field(default="Entity", description="Ontology-Typ oder 'Entity' als Fallback")
-    attributes: Dict[str, Any] = Field(default_factory=dict)
-
-
-class NerRelation(BaseModel):
-    """Eine extrahierte Relation zwischen zwei Entitäten."""
-
-    model_config = _PYDANTIC_TOLERANT
-
-    source: str = Field(min_length=1)
-    target: str = Field(min_length=1)
-    type: str = Field(default="RELATED_TO")
-    fact: str = Field(default="")
-
-
-class NerExtractionResult(BaseModel):
-    """Strict-Schema für NER-Output. Wird als ``schema=`` an chat_json
-    übergeben → zwingt das Modell, sowohl entities[] als auch relations[]
-    zu liefern (vorher: Modell durfte 'relations' weglassen → 0 edges)."""
-
-    model_config = _PYDANTIC_TOLERANT
-
-    entities: List[NerEntity] = Field(default_factory=list)
-    relations: List[NerRelation] = Field(default_factory=list)
 
 # ---------------------------------------------------------------------------
 # Tabellen- und Listen-Erkennung & Vorverarbeitung (Issue #1292).
@@ -136,10 +107,15 @@ RULES:
    no matching ontology type fits, use the most descriptive UPPER_SNAKE_CASE label you can
    derive from the text (e.g. ACQUIRED, REPORTS_TO, COLLABORATES_WITH, OPERATES, FUNDS).
    Never omit a relation just because the ontology does not explicitly list its type.
-2. Normalize entity names: strip whitespace, use canonical form (e.g., "Jack Ma" not "ma jack").
-3. Each entity must have: name, type (from ontology or a reasonable fallback), and optional attributes.
+2. Preserve the source language of entity names. For Chinese text, keep the Chinese
+   names exactly as written; never translate them into English or romanize them.
+   Keep original brand names such as OpenAI if that is how the source writes them.
+   When both Chinese and English names are explicitly present, prefer the Chinese name
+   and store the English name in aliases. Do not invent translations or aliases.
+3. Each entity must have: name, type (from ontology or a reasonable fallback), optional aliases (alternative names attested in the text), and optional attributes.
 4. Each relation must have: source entity name, target entity name, relation type, and a fact
-   sentence quoting the relationship as stated in the text.
+   sentence in the source language quoting the relationship as stated in the text.
+   Relation endpoints must exactly match the extracted entity names, including Chinese characters.
 5. If no entities or relations are found, return empty lists.
 6. Extract every relation that is explicitly stated or strongly implied. When in doubt, include
    the relation — it is better to include a borderline relation than to omit one.
@@ -191,7 +167,7 @@ EXAMPLES of well-formed relation output:
 Return ONLY valid JSON in this exact format:
 {{
   "entities": [
-    {{"name": "...", "type": "...", "attributes": {{"key": "value"}}}}
+    {{"name": "...", "type": "...", "aliases": [], "attributes": {{"key": "value"}}}}
   ],
   "relations": [
     {{"source": "...", "target": "...", "type": "...", "fact": "..."}}
@@ -377,7 +353,7 @@ class NERExtractor:
             else:
                 valid_relation_types.add(str(rt).strip())
 
-        cleaned_entities = _clean_entities(entities, valid_entity_types)
+        cleaned_entities = _clean_entities(entities, valid_entity_types, source_text)
         cleaned_relations = _clean_relations(relations, cleaned_entities)
 
         # 0-Entitäten-Warnung bei substantiellem Chunk (Issue #1470, #1292)
@@ -403,7 +379,15 @@ def _is_pronoun(name: str) -> bool:
     return name.strip().lower() in _PRONOUN_BLOCKLIST
 
 
-def _clean_entities(entities: List[Any], valid_entity_types: set) -> List[Dict[str, Any]]:
+def _entity_aliases(value: Any) -> list[str]:
+    if isinstance(value, str):
+        value = [value]
+    if not isinstance(value, list):
+        return []
+    return [item.strip() for item in value if isinstance(item, str) and item.strip()]
+
+
+def _clean_entities(entities: List[Any], valid_entity_types: set, source_text: str = "") -> List[Dict[str, Any]]:
     """Entitäten normalisieren, Pronomen verwerfen, nach Namen deduplizieren."""
     cleaned: List[Dict[str, Any]] = []
     seen_names: set = set()
@@ -418,8 +402,23 @@ def _clean_entities(entities: List[Any], valid_entity_types: set) -> List[Dict[s
         if _is_pronoun(name):
             logger.debug("NER: Pronomen/Rückverweis verworfen name=%r type=%r", name, etype)
             continue
+        attributes = dict(entity["attributes"]) if isinstance(entity.get("attributes"), dict) else {}
+        aliases = _entity_aliases(entity.get("aliases", [])) + _entity_aliases(attributes.get("aliases", []))
+        # Only prefer a Chinese alternative actually attested in the current chunk.
+        if source_text and not re.search(r"[\u3400-\u9fff]", name):
+            source_names = [alias for alias in aliases if re.search(r"[\u3400-\u9fff]", alias) and alias in source_text]
+            if source_names:
+                name, previous_name = source_names[0], name
+                aliases.append(previous_name)
+        aliases = list(dict.fromkeys(alias for alias in aliases if alias.casefold() != name.casefold()))
+        if aliases:
+            attributes["aliases"] = aliases
         name_lower = name.lower()
         if name_lower in seen_names:
+            existing = next(e for e in cleaned if e["name"].lower() == name_lower)
+            merged = list(dict.fromkeys(_entity_aliases(existing["attributes"].get("aliases", [])) + aliases))
+            if merged:
+                existing["attributes"]["aliases"] = merged
             continue
         seen_names.add(name_lower)
         # If ontology has types, warn but keep entities with unknown types
@@ -428,7 +427,7 @@ def _clean_entities(entities: List[Any], valid_entity_types: set) -> List[Dict[s
         cleaned.append({
             "name": name,
             "type": etype,
-            "attributes": entity.get("attributes", {}),
+            "attributes": attributes,
         })
     return cleaned
 
@@ -444,6 +443,14 @@ def _clean_relations(
     """
     cleaned: List[Dict[str, Any]] = []
     entity_names_lower = {e["name"].lower() for e in cleaned_entities}
+    canonical_names = {e["name"].casefold(): e["name"] for e in cleaned_entities}
+    alias_targets: dict[str, set[str]] = {}
+    for entity in cleaned_entities:
+        for alias in _entity_aliases(entity["attributes"].get("aliases", [])):
+            alias_targets.setdefault(alias.casefold(), set()).add(entity["name"])
+    for alias, names in alias_targets.items():
+        if len(names) == 1 and alias not in canonical_names:
+            canonical_names[alias] = next(iter(names))
     for relation in relations:
         if not isinstance(relation, dict):
             continue
@@ -453,6 +460,8 @@ def _clean_relations(
         fact = str(relation.get("fact", "")).strip()
         if not source or not target or _is_pronoun(source) or _is_pronoun(target):
             continue
+        source = canonical_names.get(source.casefold(), source)
+        target = canonical_names.get(target.casefold(), target)
         # Ensure source and target entities exist
         # (they might not if LLM hallucinated a relation without the entity)
         for endpoint in (source, target):

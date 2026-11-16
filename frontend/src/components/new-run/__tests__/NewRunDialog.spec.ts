@@ -331,6 +331,7 @@ describe('NewRunDialog — Aufbau', () => {
       expect(api.createSimulationFromPersonas).toHaveBeenCalledWith({
         simulation_requirement: 'Wie hält das Betriebsrat?',
         persona_set_id: 'pset_a',
+        language: 'de',
       })
       // Der Weg traegt weder Datei noch Graph und bereitet nicht nach: der
       // Endpunkt macht beides in einem Schritt.
@@ -430,6 +431,11 @@ describe('NewRunDialog — vorhandener Graph', () => {
   it('„Starten“ ruft create, dann prepare, und merkt Tage, Runden und Budget vor', async () => {
     const { router } = await mountDialog('/library/runs/new?graph=p1')
     await type(qa<HTMLTextAreaElement>('textarea').find((t) => t.minLength === 10) ?? null, 'Wer blockiert die Reform?')
+    const languageSelect = qa<HTMLSelectElement>('select').find((select) => select.querySelector('option[value=zh]'))!
+    expect(languageSelect).toBeDefined()
+    languageSelect.value = 'zh'
+    languageSelect.dispatchEvent(new Event('change', { bubbles: true }))
+    await flushPromises()
     await click(byTestId('budget-edit'))
     await click(startBtn())
     expect(api.createSimulation).toHaveBeenCalledTimes(1)
@@ -438,7 +444,7 @@ describe('NewRunDialog — vorhandener Graph', () => {
     expect(api.prepareSimulation).toHaveBeenCalledWith({
       simulation_id: 'sim-1',
       use_llm_for_profiles: true,
-      language: 'de',
+      language: 'zh',
       activity_mode: 'realistic',
       max_agents: 30,
       contested_question: 'Wer blockiert die Reform?',

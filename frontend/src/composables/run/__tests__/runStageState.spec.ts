@@ -189,7 +189,7 @@ describe('deriveStages: genau ein nächster Schritt', () => {
       }),
     )
     expect(row(rows, 'graph').next).toMatchObject({ kind: 'view', to: { name: 'RunGraph', params: { simulationId: 'sim_1' } } })
-    expect(row(rows, 'personas').next.to).toEqual({ name: 'StepEnvSetup', params: { projectId: 'proj_1' } })
+    expect(row(rows, 'personas').next.to).toEqual({ name: 'RunPersonas', params: { simulationId: 'sim_1' } })
     expect(row(rows, 'simulation').next.to).toEqual({ name: 'RunSimulationFeed', params: { simulationId: 'sim_1' } })
     expect(row(rows, 'report').next).toMatchObject({ kind: 'view', to: { name: 'RunReport', params: { simulationId: 'sim_1', reportId: 'report_1' } } })
     expect(row(rows, 'interviews').next.to).toEqual({ name: 'RunInterviews', params: { simulationId: 'sim_1' } })
