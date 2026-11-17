@@ -1,5 +1,5 @@
 <p align="center">
-  <strong>English</strong> · <a href="./README.de.md">Deutsch</a>
+  <strong>English</strong> · <a href="./README.de.md">Deutsch</a> · <a href="./README_zh.md">简体中文</a>
 </p>
 
 <div align="center">
@@ -28,6 +28,12 @@
 
 > [!IMPORTANT]
 > **Agora does not predict human behavior.** Personas and simulations are synthetic model outputs. Agora is designed to surface plausible stakeholder reactions, conflicts, assumptions, evidence gaps, and alternative scenarios before decisions are made. It does not replace interviews, user research, expert review, or empirical validation.
+
+## Source and local modifications
+
+This codebase is based on [arn0ld87/agora](https://github.com/arn0ld87/agora). This local version adds Simplified Chinese localization, Chinese generation support, Windows runtime fixes, and frontend pnpm support. These changes describe this checkout; they do not imply that the upstream repository includes them. Original attribution and the AGPL-3.0 license are preserved in [`NOTICE`](./NOTICE) and [`LICENSE`](./LICENSE).
+
+See the [Chinese README](./README_zh.md) for setup and configuration in Chinese.
 
 ## Demo
 
@@ -272,15 +278,57 @@ Default service endpoints:
 
 Provider setup and route persistence are described in [`docs/provider-runtime-settings.md`](./docs/provider-runtime-settings.md). For the optional PostgreSQL path, follow the [upgrade runbook](./docs/runbooks/upgrade.md) (steps, order and rollback per release jump) and the [LLM-profile migration runbook](./docs/runbooks/llm-profile-postgres-umstellung.md); changing a backend setting alone does not migrate existing data.
 
+## Chinese localization
+
+This local version supports a Simplified Chinese interface, Chinese agent personas and simulation/interview responses, Chinese report generation, and Chinese display labels for graph types. Source-attested Chinese entity names are preserved during new graph extraction. Synthetic individual personas use Chinese names when the agent language is Chinese; source persons and organizations retain their source identities. The persona view stays inside the run workspace. Some legacy records, operational messages, and historical demo material may retain their original language.
+
+### Chinese `.env` settings
+
+Use [`.env.zh-CN.example`](./.env.zh-CN.example) as a commented Chinese configuration template. Copy it to the **project-root** `.env` only after backing up any existing configuration, then fill in your own credentials, service endpoints and optional local model directory. The example contains placeholders and is not ready to run until they are replaced. Keep existing Fernet keys on an existing installation so stored secrets remain readable.
+
+```dotenv
+# Default agent language for new runs
+AGENT_LANGUAGE=zh
+# Language used by the report pipeline
+REPORT_LANGUAGE=Simplified Chinese
+# Optional complete local model directory; blank keeps the existing HF cache/download path
+AGORA_TWHIN_BERT_MODEL_DIR=
+```
+
+| Setting | Effect and limits |
+|---|---|
+| `AGENT_LANGUAGE=zh` | Defaults new runs to Chinese. Choose **简体中文** in the new-run or persona settings; the saved per-run language controls agent output. Supported codes: `de`, `en`, `zh`. |
+| `REPORT_LANGUAGE=Simplified Chinese` | Controls report planning, writing, generated metadata, review responses and report chat. `zh` and `zh-CN` are accepted aliases. Independent of agent and interface language. |
+| Interface language | Select **简体中文** on the sign-in page or in the header. Stored in this browser; there is no `.env` interface-language switch. |
+| Personal profile | Language and report-language preferences accept `zh-CN`. The profile report-language preference does not currently override `REPORT_LANGUAGE`. Beijing time is `Asia/Shanghai`; ?Use system timezone? copies the browser's current IANA timezone when clicked. |
+
+Restart the backend after changing `.env`. Existing graphs, personas, posts, interviews and reports are not automatically translated; regenerate the relevant artifacts or create a new run. Explicitly supplied report section titles remain unchanged, and source evidence is preserved rather than translated. New Chinese graph extraction can retain Chinese entity names while internal ontology identifiers remain stable; display labels do not rename persisted identifiers.
+
+For an OpenAI-compatible text model, fill in `LLM_API_KEY`, `LLM_BASE_URL` and `LLM_MODEL_NAME`. Configure embeddings independently with `EMBEDDING_BASE_URL`, `EMBEDDING_MODEL`, `EMBEDDING_API_KEY` and `VECTOR_DIM`. Use a `/v1` base URL for embeddings, not the full `/v1/embeddings` request path. The example uses `bge-m3` with 1024 dimensions; match the dimension to the model actually deployed. Existing provider connections and per-stage routes must also be configured in the application; editing bootstrap `.env` values does not replace a stored route automatically.
+
+### Local development with pnpm
+
+The frontend in this checkout declares pnpm as its package manager. Root orchestration scripts still use Bun. To use pnpm, start the services separately from the project root in two terminals:
+
+```bash
+# Terminal 1: backend; Python environment belongs in backend/
+cd backend
+uv sync
+uv run python run.py
+```
+
+```bash
+# Terminal 2: frontend
+cd frontend
+pnpm install
+pnpm dev
+```
+
+For a frontend production build, use `cd frontend && pnpm build`. Refer to the [Chinese README](./README_zh.md) for required services, secret generation and a local model example.
+
 ## Development and checks
 
 From the repository root, `bun run backend` starts only Flask and `bun run frontend` starts only Vite. The scripts below match the checked-in package configuration:
-
-The interface supports Deutsch, English and 简体中文. Use the language selector on the sign-in page or in the application header; your choice is remembered in this browser. This changes the interface language independently of the agent and report languages.
-
-For Chinese simulation output, choose **简体中文** in the new-run model settings or environment setup. Agent language supports `de`, `en` and `zh`; `AGENT_LANGUAGE=zh` sets the default for new runs. Generated personas, initial posts, and agent posts/replies follow this selection. Existing saved personas keep their original text. Report language is configured separately through `REPORT_LANGUAGE`.
-
-For Chinese reports, set `REPORT_LANGUAGE=Simplified Chinese` (aliases `zh` and `zh-CN` also work) and restart the backend. Outline planning, section writing, extracted natural-language metadata, quality-review responses and report chat use this setting; completeness checks recognize Chinese analysis aspects. The default remains `German`, and `English` is supported. Existing reports and source evidence are not translated: regenerate the report to apply a changed language. Explicitly supplied section titles retain their exact-title contract. Operational diagnostics can still use their original language.
 
 To use an existing TWHIN-BERT directory for Twitter simulations, set `AGORA_TWHIN_BERT_MODEL_DIR` in `.env`. The directory must contain `config.json`, tokenizer files and model weights (`model.safetensors` or `pytorch_model.bin`; sharded weight indexes are also supported). Model and tokenizer load directly from that directory with `local_files_only=True`. Relative paths resolve from the project root; Docker requires a path mounted inside the container. Leave the setting empty or unset to retain Hugging Face cache checks and warmup downloads. A configured invalid directory fails explicitly. Restart the backend after changing this setting.
 
@@ -365,6 +413,6 @@ See [`SECURITY.md`](./SECURITY.md), [`docs/auth.md`](./docs/auth.md), [`docs/sec
 
 ## License and origin
 
-Agora is open source under the **AGPL-3.0** license. It descends from [MiroFish](https://github.com/666ghj/MiroFish) by way of [MiroFish-Offline](https://github.com/nikmcfly/MiroFish-Offline) by Nik (GitHub: nikmcfly), which replaced Zep Cloud with Neo4j and Ollama in March 2026, and has been developed independently under the name Agora since April 2026. See [`NOTICE`](./NOTICE) for attribution details.
+This checkout is based on [arn0ld87/agora](https://github.com/arn0ld87/agora), with the local modifications described above. Agora is open source under the **AGPL-3.0** license. It descends from [MiroFish](https://github.com/666ghj/MiroFish) by way of [MiroFish-Offline](https://github.com/nikmcfly/MiroFish-Offline) by Nik (GitHub: nikmcfly), which replaced Zep Cloud with Neo4j and Ollama in March 2026, and has been developed independently under the name Agora since April 2026. See [`NOTICE`](./NOTICE) for attribution details.
 
 Parts of the simulation runtime use the CAMEL-AI/OASIS ecosystem.

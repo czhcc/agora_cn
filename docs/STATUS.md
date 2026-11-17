@@ -10,6 +10,10 @@ Diese Datei ist die **Single Source of Truth für den verifizierten Istzustand**
 
 ## Kurzurteil
 
+- **Chinesische README (lokaler Branch):** README.md nennt die Codebasis `arn0ld87/agora` und trennt lokale Anpassungen vom Upstream. README_zh.md ergänzt eine chinesische Einführung mit uv-/pnpm-Start, Env-Spracheinstellungen, Modellkonfiguration und bestehenden Grenzen; beide verlinken `.env.zh-CN.example`.
+
+- **Chinesisches Env-Beispiel (lokaler Branch):** `.env.zh-CN.example` dokumentiert die lokale chinesische Konfiguration ohne echte Secrets oder Maschinenpfade. Vorlage wird nicht automatisch geladen; bestehende `.env` und Laufzeitdefaults bleiben unverändert.
+
 - **Lokale Integrationsprüfung vor Main-Merge (16.11.2026):** Geänderte/neue Frontend-Tests: 383 erfolgreich. Backend: 525 erfolgreich, zwei bestehende Unix-only-Skips, ein Fehler in test_provider_connection_store wegen Unix-0600-Erwartung auf Windows (0666). Alle JSON-Schemas ohne Drift; Ruff für geänderte/neue Python-Dateien erfolgreich. Frontend-Typecheck weiterhin mit den fünf bekannten Fehlern in sourceMapSecurity/useGraphRender. Keine entfernte Veröffentlichung.
 
 - **Chinesische Profilpräferenzen (lokaler Branch):** Profil-/Update-Vertrag und Zod-Spiegel akzeptieren `zh-CN` für Sprache und Berichtssprache. Formulare in Einstellungen und Onboarding bieten Chinesisch sowie Peking als Zeitzonenvorschlag; neue Profile initialisieren die Browser-Zeitzone, Bestandsprofile können sie ausdrücklich übernehmen. Bestehende IANA-Zeitzonen bleiben erhalten. Frontend: 64 gezielte Tests erfolgreich; Backend: 67 erfolgreich, ein Windows-Dateimodus-Test erwartet Unix-0600 und scheitert an 0666. Ruff und Vue-Lint ohne Befund; Typecheck weiterhin mit den fünf bekannten Fehlern in sourceMapSecurity/useGraphRender. Berichtserzeugung liest weiterhin REPORT_LANGUAGE, nicht die Profilpräferenz.
